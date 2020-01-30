@@ -14,6 +14,7 @@ body {
   position: fixed;
   top: 17%;
   display: block;
+  z-index: 1;
 }
 
 #flip {
@@ -40,7 +41,7 @@ body {
   background: #4ec7f3;
 }
 #flip div:last-child div {
-  background: #dc143c;
+  background: #ff8ca3;
 }
 
 @keyframes show {

@@ -1,0 +1,131 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:700");
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto";
+}
+body .page {
+  margin: 0 auto;
+  width: 100%;
+  z-index: 2;
+}
+body .content {
+  width: 33%;
+  display: inline-block;
+  margin: 0 auto;
+  position: relative;
+  top: 150px;
+}
+
+body .circle {
+  position: relative;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 200px;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+body .circle:hover .circle_shine {
+  top: 330px;
+  left: -200px;
+}
+body .circle_shine {
+  background: white;
+  width: 600px;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  height: 200px;
+  opacity: 0.2;
+  top: -10px;
+  left: -90px;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  position: absolute;
+  z-index: 2;
+}
+body .circle:hover h2,
+body .circle:hover h3 {
+  opacity: 1;
+  top: -36px;
+}
+body .circle:hover .content_shadow {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  top: -22px;
+}
+body .circle:hover h3 {
+  -webkit-transition: all 0.2s 0.04s;
+  transition: all 0.2s 0.04s;
+}
+body .circle:hover h2 {
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+body .circle_title {
+  text-align: center;
+}
+body .circle_title h2,
+body .circle_title h3 {
+  opacity: 0;
+  color: #4a7479;
+  margin: 0;
+  -webkit-transition: all 0.2s 0.04s;
+  transition: all 0.2s 0.04s;
+  position: relative;
+  top: -10px;
+}
+body .circle_title h3 {
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  color: #b0d5d6;
+  font-size: 15px;
+}
+body .circle_inner {
+  border-radius: 200px;
+  background: #b0d5d6;
+  overflow: hidden;
+  margin: auto;
+  width: 10vw;
+  z-index: 1;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  height: 10vw;
+  position: relative;
+}
+body .circle_inner:hover {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+body .circle_inner:hover .circle_inner__layer:nth-of-type(1) {
+  left: -80px;
+  -webkit-transition: all 4s linear;
+  transition: all 4s linear;
+}
+body .circle_inner:hover .circle_inner__layer:nth-of-type(2) {
+  left: -400px;
+  -webkit-transition: all 4s linear;
+  transition: all 4s linear;
+}
+body .circle_inner:hover .circle_inner__layer:nth-of-type(3) {
+  left: -140px;
+  -webkit-transition: all 4s linear;
+  transition: all 4s linear;
+}
+body .content_shadow {
+  width: 200px;
+  box-shadow: 0px 31px 19px -2px #e0e8f9;
+  height: 20px;
+  border-radius: 70%;
+  position: relative;
+  top: -44px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  z-index: 0;
+}
