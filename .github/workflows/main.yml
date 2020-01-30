@@ -20,4 +20,4 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.PAT }}
           BRANCH: gh-pages
-          FOLDER: client/build
+          FOLDER: build
