@@ -21,27 +21,25 @@ export default function Frontpage() {
 
   return (
     <div>
-      <Grid container direction="row" className={classes.body}>
-        <Grid container item xs={12} lg={6} justify="center" direction="column">
-          <Grid item container xs justify="center">
-            <Avatar
-              alt="Nikolai Dokken"
-              src="./resources/test.png"
-              style={{ height: "20vw", width: "20vw" }}
-            />
-          </Grid>
+      <Grid container className={classes.body}>
+        <Grid container item md justify="center">
+          <Avatar
+            alt="Nikolai Dokken"
+            src="./resources/test.png"
+            style={{ height: "20vw", width: "20vw" }}
+          />
         </Grid>
-        <Grid container item xs={12} lg={6} justify="center" direction="column">
+        <Grid container item md justify="center" direction="column">
           <ThemeProvider theme={responsiveFontSizes(createMuiTheme())}>
-            <Typography variant="h1">Nikolai Roede Dokken</Typography>
+            <Typography variant="h3">Nikolai Roede Dokken</Typography>
             <Typography variant="h5">
               - Computer Engineering at NTNU Trondheim
             </Typography>
           </ThemeProvider>
         </Grid>
       </Grid>
-      <Grid container direction="row">
-        <Grid container item xs={12} justify="center">
+      <Grid container>
+        <Grid container item justify="center">
           <div id="flipBox">
             <Typography variant="h6">MADE WITH</Typography>
             <div id="flip">
