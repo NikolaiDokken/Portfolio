@@ -22,14 +22,14 @@ export default function Frontpage() {
   return (
     <div>
       <Grid container className={classes.body}>
-        <Grid container item md justify="center">
+        <Grid container item md={3} lg={3} justify="center">
           <Avatar
             alt="Nikolai Dokken"
-            src="./resources/test.png"
+            src="./resources/headshot.jpg"
             style={{ height: "20vw", width: "20vw" }}
           />
         </Grid>
-        <Grid container item md justify="center" direction="column">
+        <Grid container item md={9} lg={9} justify="center" direction="column">
           <ThemeProvider theme={responsiveFontSizes(createMuiTheme())}>
             <Typography variant="h3">Nikolai Roede Dokken</Typography>
             <Typography variant="h5">
