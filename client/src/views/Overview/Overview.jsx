@@ -26,10 +26,10 @@ export default function(props) {
   const classes = useStyles();
 
   return (
-    <div className={classes.bouncy}>
+    <div>
       <Button
-        variant="outlined"
         className={classes.button}
+        variant="outlined"
         onClick={() => props.changePage(3)}
       >
         SCRUM
