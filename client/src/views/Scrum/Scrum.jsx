@@ -52,7 +52,7 @@ export default function Scrum(props) {
             <a href="./resources/Harmoni.png" target="_blank">
               <img
                 className={classes.image}
-                src="./resources/harmoni.png"
+                src="./resources/Harmoni.png"
                 alt="Harmoni"
                 target="_blank"
               />
