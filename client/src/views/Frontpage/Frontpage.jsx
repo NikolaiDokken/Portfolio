@@ -50,7 +50,7 @@ export default function Frontpage() {
                 <div>MATERIAL UI</div>
               </div>
               <div>
-                <div>CSS</div>
+                <div>JavaScript</div>
               </div>
             </div>
           </div>

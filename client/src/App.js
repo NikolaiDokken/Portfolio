@@ -2,6 +2,7 @@ import React from "react";
 import ReactFullpage from "@fullpage/react-fullpage";
 import Frontpage from "./views/Frontpage/Frontpage";
 import Overview from "./views/Overview/Overview";
+import Scrum from "./views/Scrum/Scrum";
 
 export default function App() {
   return (
@@ -21,6 +22,14 @@ export default function App() {
               <div className="section">
                 <Overview changePage={changePage} />
               </div>
+              <div className="section">
+                <Scrum changePage={changePage} />
+              </div>
+              <div className="section">Libertyboat.no</div>
+              <div className="section">Community Newspage</div>
+              <div className="section">Squiggle</div>
+              <div className="section">Monté</div>
+              <div className="section">IDI Rally</div>
               <div className="section">
                 <div className="slide">
                   <h3>Slide 2.1</h3>

@@ -34,17 +34,40 @@ export default function(props) {
       >
         SCRUM
       </Button>
-      <Button variant="outlined" className={classes.button}>
-        Lego Project
-      </Button>
-      <Button variant="outlined" className={classes.button}>
-        Squiggle
-      </Button>
-      <Button variant="outlined" className={classes.button}>
+      <Button
+        variant="outlined"
+        className={classes.button}
+        onClick={() => props.changePage(4)}
+      >
         Libertyboat.no
       </Button>
-      <Button variant="outlined" className={classes.button}>
-        Miniproject
+      <Button
+        variant="outlined"
+        className={classes.button}
+        onClick={() => props.changePage(5)}
+      >
+        Community Newspage
+      </Button>
+      <Button
+        variant="outlined"
+        className={classes.button}
+        onClick={() => props.changePage(6)}
+      >
+        Squiggle
+      </Button>
+      <Button
+        variant="outlined"
+        className={classes.button}
+        onClick={() => props.changePage(7)}
+      >
+        Lego Monté
+      </Button>
+      <Button
+        variant="outlined"
+        className={classes.button}
+        onClick={() => props.changePage(8)}
+      >
+        IDI Rally
       </Button>
     </div>
   );
