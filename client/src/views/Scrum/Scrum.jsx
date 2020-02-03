@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, Grid, Typography, Chip, Button } from "@material-ui/core";
+import { makeStyles, Grid, Typography, Chip } from "@material-ui/core";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import "typeface-roboto";
 
@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   image: {
     width: "100%",
     height: "auto",
-    maxHeight: "400px",
+    maxHeight: "350px",
     maxWidth: "100%",
     objectFit: "contain"
   },
@@ -19,9 +19,9 @@ const useStyles = makeStyles({
     fontWeight: "inherit"
   },
   button: {
-    borderColor: "#fff",
     color: "#fff",
-    marginRight: "0"
+    position: "absolute",
+    bottom: "0px"
   }
 });
 
@@ -42,25 +42,24 @@ export default function Scrum(props) {
           <Typography variant="h3">Scrum Project</Typography>
           <Typography variant="h6">HARMONI</Typography>
           <Typography variant="body1" fontWeight={100}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque
-            mollitia dignissimos, corrupti nesciunt nulla labore expedita eaque
-            quasi alias ex nisi magni odit id beatae saepe asperiores ea
-            pariatur! Amet iste repellat quidem accusantium ducimus quaerat
-            error excepturi nemo necessitatibus adipisci! Eos inventore iure
-            tempora quia! Laborum numquam officia eos.
+            Team project where main goal was to create a website for
+            concert-organizers. Worked with 9 other developers, Scrum master and
+            product owner. Active use of git, CI and Scum board.
           </Typography>
         </Grid>
         <Grid item sm={12} md={5}>
           <div>
-            <img
-              className={classes.image}
-              src="./resources/harmoni.png"
-              alt="Harmoni"
-              target="_blank"
-            />
+            <a href="./resources/harmoni.png" target="_blank">
+              <img
+                className={classes.image}
+                src="./resources/harmoni.png"
+                alt="Harmoni"
+                target="_blank"
+              />
+            </a>
             <Grid container item justify="center" direction="row">
               <a
-                href="https://github.com/NikolaiDokken"
+                href="https://github.com/NikolaiDokken/Harmoni"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ color: "white" }}
@@ -74,19 +73,13 @@ export default function Scrum(props) {
                     backgroundColor: chip.color,
                     margin: "auto 5px auto 5px"
                   }}
+                  key={index}
                 ></Chip>
               ))}
             </Grid>
           </div>
         </Grid>
       </Grid>
-      <Button
-        variant="outlined"
-        className={classes.button}
-        onClick={() => props.changePage(2)}
-      >
-        Go to projects
-      </Button>
     </div>
   );
 }

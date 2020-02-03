@@ -27,48 +27,20 @@ export default function(props) {
 
   return (
     <div>
-      <Button
-        className={classes.button}
-        variant="outlined"
-        onClick={() => props.changePage(3)}
-      >
-        SCRUM
-      </Button>
-      <Button
-        variant="outlined"
-        className={classes.button}
-        onClick={() => props.changePage(4)}
-      >
-        Libertyboat.no
-      </Button>
-      <Button
-        variant="outlined"
-        className={classes.button}
-        onClick={() => props.changePage(5)}
-      >
-        Community Newspage
-      </Button>
-      <Button
-        variant="outlined"
-        className={classes.button}
-        onClick={() => props.changePage(6)}
-      >
-        Squiggle
-      </Button>
-      <Button
-        variant="outlined"
-        className={classes.button}
-        onClick={() => props.changePage(7)}
-      >
-        Lego Monté
-      </Button>
-      <Button
-        variant="outlined"
-        className={classes.button}
-        onClick={() => props.changePage(8)}
-      >
-        IDI Rally
-      </Button>
+      {props.pages.map((Page, index) => {
+        if (index !== 0 && index !== 1) {
+          return (
+            <Button
+              className={classes.button}
+              variant="outlined"
+              onClick={() => props.changePage(index + 1)}
+              key={index}
+            >
+              {Page.name}
+            </Button>
+          );
+        } else return null;
+      })}
     </div>
   );
 }
