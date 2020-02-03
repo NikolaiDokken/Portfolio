@@ -44,12 +44,12 @@ export default function Scrum(props) {
           <Typography variant="body1" fontWeight={100}>
             Team project where main goal was to create a website for
             concert-organizers. Worked with 9 other developers, Scrum master and
-            product owner. Active use of git, CI and Scum board.
+            product owner. Active use of git, CI and Scrum board.
           </Typography>
         </Grid>
         <Grid item sm={12} md={5}>
           <div>
-            <a href="./resources/harmoni.png" target="_blank">
+            <a href="./resources/Harmoni.png" target="_blank">
               <img
                 className={classes.image}
                 src="./resources/harmoni.png"
