@@ -11,10 +11,9 @@ body {
   font-size: 36px;
   font-weight: bold;
   padding-top: 200px;
-  position: fixed;
-  top: 300px;
-  display: block;
-  z-index: 1;
+  position: absolute;
+  z-index: 10;
+  margin-top: -180px;
 }
 
 #flip {
