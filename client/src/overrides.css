@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:700");
+
+#fp-nav ul li a span {
+  background-color: #4ec7f3;
+}
+
+#fp-nav ul li:hover span {
+  background-color: #42c58a;
+}
+
+#fp-nav ul li .fp-tooltip {
+  background-color: black;
+  padding: 5px;
+  color: white;
+  border-radius: 5px;
+  font-family: "Roboto";
+}
+
+#fp-nav ul li a.active span {
+  background-color: #ff8ca3;
+}

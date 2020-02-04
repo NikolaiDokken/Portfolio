@@ -3,12 +3,13 @@ import ReactFullpage from "@fullpage/react-fullpage";
 import Frontpage from "./views/Frontpage/Frontpage";
 import Overview from "./views/Overview/Overview";
 import Scrum from "./views/Scrum/Scrum";
+import "./overrides.css";
 
 export default function App() {
   const pages = [
-    { component: Frontpage, name: "Frontpage" },
-    { component: Overview, name: "Projects" },
-    { component: Scrum, name: "Harmoni" }
+    { component: Frontpage, name: "Frontpage", color: "white" },
+    { component: Overview, name: "Projects", color: "#313131" },
+    { component: Scrum, name: "Harmoni", color: "black" }
   ];
 
   return (
@@ -17,9 +18,8 @@ export default function App() {
         navigation={true}
         navigationPosition="left"
         navigationTooltips={pages.map(page => page.name)}
-        showActiveTooltip={true}
         scrollOverflow={true}
-        sectionsColor={["white", "#313131", "black", "beige"]}
+        sectionsColor={pages.map(page => page.color)}
         render={({ state, fullpageApi }) => {
           function changePage(pageNr) {
             fullpageApi.moveTo(pageNr, 0);
