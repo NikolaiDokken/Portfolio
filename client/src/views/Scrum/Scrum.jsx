@@ -11,9 +11,7 @@ const useStyles = makeStyles({
   image: {
     width: "100%",
     height: "auto",
-    maxHeight: "350px",
-    maxWidth: "100%",
-    objectFit: "contain"
+    maxWidth: "100%"
   },
   description: {
     fontWeight: "inherit"
@@ -38,23 +36,37 @@ export default function Scrum(props) {
   return (
     <div className={classes.body}>
       <Grid container>
-        <Grid item sm={12} md={7}>
+        <Grid item sm={12} md={7} style={{ paddingRight: "10px" }}>
           <Typography variant="h3">Scrum Project</Typography>
           <Typography variant="h6">HARMONI</Typography>
           <Typography variant="body1" fontWeight={100}>
             Team project where main goal was to create a website for
             concert-organizers. Worked with 9 other developers, Scrum master and
             product owner. Active use of git, CI and Scrum board.
+            <a
+              href="http://harmoni-ui.firebaseapp.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "none" }}
+            >
+              HARMONI
+            </a>
           </Typography>
         </Grid>
         <Grid item sm={12} md={5}>
           <div>
-            <a href="./resources/Harmoni.png" target="_blank">
+            <a
+              href="./resources/Harmoni.png"
+              target="_blank"
+              style={{ padding: "0" }}
+            >
               <img
                 className={classes.image}
                 src="./resources/Harmoni.png"
                 alt="Harmoni"
                 target="_blank"
+                rel="noopener noreferrer"
+                style={{ margin: "0" }}
               />
             </a>
             <Grid container item justify="center" direction="row">
