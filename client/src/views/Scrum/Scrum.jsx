@@ -6,11 +6,11 @@ import "typeface-roboto";
 const useStyles = makeStyles({
   body: {
     color: "white",
-    margin: "20px"
+    margin: "0 20px 0 50px"
   },
   image: {
-    width: "100%",
-    height: "auto",
+    minWith: "100%",
+    maxHeight: "350px",
     maxWidth: "100%"
   },
   description: {
@@ -42,12 +42,17 @@ export default function Scrum(props) {
           <Typography variant="body1" fontWeight={100}>
             Team project where main goal was to create a website for
             concert-organizers. Worked with 9 other developers, Scrum master and
-            product owner. Active use of git, CI and Scrum board.
+            product owner. Active use of git, CI and Scrum board. Mainly worked
+            with frontend, working with Material UIs input components, but also
+            made endpoints in backend using sequilize and DAO. Towards the end
+            of the project I was tasked with typechecking methods and React
+            components.
+            <br />
             <a
               href="http://harmoni-ui.firebaseapp.com/"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ textDecoration: "none" }}
+              style={{ textDecoration: "line", color: "white" }}
             >
               HARMONI
             </a>
