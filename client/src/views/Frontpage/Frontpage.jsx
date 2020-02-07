@@ -33,7 +33,8 @@ export default function Frontpage() {
           <ThemeProvider theme={responsiveFontSizes(createMuiTheme())}>
             <Typography variant="h3">Nikolai Roede Dokken</Typography>
             <Typography variant="h5">
-              - Computer Engineering at NTNU Trondheim
+              - Computer Engineering at Norwegian University of Science and
+              Technology
             </Typography>
           </ThemeProvider>
         </Grid>
