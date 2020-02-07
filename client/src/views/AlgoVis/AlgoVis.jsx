@@ -9,8 +9,8 @@ const useStyles = makeStyles({
   },
   image: {
     minWith: "100%",
-    maxHeight: "350px",
-    maxWidth: "100%"
+    width: "500px",
+    height: "400px"
   },
   description: {
     fontWeight: "inherit"
@@ -25,9 +25,7 @@ const useStyles = makeStyles({
 const chips = [
   { label: "React.js", color: "#61dbfb" },
   { label: "Material UI", color: "#e91e63" },
-  { label: "Sequelize", color: "#009688" },
-  { label: "Node.js", color: "#ffeb3b" },
-  { label: "TypeScript", color: "#c6ff00" }
+  { label: "JavaScript", color: "#c6ff00" }
 ];
 
 export default function AlgoVis(props) {
@@ -61,20 +59,13 @@ export default function AlgoVis(props) {
         </Grid>
         <Grid item sm={12} md={5}>
           <div>
-            <a
-              href="./resources/Harmoni.png"
-              target="_blank"
-              style={{ padding: "0" }}
-            >
-              <img
+            
+              <iframe
+                title="Algorithm Visualizer"
                 className={classes.image}
-                src="./resources/Harmoni.png"
-                alt="Harmoni"
-                target="_blank"
-                rel="noopener noreferrer"
+                src="https://nikolaidokken.github.io/algorithmVisualizer"
                 style={{ margin: "0" }}
               />
-            </a>
             <Grid container item justify="center" direction="row">
               <a
                 href="https://github.com/NikolaiDokken/Harmoni"
