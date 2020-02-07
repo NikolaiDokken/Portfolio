@@ -5,7 +5,7 @@ import "typeface-roboto";
 
 const useStyles = makeStyles({
   body: {
-    color: "white",
+    color: "white"
   },
   image: {
     minWith: "100%",
@@ -30,7 +30,7 @@ const chips = [
   { label: "TypeScript", color: "#c6ff00" }
 ];
 
-export default function Scrum(props) {
+export default function AlgoVis(props) {
   const classes = useStyles();
   return (
     <div
@@ -41,24 +41,21 @@ export default function Scrum(props) {
     >
       <Grid container>
         <Grid item sm={12} md={7} style={{ paddingRight: "10px" }}>
-          <Typography variant="h3">Scrum Project</Typography>
-          <Typography variant="h6">HARMONI</Typography>
+          <Typography variant="h3">Algorithm Visualizer</Typography>
+          <Typography variant="h6">Shortest path</Typography>
           <Typography variant="body1" fontWeight={100}>
-            Team project where main goal was to create a website for
-            concert-organizers. Worked with 9 other developers, Scrum master and
-            product owner. Active use of git, CI and Scrum board. Mainly worked
-            with frontend, working with Material UIs input components, but also
-            made endpoints in backend using sequilize and DAO. Towards the end
-            of the project I was tasked with typechecking methods and React
-            components.
+            Small hobby project: Visualizing shortest path algorithms like
+            Dijkstra and A*. Allows user to draw walls, and move start/end
+            nodes. Visualizes search pattern and then shortest path. Made in
+            javascript and CSS.
             <br />
             <a
-              href="http://harmoni-ui.firebaseapp.com/"
+              href="https://nikolaidokken.github.io/algorithmVisualizer/"
               target="_blank"
               rel="noopener noreferrer"
               style={{ textDecoration: "line", color: "white" }}
             >
-              HARMONI
+              Algorithm Visualizer
             </a>
           </Typography>
         </Grid>

@@ -1,21 +1,25 @@
 import React from "react";
+import { useState } from "react";
 import ReactFullpage from "@fullpage/react-fullpage";
 import Frontpage from "./views/Frontpage/Frontpage";
 import Overview from "./views/Overview/Overview";
 import Scrum from "./views/Scrum/Scrum";
+import AlgoVis from "./views/AlgoVis/AlgoVis";
 import "./overrides.css";
 
 export default function App() {
   const pages = [
     { component: Frontpage, name: "Frontpage", color: "white" },
-    { component: Overview, name: "Projects", color: "#313131" },
-    { component: Scrum, name: "Harmoni", color: "black" }
+    { component: Overview, name: "Projects", color: "#000" },
+    { component: Scrum, name: "Harmoni", color: "#313131" },
+    { component: AlgoVis, name: "Algorithm Visualizer", color: "#329ea8" }
   ];
+  const [navigationBool] = useState(window.innerWidth <= 600 ? false : true);
 
   return (
     <div className="App">
       <ReactFullpage
-        navigation={true}
+        navigation={navigationBool}
         navigationPosition="left"
         navigationTooltips={pages.map(page => page.name)}
         scrollOverflow={true}
@@ -31,6 +35,7 @@ export default function App() {
                   <Page.component
                     changePage={changePage}
                     pages={index === 1 ? pages : null}
+                    mobile={!navigationBool}
                   />
                 </div>
               ))}
