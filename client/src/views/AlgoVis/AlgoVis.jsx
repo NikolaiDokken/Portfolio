@@ -8,9 +8,8 @@ const useStyles = makeStyles({
     color: "white"
   },
   image: {
-    minWith: "100%",
-    width: "500px",
-    height: "400px"
+    width: "100%",
+    maxHeight: "800px"
   },
   description: {
     fontWeight: "inherit"
@@ -38,14 +37,15 @@ export default function AlgoVis(props) {
       }
     >
       <Grid container>
-        <Grid item sm={12} md={7} style={{ paddingRight: "10px" }}>
+        <Grid container item sm={12} md={7} justify="center" direction="column">
           <Typography variant="h3">Algorithm Visualizer</Typography>
           <Typography variant="h6">Shortest path</Typography>
           <Typography variant="body1" fontWeight={100}>
             Small hobby project: Visualizing shortest path algorithms like
             Dijkstra and A*. Allows user to draw walls, and move start/end
             nodes. Visualizes search pattern and then shortest path. Made in
-            javascript and CSS.
+            javascript and CSS. Feel free to try it out in the demo{" "}
+            {window.innerWidth >= 960 ? "on the right:" : "below:"}
             <br />
             <a
               href="https://nikolaidokken.github.io/algorithmVisualizer/"
@@ -57,15 +57,18 @@ export default function AlgoVis(props) {
             </a>
           </Typography>
         </Grid>
-        <Grid item sm={12} md={5}>
+        <Grid item sm={12} xs={12} md={5}>
           <div>
-            
-              <iframe
-                title="Algorithm Visualizer"
-                className={classes.image}
-                src="https://nikolaidokken.github.io/algorithmVisualizer"
-                style={{ margin: "0" }}
-              />
+            <iframe
+              title="Algorithm Visualizer"
+              className={classes.image}
+              src="https://nikolaidokken.github.io/algorithmVisualizer"
+              style={
+                window.innerWidth >= 960
+                  ? { height: "580px" }
+                  : { height: "400px" }
+              }
+            />
             <Grid container item justify="center" direction="row">
               <a
                 href="https://github.com/NikolaiDokken/Harmoni"
