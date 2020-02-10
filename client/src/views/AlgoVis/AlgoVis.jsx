@@ -2,10 +2,12 @@ import React from "react";
 import { makeStyles, Grid, Typography, Chip } from "@material-ui/core";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import "typeface-roboto";
+import { useEffect } from "react";
 
 const useStyles = makeStyles({
   body: {
-    color: "white"
+    color: "white",
+    height: "100%"
   },
   image: {
     width: "100%",
@@ -27,25 +29,54 @@ const chips = [
   { label: "JavaScript", color: "#c6ff00" }
 ];
 
+const resizeElements = () => {
+  const iFrame = document.querySelector("#algovis");
+  const grid4 = document.querySelector("#grid4");
+  const grid6 = document.querySelector("#grid6");
+  console.log(parseInt(window.innerWidth) >= 960);
+
+  iFrame.setAttribute("height", grid4.clientHeight - grid6.clientHeight - 10);
+};
+
 export default function AlgoVis(props) {
   const classes = useStyles();
+
+  useEffect(() => {
+    window.addEventListener("resize", resizeElements);
+    resizeElements();
+  });
+
   return (
-    <div
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      id="1"
       className={classes.body}
-      style={
-        props.mobile ? { margin: "0 20px 0 20px" } : { margin: "0 20px 0 50px" }
-      }
     >
-      <Grid container>
-        <Grid container item sm={12} md={7} justify="center" direction="column">
+      <Grid container id="2" style={{ height: "inherit" }}>
+        <Grid
+          container
+          item
+          md={7}
+          justify="center"
+          direction="column"
+          id="3"
+          style={
+            parseInt(window.innerWidth) >= 960
+              ? { padding: "0 20px 0 50px" }
+              : { padding: "0 20px 0 20px" }
+          }
+        >
           <Typography variant="h3">Algorithm Visualizer</Typography>
           <Typography variant="h6">Shortest path</Typography>
           <Typography variant="body1" fontWeight={100}>
             Small hobby project: Visualizing shortest path algorithms like
             Dijkstra and A*. Allows user to draw walls, and move start/end
             nodes. Visualizes search pattern and then shortest path. Made in
-            javascript and CSS. Feel free to try it out in the demo{" "}
-            {window.innerWidth >= 960 ? "on the right:" : "below:"}
+            javascript and CSS. Feel free to try it out in the demo
+            {window.innerWidth >= 960 ? " on the right" : "below"} or on the
+            page itself(for better performance):
             <br />
             <a
               href="https://nikolaidokken.github.io/algorithmVisualizer/"
@@ -57,41 +88,54 @@ export default function AlgoVis(props) {
             </a>
           </Typography>
         </Grid>
-        <Grid item sm={12} xs={12} md={5}>
-          <div>
+        <Grid
+          container
+          item
+          md={5}
+          direction="column"
+          id="grid4"
+          style={
+            parseInt(window.innerWidth) >= 960
+              ? { padding: "0 20px 0 50px", width: "100%" }
+              : { padding: "0 20px 0 20px", width: "100%" }
+          }
+        >
+          <Grid item id="grid5">
             <iframe
+              id="algovis"
               title="Algorithm Visualizer"
-              className={classes.image}
               src="https://nikolaidokken.github.io/algorithmVisualizer"
-              style={
-                window.innerWidth >= 960
-                  ? { height: "580px" }
-                  : { height: "400px" }
-              }
+              style={{ width: "100%" }}
             />
-            <Grid container item justify="center" direction="row">
-              <a
-                href="https://github.com/NikolaiDokken/Harmoni"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "white" }}
-              >
-                <GitHubIcon style={{ fontSize: "50px", marginRight: "5px" }} />
-              </a>
-              {chips.map((chip, index) => (
-                <Chip
-                  label={chip.label}
-                  style={{
-                    backgroundColor: chip.color,
-                    margin: "auto 5px auto 5px"
-                  }}
-                  key={index}
-                ></Chip>
-              ))}
-            </Grid>
-          </div>
+          </Grid>
+          <Grid
+            item
+            container
+            direction="row"
+            justify="space-evenly"
+            id="grid6"
+          >
+            <a
+              href="https://github.com/NikolaiDokken/algorithmVisualizer"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "white" }}
+            >
+              <GitHubIcon style={{ fontSize: "50px" }} />
+            </a>
+            {chips.map((chip, index) => (
+              <Chip
+                label={chip.label}
+                style={{
+                  backgroundColor: chip.color,
+                  margin: "auto 0px auto 0px"
+                }}
+                key={index}
+              ></Chip>
+            ))}
+          </Grid>
         </Grid>
       </Grid>
-    </div>
+    </Grid>
   );
 }
