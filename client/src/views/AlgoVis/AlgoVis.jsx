@@ -43,7 +43,7 @@ export default function AlgoVis(props) {
 
   useEffect(() => {
     window.addEventListener("resize", resizeElements);
-    resizeElements();
+      resizeElements();
   });
 
   return (

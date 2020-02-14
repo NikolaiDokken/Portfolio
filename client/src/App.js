@@ -6,13 +6,15 @@ import Overview from "./views/Overview/Overview";
 import Scrum from "./views/Scrum/Scrum";
 import AlgoVis from "./views/AlgoVis/AlgoVis";
 import "./overrides.css";
+import CommunityNews from "./views/CommunityNews/CommunityNews";
 
 export default function App() {
   const pages = [
     { component: Frontpage, name: "Frontpage", color: "white" },
     { component: Overview, name: "Projects", color: "#000" },
     { component: Scrum, name: "Harmoni", color: "#313131" },
-    { component: AlgoVis, name: "Algorithm Visualizer", color: "#329ea8" }
+    { component: AlgoVis, name: "Algorithm Visualizer", color: "#329ea8" },
+    { component: CommunityNews, name: "Community News", color: "#ff9a4d" }
   ];
   const [navigationBool] = useState(window.innerWidth <= 600 ? false : true);
 
