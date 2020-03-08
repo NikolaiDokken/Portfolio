@@ -30,7 +30,7 @@ export default function Monte(props) {
           </Typography>
         </Grid>
         <Grid item xs>
-          Bilde
+          <img src="./resources/Monte.GIF" alt="Monte video" />
         </Grid>
       </Grid>
     </Grid>
