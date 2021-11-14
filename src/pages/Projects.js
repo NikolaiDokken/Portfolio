@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../components/Layout";
 import ProjectCard from "../components/ProjectCard";
 import { Link } from "react-router-dom";
 import styles from "../styles/projects.module.css";
@@ -22,9 +21,10 @@ export default function Projects() {
             .catch((err) => {
                 console.log(err.message);
             });
-    });
+    }, []);
+
     return (
-        <Layout>
+        <div>
             <div className={styles.header}>
                 <h2>Portfolio</h2>
                 <h3>
@@ -42,6 +42,6 @@ export default function Projects() {
                     </Link>
                 ))}
             </div>
-        </Layout>
+        </div>
     );
 }

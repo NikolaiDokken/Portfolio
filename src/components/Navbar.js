@@ -20,9 +20,10 @@ export default function Navbar() {
             <h1>Niko's koder</h1>
             {size.width > 600 ? (
                 <div className="links">
-                    <Link to="/">Hjem</Link>
-                    <Link to="/projects/">Prosjekter</Link>
-                    <Link to="/about/">Om meg</Link>
+                    <Link to="/">Home</Link>
+                    <Link to="/projects/">Projects</Link>
+                    <Link to="/about/">About Me</Link>
+                    <Link to="/admin/">For Me</Link>
                 </div>
             ) : (
                 <div className="links">
