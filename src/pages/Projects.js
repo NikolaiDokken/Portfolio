@@ -34,7 +34,7 @@ export default function Projects() {
             <div className={styles.cards}>
                 {projects.map((project) => (
                     <Link
-                        to={"/projects/" + project.slug}
+                        to={"/projects/" + project.id}
                         key={project.id}
                         style={{ margin: "0 5px 0 5px" }}
                     >

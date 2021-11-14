@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "../styles/project-details.module.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { getProjectBySlug } from "../utils/projects";
-import { handleDelete } from "../utils/utils";
+import { handleDelete, handleGet } from "../utils/utils";
 
 export default function ProjectDetails() {
     let params = useParams();
@@ -14,15 +13,18 @@ export default function ProjectDetails() {
         description_md: "",
         github_link: "",
         start_date: new Date(),
-        slug: "",
     });
 
     useEffect(() => {
-        getProjectBySlug(params.slug).then((project) => setProject(project));
-    }, []);
+        handleGet("projects", params.id).then((project) => setProject(project));
+    }, [params.id]);
+
+    const handleEditProject = () => {
+        navigate("/admin/edit-project/" + params.id);
+    };
 
     const handleDeleteProject = () => {
-        handleDelete("projects", project.id);
+        handleDelete("projects", params.id);
         navigate("/projects");
     };
 
@@ -36,7 +38,7 @@ export default function ProjectDetails() {
                     </Link>
                 </div>
                 <div>
-                    <button>Edit</button>
+                    <button onClick={handleEditProject}>Edit</button>
                     <button onClick={handleDeleteProject}>Delete</button>
                 </div>
             </div>
