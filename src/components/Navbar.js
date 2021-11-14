@@ -21,9 +21,9 @@ export default function Navbar() {
             {size.width > 600 ? (
                 <div className="links">
                     <Link to="/">Home</Link>
-                    <Link to="/projects/">Projects</Link>
-                    <Link to="/about/">About Me</Link>
-                    <Link to="/admin/">For Me</Link>
+                    <Link to="/projects">Projects</Link>
+                    <Link to="/about">About Me</Link>
+                    <Link to="/admin">For Me</Link>
                 </div>
             ) : (
                 <div className="links">

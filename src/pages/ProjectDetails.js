@@ -1,71 +1,73 @@
-import { graphql, Link } from "gatsby";
-import React from "react";
-import Layout from "../components/Layout";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/project-details.module.css";
-import { GatsbyImage } from "gatsby-plugin-image";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { getProjectBySlug } from "../utils/projects";
+import { handleDelete } from "../utils/utils";
 
-export default function ProjectDetails({ data }) {
-	const { html } = data.markdownRemark;
-	const { title, stack, featImg, github } = data.markdownRemark.frontmatter;
+export default function ProjectDetails() {
+    let params = useParams();
+    let navigate = useNavigate();
+    const [project, setProject] = useState({
+        id: "",
+        title: "",
+        stack: "",
+        description_md: "",
+        github_link: "",
+        start_date: new Date(),
+        slug: "",
+    });
 
-	return (
-		<Layout>
-			<div className={styles.details}>
-				<div style={{ flexDirection: "row", marginTop: -50 }}>
-					<div className={styles.backChevron} />
-					<Link className={styles.backBtn} to="/projects">
-						Tilbake
-					</Link>
-				</div>
-				<h2>{title}</h2>
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "row",
-						alignItems: "center",
-					}}
-				>
-					<h3
-						style={{
-							padding: 0,
-							margin: "0 8px 0 0",
-						}}
-					>
-						{stack}
-					</h3>
-					<a href={github} target="_blank" rel="noreferrer">
-						<img
-							src="/github.png"
-							style={{ width: 40, height: 40, color: "white" }}
-							alt="github logo"
-						></img>
-					</a>
-				</div>
-				<div className={styles.imageContainer}>
-					<GatsbyImage
-						image={featImg.childImageSharp.gatsbyImageData}
-					/>
-				</div>
-				<div className={styles.projectMd} dangerouslySetInnerHTML={{ __html: html }} />
-			</div>
-		</Layout>
-	);
+    useEffect(() => {
+        getProjectBySlug(params.slug).then((project) => setProject(project));
+    }, []);
+
+    const handleDeleteProject = () => {
+        handleDelete("projects", project.id);
+        navigate("/projects");
+    };
+
+    return (
+        <div className={styles.details}>
+            <div style={{ flexDirection: "row", marginTop: -50 }}>
+                <div>
+                    <div className={styles.backChevron} />
+                    <Link className={styles.backBtn} to="/projects">
+                        Tilbake
+                    </Link>
+                </div>
+                <div>
+                    <button>Edit</button>
+                    <button onClick={handleDeleteProject}>Delete</button>
+                </div>
+            </div>
+            <h2>{project.title}</h2>
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                }}
+            >
+                <h3
+                    style={{
+                        padding: 0,
+                        margin: "0 8px 0 0",
+                    }}
+                >
+                    {project.stack}
+                </h3>
+                <a href={project.github_link} target="_blank" rel="noreferrer">
+                    <img
+                        src="/github.png"
+                        style={{ width: 40, height: 40, color: "white" }}
+                        alt="github logo"
+                    ></img>
+                </a>
+            </div>
+            <div
+                className={styles.projectMd}
+                dangerouslySetInnerHTML={{ __html: project.description_md }}
+            />
+        </div>
+    );
 }
-
-export const query = graphql`
-	query ProjectDetails($slug: String) {
-		markdownRemark(frontmatter: { slug: { eq: $slug } }) {
-			html
-			frontmatter {
-				stack
-				title
-				featImg {
-					childImageSharp {
-						gatsbyImageData(layout: FULL_WIDTH)
-					}
-				}
-				github
-			}
-		}
-	}
-`;
