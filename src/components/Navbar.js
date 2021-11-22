@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/global.css";
+import useFirebasAuthentication from "../utils/useFirebaseAuth";
 
 export default function Navbar() {
+    const authUser = useFirebasAuthentication();
     const size = useWindowSize();
     const [navOpen, setNavOpen] = useState(false);
 
@@ -23,7 +25,11 @@ export default function Navbar() {
                     <Link to="/">Home</Link>
                     <Link to="/projects">Projects</Link>
                     <Link to="/about">About Me</Link>
-                    <Link to="/admin">For Me</Link>
+                    {authUser ? (
+                        <Link to="/login">For Me</Link>
+                    ) : (
+                        <Link to="/admin">For Me</Link>
+                    )}
                 </div>
             ) : (
                 <div className="links">

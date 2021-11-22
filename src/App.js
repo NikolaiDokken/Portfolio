@@ -6,6 +6,8 @@ import NewProject from "./pages/NewProject";
 import Admin from "./pages/Admin";
 import Layout from "./components/Layout";
 import ProjectDetails from "./pages/ProjectDetails";
+import AdminLogin from "./pages/AdminLogin";
+import { auth } from "./utils/firebase";
 
 export default function App() {
     return (
@@ -15,7 +17,10 @@ export default function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/projects/:id" element={<ProjectDetails />} />
-                    <Route path="/admin" element={<Admin />} />
+                    {auth.currentUser && (
+                        <Route path="/admin" element={<Admin />} />
+                    )}
+                    <Route path="/login" element={<AdminLogin />} />
                     <Route path="/admin/new-project" element={<NewProject />} />
                     <Route
                         path="/admin/edit-project/:id"
