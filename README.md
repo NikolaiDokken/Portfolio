@@ -3,6 +3,7 @@ The first portfolio I ever made.
 Portfolio website for showing my experience, skills, and projects. Built with:
 * React
 * JavaScript
+* CSS
 
 ## Setup
 ```{sh}
