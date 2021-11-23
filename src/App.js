@@ -4,7 +4,7 @@ import Projects from "./pages/Projects";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NewProject from "./pages/NewProject";
 import Admin from "./pages/Admin";
-// import About from "./pages/About";
+import About from "./pages/About";
 import Layout from "./components/Layout";
 import ProjectDetails from "./pages/ProjectDetails";
 import AdminLogin from "./pages/AdminLogin";
@@ -19,7 +19,7 @@ export default function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/projects/:id" element={<ProjectDetails />} />
-                    {/*<Route path="/about" element={<About />} />*/}
+                    <Route path="/about" element={<About />} />
                     <Route path="/login" element={<AdminLogin />} />
                     {authUser && <Route path="/admin" element={<Admin />} />}
                     {authUser && (
