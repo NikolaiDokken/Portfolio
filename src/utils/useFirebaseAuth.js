@@ -7,7 +7,6 @@ const useFirebasAuthentication = () => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-            console.log("User changed", user);
             user ? setAuthUser(user) : setAuthUser(null);
         });
         return () => unsubscribe();

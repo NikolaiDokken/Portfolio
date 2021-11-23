@@ -3,8 +3,10 @@ import * as Yup from "yup";
 import "../styles/admin.css";
 import { signInWithEmailAndPassword } from "@firebase/auth";
 import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminLogin() {
+    const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -16,7 +18,7 @@ export default function AdminLogin() {
         }),
         onSubmit: (values) => {
             signInWithEmailAndPassword(auth, values.email, values.password)
-                .then((credentials) => console.log(credentials.user))
+                .then((credentials) => navigate("/admin"))
                 .catch((err) => console.log(err.message));
         },
     });
