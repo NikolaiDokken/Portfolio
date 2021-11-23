@@ -12,8 +12,8 @@ You can view the website [here](https://nikolaidokken.no).
 ```{sh}
 git clone https://github.com/NikolaiDokken/Portfolio.git
 cd Portfolio
-npm install
-npm start
+yarn
+yarn start
 ```
 
 Enjoy! :rocket:
