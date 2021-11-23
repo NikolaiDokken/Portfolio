@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import styles from "../styles/project-details.module.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { handleDelete, handleGet } from "../utils/utils";
+import useFirebaseAuthentication from "../utils/useFirebaseAuth";
 
 export default function ProjectDetails() {
-    let params = useParams();
-    let navigate = useNavigate();
+    const authUser = useFirebaseAuthentication();
+    const params = useParams();
+    const navigate = useNavigate();
     const [project, setProject] = useState({
         id: "",
         title: "",
@@ -24,8 +26,9 @@ export default function ProjectDetails() {
     };
 
     const handleDeleteProject = () => {
-        handleDelete("projects", params.id);
-        navigate("/projects");
+        handleDelete("projects", params.id)
+            .then(() => navigate("/projects"))
+            .catch((err) => console.log(err.message));
     };
 
     return (
@@ -37,10 +40,12 @@ export default function ProjectDetails() {
                         Tilbake
                     </Link>
                 </div>
-                <div>
-                    <button onClick={handleEditProject}>Edit</button>
-                    <button onClick={handleDeleteProject}>Delete</button>
-                </div>
+                {authUser && (
+                    <div>
+                        <button onClick={handleEditProject}>Edit</button>
+                        <button onClick={handleDeleteProject}>Delete</button>
+                    </div>
+                )}
             </div>
             <h2>{project.title}</h2>
             <div

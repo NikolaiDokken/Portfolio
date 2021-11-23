@@ -8,10 +8,10 @@ import Admin from "./pages/Admin";
 import Layout from "./components/Layout";
 import ProjectDetails from "./pages/ProjectDetails";
 import AdminLogin from "./pages/AdminLogin";
-import useFirebasAuthentication from "./utils/useFirebaseAuth";
+import useFirebaseAuthentication from "./utils/useFirebaseAuth";
 
 export default function App() {
-    const authUser = useFirebasAuthentication();
+    const authUser = useFirebaseAuthentication();
     return (
         <BrowserRouter>
             <Layout>
