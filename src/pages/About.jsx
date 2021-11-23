@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styles from "../styles/about.module.css";
-import moment from "moment";
-import { storage } from "../utils/firebase";
 import db from "../utils/firebase";
 import { getDocs, collection } from "firebase/firestore";
 import JobRow from "../components/JobRow";

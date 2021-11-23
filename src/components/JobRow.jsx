@@ -6,7 +6,6 @@ import styles from "../styles/about.module.css";
 
 export default function JobRow({ job }) {
     const [src, setSrc] = useState("");
-    const imageRef = ref(storage, job.logo);
 
     const getFromToDateString = (position) => {
         return (
@@ -40,10 +39,11 @@ export default function JobRow({ job }) {
     };
 
     useEffect(() => {
+        const imageRef = ref(storage, job.logo);
         getDownloadURL(imageRef)
             .then((url) => setSrc(url))
             .catch((err) => console.log(err.message));
-    }, []);
+    }, [job.logo]);
 
     return (
         <div>

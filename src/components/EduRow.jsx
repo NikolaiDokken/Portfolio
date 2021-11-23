@@ -6,7 +6,6 @@ import styles from "../styles/about.module.css";
 
 export default function EduRow({ school }) {
     const [src, setSrc] = useState("");
-    const imageRef = ref(storage, school.logo);
 
     const getFromToDateString = (position) => {
         return (
@@ -40,10 +39,11 @@ export default function EduRow({ school }) {
     };
 
     useEffect(() => {
+        const imageRef = ref(storage, school.logo);
         getDownloadURL(imageRef)
             .then((url) => setSrc(url))
             .catch((err) => console.log(err.message));
-    }, []);
+    }, [school.logo]);
 
     return (
         <div>
