@@ -3,10 +3,12 @@ import * as Yup from "yup";
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
 import { handleNew, handleGet, handleEdit } from "../utils/utils";
+import { useNavigate } from "react-router-dom";
 import "../styles/admin.css";
 
 export default function NewProject() {
     const params = useParams();
+    const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
             title: "",
@@ -24,9 +26,13 @@ export default function NewProject() {
         }),
         onSubmit: (values) => {
             if (params.id) {
-                handleEdit("projects", params.id, values);
+                handleEdit("projects", params.id, values).then((projectId) =>
+                    navigate("/projects/" + projectId)
+                );
             } else {
-                handleNew("projects", values);
+                handleNew("projects", values).then((projectId) =>
+                    navigate("/projects/" + projectId)
+                );
             }
         },
     });

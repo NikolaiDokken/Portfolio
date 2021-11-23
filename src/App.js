@@ -4,10 +4,14 @@ import Projects from "./pages/Projects";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NewProject from "./pages/NewProject";
 import Admin from "./pages/Admin";
+// import About from "./pages/About";
 import Layout from "./components/Layout";
 import ProjectDetails from "./pages/ProjectDetails";
+import AdminLogin from "./pages/AdminLogin";
+import useFirebasAuthentication from "./utils/useFirebaseAuth";
 
 export default function App() {
+    const authUser = useFirebasAuthentication();
     return (
         <BrowserRouter>
             <Layout>
@@ -15,12 +19,21 @@ export default function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/projects/:id" element={<ProjectDetails />} />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="/admin/new-project" element={<NewProject />} />
-                    <Route
-                        path="/admin/edit-project/:id"
-                        element={<NewProject />}
-                    />
+                    {/*<Route path="/about" element={<About />} />*/}
+                    <Route path="/login" element={<AdminLogin />} />
+                    {authUser && <Route path="/admin" element={<Admin />} />}
+                    {authUser && (
+                        <Route
+                            path="/admin/new-project"
+                            element={<NewProject />}
+                        />
+                    )}
+                    {authUser && (
+                        <Route
+                            path="/admin/edit-project/:id"
+                            element={<NewProject />}
+                        />
+                    )}
                     <Route
                         path="*"
                         element={

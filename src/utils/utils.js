@@ -1,7 +1,7 @@
 import {
     collection,
     addDoc,
-    setDoc,
+    updateDoc,
     doc,
     deleteDoc,
     getDoc,
@@ -23,7 +23,7 @@ export const handleNew = async (collectionName, document) => {
 
 export const handleEdit = async (collectionName, id, document) => {
     const docRef = doc(db, collectionName, id);
-    setDoc(docRef, document);
+    updateDoc(docRef, document);
     return docRef.id;
 };
 

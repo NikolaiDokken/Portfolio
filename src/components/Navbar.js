@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/global.css";
+import useFirebasAuthentication from "../utils/useFirebaseAuth";
+import { signOut } from "@firebase/auth";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
+    const navigate = useNavigate();
+    const authUser = useFirebasAuthentication();
     const size = useWindowSize();
     const [navOpen, setNavOpen] = useState(false);
 
@@ -23,7 +29,20 @@ export default function Navbar() {
                     <Link to="/">Home</Link>
                     <Link to="/projects">Projects</Link>
                     <Link to="/about">About Me</Link>
-                    <Link to="/admin">For Me</Link>
+                    {authUser ? (
+                        <Link to="/admin">Admin</Link>
+                    ) : (
+                        <Link to="/login">Admin</Link>
+                    )}
+                    {authUser && (
+                        <button
+                            onClick={() => {
+                                signOut(auth).then(() => navigate("/login"));
+                            }}
+                        >
+                            Sign out
+                        </button>
+                    )}
                 </div>
             ) : (
                 <div className="links">
