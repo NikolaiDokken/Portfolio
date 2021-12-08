@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Projects from "./pages/Projects";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NewProject from "./pages/NewProject";
+import NewExperience from "./pages/NewExperience";
 import Admin from "./pages/Admin";
 import About from "./pages/About";
 import Layout from "./components/Layout";
@@ -21,18 +22,22 @@ export default function App() {
                     <Route path="/projects/:id" element={<ProjectDetails />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/login" element={<AdminLogin />} />
-                    {authUser && <Route path="/admin" element={<Admin />} />}
                     {authUser && (
-                        <Route
-                            path="/admin/new-project"
-                            element={<NewProject />}
-                        />
-                    )}
-                    {authUser && (
-                        <Route
-                            path="/admin/edit-project/:id"
-                            element={<NewProject />}
-                        />
+                        <>
+                            <Route path="/admin" element={<Admin />} />
+                            <Route
+                                path="/admin/new-project"
+                                element={<NewProject />}
+                            />
+                            <Route
+                                path="/admin/edit-project/:id"
+                                element={<NewProject />}
+                            />
+                            <Route
+                                path="/admin/new-experience"
+                                element={<NewExperience />}
+                            />
+                        </>
                     )}
                     <Route
                         path="*"

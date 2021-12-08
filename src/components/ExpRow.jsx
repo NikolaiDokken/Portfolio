@@ -42,10 +42,12 @@ export default function ExpRow({ experience }) {
     };
 
     useEffect(() => {
-        const imageRef = ref(storage, experience.logo);
-        getDownloadURL(imageRef)
-            .then((url) => setSrc(url))
-            .catch((err) => console.log(err.message));
+        if (experience.logo) {
+            const imageRef = ref(storage, experience.logo);
+            getDownloadURL(imageRef)
+                .then((url) => setSrc(url))
+                .catch((err) => console.log(err.message));
+        }
     }, [experience.logo]);
 
     return (
@@ -60,7 +62,7 @@ export default function ExpRow({ experience }) {
             >
                 <img
                     src={src}
-                    alt="Infiniwell logo"
+                    alt="Organization logo"
                     style={{
                         maxWidth: 50,
                         maxHeight: 50,
