@@ -4,34 +4,37 @@ import { storage } from "../utils/firebase";
 import moment from "moment";
 import styles from "../styles/about.module.css";
 
-export default function EduRow({ school }) {
+export default function ExpRow({ experience }) {
     const [src, setSrc] = useState("");
 
-    const getFromToDateString = (position) => {
+    const getFromToDateString = (experience) => {
         return (
-            moment(position.start_date).format("MMM YYYY") +
+            moment(experience.start_date).format("MMM YYYY") +
             " - " +
-            (position.end ? moment(position.end).format("MMM YYYY") : "Nå")
+            (experience.end_date
+                ? moment(experience.end_date).format("MMM YYYY")
+                : "Nå")
         );
     };
     const getDuration = () => {
-        var minDate = moment(school.degrees[0].start_date);
-        var maxDate = moment(school.degrees[0].end);
-        school.degrees.forEach((position) => {
-            if (moment(position.start_date).diff(minDate) < 0) {
-                minDate = moment(position.start_date);
+        var minDate = moment(experience.experiences[0].start_date);
+        var maxDate = moment(experience.experiences[0].end_date);
+        experience.experiences.forEach((exp) => {
+            if (moment(exp.start_date).diff(minDate) < 0) {
+                minDate = moment(exp.start_date);
             }
-            if (!position.end) {
+            if (!exp.end_date) {
                 maxDate = moment();
             }
-            if (moment(position.end).diff(maxDate) > 0) {
-                maxDate = moment(position.end);
+            if (moment(exp.end_date).diff(maxDate) > 0) {
+                maxDate = moment(exp.end_date);
             }
         });
         const months = maxDate.diff(minDate, "months");
         return Math.floor(months / 12) > 0
-            ? Math.floor(months / 12) +
-                  " år" +
+            ? (Math.floor(months / 12) > 1
+                  ? Math.floor(months / 12) + " years"
+                  : Math.floor(months / 12) + " year") +
                   (months % 12 > 0 ? ", " + (months % 12) + " mnd" : "")
             : months > 0
             ? months + " mnd"
@@ -39,11 +42,11 @@ export default function EduRow({ school }) {
     };
 
     useEffect(() => {
-        const imageRef = ref(storage, school.logo);
+        const imageRef = ref(storage, experience.logo);
         getDownloadURL(imageRef)
             .then((url) => setSrc(url))
             .catch((err) => console.log(err.message));
-    }, [school.logo]);
+    }, [experience.logo]);
 
     return (
         <div>
@@ -57,7 +60,7 @@ export default function EduRow({ school }) {
             >
                 <img
                     src={src}
-                    alt={school.school}
+                    alt="Infiniwell logo"
                     style={{
                         maxWidth: 50,
                         maxHeight: 50,
@@ -66,28 +69,30 @@ export default function EduRow({ school }) {
                     }}
                 />
                 <div>
-                    {school.degrees.length === 1 ? (
+                    {experience.experiences.length === 1 ? (
                         <div>
-                            <h4>{school.degrees[0].field_of_study}</h4>
-                            <p>{school.company}</p>
+                            <h4>{experience.experiences[0].title}</h4>
+                            <p>{experience.organization}</p>
                             <p style={{ fontSize: 14 }}>
-                                {school.degrees[0].degree}
+                                {experience.experiences[0].subtitle}
                             </p>
                             <p style={{ fontSize: 14 }}>
-                                {getFromToDateString(school.degrees[0])}{" "}
+                                {getFromToDateString(experience.experiences[0])}{" "}
                                 &#x2E31; {getDuration()}
                             </p>
                         </div>
                     ) : (
                         <div>
-                            <h4 style={{ fontSize: 18 }}>{school.company}</h4>
+                            <h4 style={{ fontSize: 18 }}>
+                                {experience.organization}
+                            </h4>
                             <p>{getDuration()}</p>
                         </div>
                     )}
                 </div>
             </div>
-            {school.degrees.length > 1
-                ? school.degrees
+            {experience.experiences.length > 1
+                ? experience.experiences
                       .sort((a, b) => {
                           return (
                               new Date(b.start_date) - new Date(a.start_date)
@@ -95,13 +100,13 @@ export default function EduRow({ school }) {
                       })
                       .map((position, index) => (
                           <div className={styles.experience} key={index}>
-                              {index < school.degrees.length - 1 ? (
+                              {index < experience.experiences.length - 1 ? (
                                   <div className={styles.trail} />
                               ) : (
                                   ""
                               )}
-                              <h4>{position.field_of_study}</h4>
-                              <p>{position.degree}</p>
+                              <h4>{position.title}</h4>
+                              <p>{position.subtitle}</p>
                               <p>{getFromToDateString(position)}</p>
                           </div>
                       ))

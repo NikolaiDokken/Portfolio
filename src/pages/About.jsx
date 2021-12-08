@@ -2,23 +2,15 @@ import React, { useEffect, useState } from "react";
 import styles from "../styles/about.module.css";
 import db from "../utils/firebase";
 import { getDocs, collection } from "firebase/firestore";
-import JobRow from "../components/JobRow";
-import EduRow from "../components/EduRow";
+import ExpRow from "../components/ExpRow";
 
 export default function About() {
-    const [jobs, setJobs] = useState([]);
-    const [education, setEducation] = useState([]);
+    const [experience, setExperience] = useState([]);
 
     useEffect(() => {
-        const fetchedJobs = getDocs(collection(db, "jobs"));
-        const fetchedEducation = getDocs(collection(db, "education"));
-
-        Promise.all([fetchedJobs, fetchedEducation]).then((values) => {
-            setJobs(
-                values[0].docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-            );
-            setEducation(
-                values[1].docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        getDocs(collection(db, "experience")).then((values) => {
+            setExperience(
+                values.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
             );
         });
     }, []);
@@ -33,22 +25,25 @@ export default function About() {
             </h2>
             <section>
                 <h3>
-                    Experience -{" "}
+                    Work Experience -{" "}
                     <span role="img" aria-label="work-experience">
                         💼
                     </span>
                 </h3>
                 <div className={styles.divider} />
-                {jobs
+                {experience
+                    .filter((exp) => exp.type === "Work Experience")
                     .sort((a, b) => {
                         return new Date(b.start_date) - new Date(a.start_date);
                     })
                     .map((job, index) => (
                         <div key={index}>
-                            <JobRow job={job} />
-                            {index !== jobs.length - 1 && (
-                                <div className={styles.subdivider} />
-                            )}
+                            <ExpRow experience={job} />
+                            {index !==
+                                experience.filter(
+                                    (exp) => exp.type === "Work Experience"
+                                ).length -
+                                    1 && <div className={styles.subdivider} />}
                         </div>
                     ))}
             </section>
@@ -60,14 +55,18 @@ export default function About() {
                     </span>
                 </h3>
                 <div className={styles.divider} />
-                {education
+                {experience
+                    .filter((exp) => exp.type === "Education")
                     .sort((a, b) => {
                         return new Date(b.start_date) - new Date(a.start_date);
                     })
                     .map((edu, index) => (
                         <div key={index}>
-                            <EduRow school={edu} />
-                            {index !== education.length - 1 ? (
+                            <ExpRow experience={edu} />
+                            {index !==
+                            experience.filter((exp) => exp.type === "Education")
+                                .length -
+                                1 ? (
                                 <div className={styles.subdivider} />
                             ) : (
                                 ""
