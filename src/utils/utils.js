@@ -6,7 +6,8 @@ import {
     deleteDoc,
     getDoc,
 } from "firebase/firestore";
-import db from "./firebase";
+import db, { storage } from "./firebase";
+import { ref, getDownloadURL } from "@firebase/storage";
 
 // Utils
 export const handleGet = async (collectionName, id) => {
@@ -30,4 +31,10 @@ export const handleEdit = async (collectionName, id, document) => {
 export const handleDelete = async (collectionName, id) => {
     const docRef = doc(db, collectionName, id);
     await deleteDoc(docRef);
+};
+
+export const getFileFromStorage = async (path) => {
+    const storageRef = ref(storage, path);
+    const url = await getDownloadURL(storageRef);
+    return url;
 };

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styles from "../styles/project-details.module.css";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { handleDelete, handleGet } from "../utils/utils";
+import { getFileFromStorage, handleDelete, handleGet } from "../utils/utils";
 import useFirebaseAuthentication from "../utils/useFirebaseAuth";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 export default function ProjectDetails() {
     const authUser = useFirebaseAuthentication();
@@ -16,9 +17,21 @@ export default function ProjectDetails() {
         github_link: "",
         start_date: new Date(),
     });
+    const [description, setDescription] = useState(null);
 
     useEffect(() => {
-        handleGet("projects", params.id).then((project) => setProject(project));
+        handleGet("projects", params.id).then((project) => {
+            setProject(project);
+            if (project.description_path) {
+                getFileFromStorage(project.description_path)
+                    .then((url) =>
+                        fetch(url).then((response) =>
+                            response.text().then((md) => setDescription(md))
+                        )
+                    )
+                    .catch((err) => console.log(err.message));
+            }
+        });
     }, [params.id]);
 
     const handleEditProject = () => {
@@ -71,10 +84,7 @@ export default function ProjectDetails() {
                     ></img>
                 </a>
             </div>
-            <div
-                className={styles.projectMd}
-                dangerouslySetInnerHTML={{ __html: project.description_md }}
-            />
+            <ReactMarkdown>{description}</ReactMarkdown>
         </div>
     );
 }
