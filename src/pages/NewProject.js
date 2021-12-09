@@ -1,19 +1,29 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { handleNew, handleGet, handleEdit } from "../utils/utils";
+import {
+    handleNew,
+    handleGet,
+    handleEdit,
+    getFileFromStorage,
+} from "../utils/utils";
 import { useNavigate } from "react-router-dom";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+
 import "../styles/admin.css";
+import { ref, uploadBytes } from "@firebase/storage";
+import { storage } from "../utils/firebase";
 
 export default function NewProject() {
     const params = useParams();
     const navigate = useNavigate();
+    const [description, setDescription] = useState("");
     const formik = useFormik({
         initialValues: {
             title: "",
             stack: "",
-            description_md: "",
+            description_path: "",
             github_link: "",
             start_date: new Date().toISOString().substring(0, 10),
         },
@@ -22,17 +32,30 @@ export default function NewProject() {
             stack: Yup.string().required("Required"),
             github_link: Yup.string().required("Required"),
             start_date: Yup.string(),
-            description_md: Yup.string(),
+            description_path: Yup.string(),
         }),
         onSubmit: (values) => {
+            const submitValues = {
+                ...values,
+                description_path:
+                    "projects/description/" +
+                    values.title.toLowerCase().replaceAll(" ", "_") +
+                    ".md",
+            };
+            const file = new Blob([description], { type: "text/plain" });
+            const storageRef = ref(storage, submitValues.description_path);
             if (params.id) {
-                handleEdit("projects", params.id, values).then((projectId) =>
-                    navigate("/projects/" + projectId)
-                );
+                handleEdit("projects", params.id, values).then((projectId) => {
+                    uploadBytes(storageRef, file).then((snapshot) =>
+                        navigate("/projects/" + projectId)
+                    );
+                });
             } else {
-                handleNew("projects", values).then((projectId) =>
-                    navigate("/projects/" + projectId)
-                );
+                handleNew("projects", values).then((projectId) => {
+                    uploadBytes(storageRef, file).then((snapshot) =>
+                        navigate("/projects/" + projectId)
+                    );
+                });
             }
         },
     });
@@ -44,6 +67,17 @@ export default function NewProject() {
                 .then((project) => {
                     if (project) {
                         setValues(project);
+                        if (project.description_path) {
+                            getFileFromStorage(project.description_path)
+                                .then((url) =>
+                                    fetch(url).then((response) =>
+                                        response
+                                            .text()
+                                            .then((md) => setDescription(md))
+                                    )
+                                )
+                                .catch((err) => console.log(err.message));
+                        }
                     }
                 })
                 .catch((err) => console.log(err.message));
@@ -103,13 +137,18 @@ export default function NewProject() {
                 ) : null}
 
                 <label>Description </label>
-                <textarea
-                    id="description_md"
-                    name="description_md"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.description_md}
-                />
+                <div style={{ display: "flex" }}>
+                    <textarea
+                        name="description_md"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        style={{ flex: 1 }}
+                    />
+                    <div style={{ flex: 0.01 }} />
+                    <div style={{ flex: 1 }}>
+                        <ReactMarkdown>{description}</ReactMarkdown>
+                    </div>
+                </div>
                 {formik.touched.description_md &&
                 formik.errors.description_md ? (
                     <div>{formik.errors.description_md}</div>
