@@ -12,13 +12,14 @@ import { useNavigate } from "react-router-dom";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 import "../styles/admin.css";
-import { ref, uploadBytes } from "@firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "@firebase/storage";
 import { storage } from "../utils/firebase";
 
 export default function NewProject() {
     const params = useParams();
     const navigate = useNavigate();
     const [description, setDescription] = useState("");
+    const [image, setImage] = useState("");
     const formik = useFormik({
         initialValues: {
             title: "",
@@ -35,25 +36,58 @@ export default function NewProject() {
             description_path: Yup.string(),
         }),
         onSubmit: (values) => {
+            const imageFile = document.getElementById("image_input").files[0];
+
             const submitValues = {
                 ...values,
                 description_path:
                     "projects/description/" +
                     values.title.toLowerCase().replaceAll(" ", "_") +
                     ".md",
+                image: imageFile
+                    ? "projects/image/" +
+                      values.title.toLowerCase().replaceAll(" ", "_") +
+                      "." +
+                      imageFile.type.split("/")[1]
+                    : null,
             };
-            const file = new Blob([description], { type: "text/plain" });
-            const storageRef = ref(storage, submitValues.description_path);
+            const mdFile = new Blob([description], { type: "text/plain" });
+            const storageRefDescription = ref(
+                storage,
+                submitValues.description_path
+            );
+            const storageRefImage = ref(storage, submitValues.image);
             if (params.id) {
-                handleEdit("projects", params.id, values).then((projectId) => {
-                    uploadBytes(storageRef, file).then((snapshot) =>
-                        navigate("/projects/" + projectId)
-                    );
-                });
+                handleEdit("projects", params.id, submitValues).then(
+                    (projectId) => {
+                        const descriptionUpload = uploadBytes(
+                            storageRefDescription,
+                            mdFile
+                        );
+                        const imageUpload = uploadBytes(
+                            storageRefImage,
+                            imageFile
+                        );
+
+                        Promise.all([descriptionUpload, imageUpload]).then(
+                            (values) => {
+                                navigate("/projects/" + projectId);
+                            }
+                        );
+                    }
+                );
             } else {
-                handleNew("projects", values).then((projectId) => {
-                    uploadBytes(storageRef, file).then((snapshot) =>
-                        navigate("/projects/" + projectId)
+                handleNew("projects", submitValues).then((projectId) => {
+                    const descriptionUpload = uploadBytes(
+                        storageRefDescription,
+                        mdFile
+                    );
+                    const imageUpload = uploadBytes(storageRefImage, imageFile);
+
+                    Promise.all([descriptionUpload, imageUpload]).then(
+                        (values) => {
+                            navigate("/projects/" + projectId);
+                        }
                     );
                 });
             }
@@ -78,10 +112,22 @@ export default function NewProject() {
                                 )
                                 .catch((err) => console.log(err.message));
                         }
+                        if (project.image) {
+                            const imageRef = ref(storage, project.image);
+                            getDownloadURL(imageRef)
+                                .then((url) => setImage(url))
+                                .catch((err) => console.log(err.message));
+                        }
                     }
                 })
                 .catch((err) => console.log(err.message));
         }
+        document.getElementById("image_input").onchange = (e) => {
+            const file = document.getElementById("image_input").files[0];
+            if (file) {
+                setImage(URL.createObjectURL(file));
+            }
+        };
     }, [params.id, setValues]);
 
     return (
@@ -111,6 +157,10 @@ export default function NewProject() {
                 {formik.touched.stack && formik.errors.stack ? (
                     <div>{formik.errors.stack}</div>
                 ) : null}
+
+                <label>Image</label>
+                <input id="image_input" type="file" accept="image/*" />
+                <img style={{ height: 100 }} src={image} alt="Project"></img>
 
                 <label>Github</label>
                 <input

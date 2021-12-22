@@ -4,6 +4,8 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { getFileFromStorage, handleDelete, handleGet } from "../utils/utils";
 import useFirebaseAuthentication from "../utils/useFirebaseAuth";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { ref, getDownloadURL } from "@firebase/storage";
+import { storage } from "../utils/firebase";
 
 export default function ProjectDetails() {
     const authUser = useFirebaseAuthentication();
@@ -18,6 +20,7 @@ export default function ProjectDetails() {
         start_date: new Date(),
     });
     const [description, setDescription] = useState(null);
+    const [image, setImage] = useState(null);
 
     useEffect(() => {
         handleGet("projects", params.id).then((project) => {
@@ -29,6 +32,12 @@ export default function ProjectDetails() {
                             response.text().then((md) => setDescription(md))
                         )
                     )
+                    .catch((err) => console.log(err.message));
+            }
+            if (project.image) {
+                const imageRef = ref(storage, project.image);
+                getDownloadURL(imageRef)
+                    .then((url) => setImage(url))
                     .catch((err) => console.log(err.message));
             }
         });
@@ -84,6 +93,11 @@ export default function ProjectDetails() {
                     ></img>
                 </a>
             </div>
+            <img
+                style={{ width: "100%", height: "300px", objectFit: "cover" }}
+                src={image}
+                alt="Thumbnail"
+            ></img>
             <ReactMarkdown>{description}</ReactMarkdown>
         </div>
     );
