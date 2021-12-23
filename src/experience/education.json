@@ -1,0 +1,34 @@
+[
+	{
+		"company": "Nadderud Videregående skole",
+		"start": "2015-08-01T12:00:00",
+		"logo": "/edu/nadderud.png",
+		"positions": [
+			{
+				"title": "Studiespesialisering",
+				"type": null,
+				"start": "2015-08-01T12:00:00",
+				"end": "2018-06-01T12:00:00"
+			}
+		]
+	},
+	{
+		"company": "Norges teknisk-naturvitenskapelige universitet Trondheim",
+		"start": "2018-08-10T12:00:00",
+		"logo": "/edu/ntnu.png",
+		"positions": [
+			{
+				"title": "Dataingeniør",
+				"type": "Bachelor",
+				"start": "2018-08-07T12:00:00",
+				"end": "2021-05-01T12:00:00"
+			},
+			{
+				"title": "Datateknologi",
+				"type": "Master",
+				"start": "2021-08-16T12:00:00",
+				"end": null
+			}
+		]
+	}
+]
