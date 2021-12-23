@@ -20,6 +20,7 @@ export default function NewProject() {
     const navigate = useNavigate();
     const [description, setDescription] = useState("");
     const [image, setImage] = useState("");
+    const [preview, setPreview] = useState("");
     const formik = useFormik({
         initialValues: {
             title: "",
@@ -37,6 +38,8 @@ export default function NewProject() {
         }),
         onSubmit: (values) => {
             const imageFile = document.getElementById("image_input").files[0];
+            const previewFile =
+                document.getElementById("preview_input").files[0];
 
             const submitValues = {
                 ...values,
@@ -49,7 +52,13 @@ export default function NewProject() {
                       values.title.toLowerCase().replaceAll(" ", "_") +
                       "." +
                       imageFile.type.split("/")[1]
-                    : null,
+                    : values.image,
+                preview: previewFile
+                    ? "projects/preview/" +
+                      values.title.toLowerCase().replaceAll(" ", "_") +
+                      "." +
+                      previewFile.type.split("/")[1]
+                    : values.preview,
             };
             const mdFile = new Blob([description], { type: "text/plain" });
             const storageRefDescription = ref(
@@ -57,6 +66,7 @@ export default function NewProject() {
                 submitValues.description_path
             );
             const storageRefImage = ref(storage, submitValues.image);
+            const storageRefPreview = ref(storage, submitValues.preview);
             if (params.id) {
                 handleEdit("projects", params.id, submitValues).then(
                     (projectId) => {
@@ -64,16 +74,21 @@ export default function NewProject() {
                             storageRefDescription,
                             mdFile
                         );
-                        const imageUpload = uploadBytes(
-                            storageRefImage,
-                            imageFile
-                        );
+                        const imageUpload = imageFile
+                            ? uploadBytes(storageRefImage, imageFile)
+                            : null;
 
-                        Promise.all([descriptionUpload, imageUpload]).then(
-                            (values) => {
-                                navigate("/projects/" + projectId);
-                            }
-                        );
+                        const previewUpload = previewFile
+                            ? uploadBytes(storageRefPreview, previewFile)
+                            : null;
+
+                        Promise.all([
+                            descriptionUpload,
+                            imageUpload,
+                            previewUpload,
+                        ]).then((values) => {
+                            navigate("/projects/" + projectId);
+                        });
                     }
                 );
             } else {
@@ -83,12 +98,18 @@ export default function NewProject() {
                         mdFile
                     );
                     const imageUpload = uploadBytes(storageRefImage, imageFile);
-
-                    Promise.all([descriptionUpload, imageUpload]).then(
-                        (values) => {
-                            navigate("/projects/" + projectId);
-                        }
+                    const previewUpload = uploadBytes(
+                        storageRefPreview,
+                        previewFile
                     );
+
+                    Promise.all([
+                        descriptionUpload,
+                        imageUpload,
+                        previewUpload,
+                    ]).then((values) => {
+                        navigate("/projects/" + projectId);
+                    });
                 });
             }
         },
@@ -118,6 +139,12 @@ export default function NewProject() {
                                 .then((url) => setImage(url))
                                 .catch((err) => console.log(err.message));
                         }
+                        if (project.preview) {
+                            const imageRef = ref(storage, project.preview);
+                            getDownloadURL(imageRef)
+                                .then((url) => setPreview(url))
+                                .catch((err) => console.log(err.message));
+                        }
                     }
                 })
                 .catch((err) => console.log(err.message));
@@ -126,6 +153,12 @@ export default function NewProject() {
             const file = document.getElementById("image_input").files[0];
             if (file) {
                 setImage(URL.createObjectURL(file));
+            }
+        };
+        document.getElementById("preview_input").onchange = (e) => {
+            const file = document.getElementById("preview_input").files[0];
+            if (file) {
+                setPreview(URL.createObjectURL(file));
             }
         };
     }, [params.id, setValues]);
@@ -161,6 +194,14 @@ export default function NewProject() {
                 <label>Image</label>
                 <input id="image_input" type="file" accept="image/*" />
                 <img style={{ height: 100 }} src={image} alt="Project"></img>
+
+                <label>Preview</label>
+                <input id="preview_input" type="file" accept="image/*" />
+                <img
+                    style={{ height: 100 }}
+                    src={preview}
+                    alt="Project preview"
+                ></img>
 
                 <label>Github</label>
                 <input
