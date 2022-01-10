@@ -1,12 +1,12 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { handleNew, handleGet, handleEdit } from "../utils/utils";
 import { useNavigate } from "react-router-dom";
 import { storage } from "../utils/firebase";
 import "../styles/admin.css";
-import { uploadBytes, ref } from "@firebase/storage";
+import { uploadBytes, ref, getDownloadURL } from "@firebase/storage";
 
 const dummyExp = {
     title: "",
@@ -17,6 +17,7 @@ const dummyExp = {
 
 export default function NewExperience() {
     const params = useParams();
+    const [logo, setLogo] = useState("");
     const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
@@ -33,30 +34,34 @@ export default function NewExperience() {
             experiences: Yup.array().required("Required"),
         }),
         onSubmit: (values) => {
+            const file = document.getElementById("logo_input").files[0];
+            const submitValues = {
+                ...values,
+                start_date: values.experiences.sort((a, b) => {
+                    return new Date(b.start_date) - new Date(a.start_date);
+                })[0].start_date,
+                logo: file
+                    ? "experience/" +
+                      values.organization.toLowerCase().replaceAll(" ", "_")
+                    : values.logo,
+            };
+            const storageRef = ref(storage, submitValues.logo);
             if (params.id) {
-                handleEdit("experience", params.id, values).then((expId) =>
-                    navigate("/about")
+                handleEdit("experience", params.id, submitValues).then(
+                    (expId) => {
+                        if (file) {
+                            uploadBytes(storageRef, file).then((snapshot) =>
+                                navigate("/about")
+                            );
+                        } else {
+                            navigate("/about");
+                        }
+                    }
                 );
             } else {
-                const file = document.getElementById("logo_input").files[0];
-                const submitValues = {
-                    ...values,
-                    start_date: values.experiences.sort((a, b) => {
-                        return new Date(b.start_date) - new Date(a.start_date);
-                    })[0].start_date,
-                    logo: file
-                        ? "experience/" +
-                          values.organization
-                              .toLowerCase()
-                              .replaceAll(" ", "_") +
-                          "." +
-                          file.type.split("/")[1]
-                        : "",
-                };
                 handleNew("experience", submitValues).then((expId) => {
                     // Only upload img if experience is success
                     if (file) {
-                        const storageRef = ref(storage, submitValues.logo);
                         uploadBytes(storageRef, file).then((snapshot) =>
                             navigate("/about")
                         );
@@ -75,10 +80,22 @@ export default function NewExperience() {
                 .then((exp) => {
                     if (exp) {
                         setValues(exp);
+                        if (exp.logo) {
+                            const imageRef = ref(storage, exp.logo);
+                            getDownloadURL(imageRef)
+                                .then((url) => setLogo(url))
+                                .catch((err) => console.log(err.message));
+                        }
                     }
                 })
                 .catch((err) => console.log(err.message));
         }
+        document.getElementById("logo_input").onchange = (e) => {
+            const file = document.getElementById("logo_input").files[0];
+            if (file) {
+                setLogo(URL.createObjectURL(file));
+            }
+        };
     }, [params.id, setValues]);
 
     return (
@@ -111,6 +128,7 @@ export default function NewExperience() {
 
                 <label>Logo</label>
                 <input id="logo_input" type="file" accept="image/*" />
+                <img style={{ height: 100 }} src={logo} alt="Logo"></img>
 
                 {formik.values.experiences.map((exp, index) => (
                     <div key={index} style={{ marginLeft: 32 }}>
