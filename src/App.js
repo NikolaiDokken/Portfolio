@@ -37,6 +37,10 @@ export default function App() {
                                 path="/admin/new-experience"
                                 element={<NewExperience />}
                             />
+                            <Route
+                                path="/admin/edit-experience/:id"
+                                element={<NewExperience />}
+                            />
                         </>
                     )}
                     <Route

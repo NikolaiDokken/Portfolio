@@ -3,8 +3,12 @@ import { ref, getDownloadURL } from "@firebase/storage";
 import { storage } from "../utils/firebase";
 import moment from "moment";
 import styles from "../styles/about.module.css";
+import useFirebaseAuthentication from "../utils/useFirebaseAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function ExpRow({ experience }) {
+    const authUser = useFirebaseAuthentication();
+    const navigate = useNavigate();
     const [src, setSrc] = useState("");
 
     const getFromToDateString = (experience) => {
@@ -70,7 +74,7 @@ export default function ExpRow({ experience }) {
                         marginRight: 16,
                     }}
                 />
-                <div>
+                <div style={{ flex: 1 }}>
                     {experience.experiences.length === 1 ? (
                         <div>
                             <h4>{experience.experiences[0].title}</h4>
@@ -92,6 +96,15 @@ export default function ExpRow({ experience }) {
                         </div>
                     )}
                 </div>
+                {authUser && (
+                    <button
+                        onClick={() =>
+                            navigate("/admin/edit-experience/" + experience.id)
+                        }
+                    >
+                        Edit
+                    </button>
+                )}
             </div>
             {experience.experiences.length > 1
                 ? experience.experiences
