@@ -26,10 +26,8 @@ export default function Projects() {
     return (
         <div>
             <div className={styles.header}>
-                <h2>Portfolio</h2>
-                <h3>
-                    Prosjekter jeg har vært med på & nettsider jeg har laget
-                </h3>
+                <h2>My Projects</h2>
+                <h3>Projects I've been part of & websites I've made</h3>
             </div>
             <div className={styles.cards}>
                 {projects.map((project) => (

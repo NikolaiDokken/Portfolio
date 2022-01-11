@@ -17,12 +17,40 @@ export default function About() {
 
     return (
         <div className={styles.about}>
-            <h2>
-                This is me
-                <span role="img" aria-label="me">
-                    👨🏼‍💼
-                </span>
-            </h2>
+            <div
+                style={
+                    window.innerWidth > 600
+                        ? { display: "flex", alignItems: "center" }
+                        : {
+                              display: "flex",
+                              alignItems: "center",
+                              flexDirection: "column",
+                          }
+                }
+            >
+                <img
+                    src={"/static/me.png"}
+                    style={{
+                        width: 250,
+                        maxWidth: "100%",
+                        borderRadius: "50%",
+                        marginRight: window.innerWidth > 600 ? 32 : 0,
+                    }}
+                />
+                <div style={{ textAlign: "center" }}>
+                    <h2>
+                        This is me
+                        <span role="img" aria-label="me">
+                            👨🏼‍💼
+                        </span>
+                    </h2>
+                    <h3 style={{ margin: 0, padding: 0 }}>
+                        I like programming as much as I like working with
+                        people. Other than that I really enjoy skiing, boating,
+                        and a cold beer with friends.
+                    </h3>
+                </div>
+            </div>
             <section>
                 <h3>
                     Work Experience -{" "}
@@ -73,47 +101,6 @@ export default function About() {
                             )}
                         </div>
                     ))}
-            </section>
-            <section className={styles.hobbies}>
-                <h3>
-                    Hobbies and Interests -{" "}
-                    <span role="img" aria-label="hobbies and interests">
-                        🎿
-                    </span>
-                </h3>
-                <div className={styles.divider} />
-                <ul>
-                    <li>
-                        Skiing: During winter I love to hit the slopes (and
-                        off-piste)
-                    </li>
-                    <li>
-                        Boating: As a proud "snekke"-owner, i enjoy the sea, but
-                        also fixing the boat during springtime:P
-                    </li>
-                    <li>
-                        IT: Always been a huge interest. Without it, this site
-                        wouldn't exist.
-                    </li>
-                    <li>
-                        F1: Like to watch races and participate in online sim
-                        races
-                    </li>
-                </ul>
-            </section>
-            <section>
-                <h3>
-                    Favorite OS -{" "}
-                    <span role="img" aria-label="favourite os">
-                        💻
-                    </span>
-                </h3>
-                <div className={styles.divider} />
-                <p>
-                    I'm not very picky. Daily user of both macOS and windows,
-                    but I feel like a hacker with Linux
-                </p>
-                <p>Fun fact: This website uses the ubuntu-font</p>
             </section>
         </div>
     );

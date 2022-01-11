@@ -23,7 +23,7 @@ export default function Navbar() {
 
     return (
         <nav>
-            <h1>Niko's koder</h1>
+            <div></div>
             {size.width > 600 ? (
                 <div className="links">
                     <Link to="/">Home</Link>

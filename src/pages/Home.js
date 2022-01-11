@@ -6,24 +6,19 @@ function Home() {
     return (
         <section className={styles.header}>
             <div>
-                <h2>Hei!</h2>
-                <h3>Velkommen til min side</h3>
-                <p>Her kan du lese mer om mine prosjekter, og hvem jeg er.</p>
-                <p>
-                    Denne siden er forresten laget med <strong>Gatsby</strong>.
-                    Den er skrevet i <strong>React</strong>, men Gatsby sin
-                    prekonfigurasjon gjør denne siden veldig rask*! Dessuten lar
-                    den meg hente inn data fra et <strong>GraphQL</strong>{" "}
-                    data-lag.
-                </p>
-                <p className={styles.footnote}>*(forhåpentligvis)</p>
+                <h4>Welcome</h4>
+                <h2>I'm Nikolai</h2>
+                <h3>Computer Scientist and Developer</h3>
                 <Link className={styles.btn} to="/projects">
-                    Gå til mine prosjekter
+                    Projects
+                </Link>
+                <Link className={styles.btn} to="/about">
+                    Experience
                 </Link>
             </div>
             <div style={{ textAlign: "center" }}>
                 <img
-                    src={"/webdev.svg"}
+                    src={"/static/webdev.svg"}
                     alt="Jeg liker å lage nettsider"
                     style={{ maxWidth: "100%" }}
                 />
