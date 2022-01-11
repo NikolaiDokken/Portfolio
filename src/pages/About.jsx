@@ -36,6 +36,7 @@ export default function About() {
                         borderRadius: "50%",
                         marginRight: window.innerWidth > 600 ? 32 : 0,
                     }}
+                    alt="Headshot"
                 />
                 <div style={{ textAlign: "center" }}>
                     <h2>
