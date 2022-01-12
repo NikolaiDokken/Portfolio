@@ -14,7 +14,7 @@ import useFirebaseAuthentication from "./utils/useFirebaseAuth";
 export default function App() {
     const authUser = useFirebaseAuthentication();
     return (
-        <HashRouter>
+        <HashRouter basename="nikolaiokken.no">
             <Layout>
                 <Routes>
                     <Route path="/" element={<Home />} />
