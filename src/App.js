@@ -1,7 +1,7 @@
 import React from "react";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import NewProject from "./pages/NewProject";
 import NewExperience from "./pages/NewExperience";
 import Admin from "./pages/Admin";
@@ -14,7 +14,7 @@ import useFirebaseAuthentication from "./utils/useFirebaseAuth";
 export default function App() {
     const authUser = useFirebaseAuthentication();
     return (
-        <BrowserRouter>
+        <HashRouter>
             <Layout>
                 <Routes>
                     <Route path="/" element={<Home />} />
@@ -53,6 +53,6 @@ export default function App() {
                     />
                 </Routes>
             </Layout>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
