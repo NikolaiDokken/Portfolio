@@ -87,14 +87,14 @@ export default function ProjectDetails() {
                 </h3>
                 <a href={project.github_link} target="_blank" rel="noreferrer">
                     <img
-                        src="/github.png"
+                        src="/static/github_logo.png"
                         style={{ width: 40, height: 40, color: "white" }}
                         alt="github logo"
                     ></img>
                 </a>
             </div>
             <img
-                style={{ width: "100%", height: "300px", objectFit: "cover" }}
+                style={{ width: "100%", maxHeight: 600, objectFit: "cover" }}
                 src={image}
                 alt="Thumbnail"
             ></img>
