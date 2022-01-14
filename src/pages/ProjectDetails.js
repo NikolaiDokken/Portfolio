@@ -85,13 +85,19 @@ export default function ProjectDetails() {
                 >
                     {project.stack}
                 </h3>
-                <a href={project.github_link} target="_blank" rel="noreferrer">
-                    <img
-                        src="/static/github_logo.png"
-                        style={{ width: 40, height: 40, color: "white" }}
-                        alt="github logo"
-                    ></img>
-                </a>
+                {project.github_link && (
+                    <a
+                        href={project.github_link}
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        <img
+                            src="/static/github_logo.png"
+                            style={{ width: 40, height: 40, color: "white" }}
+                            alt="github logo"
+                        ></img>
+                    </a>
+                )}
             </div>
             <img
                 style={{ width: "100%", maxHeight: 600, objectFit: "cover" }}

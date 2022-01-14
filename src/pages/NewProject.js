@@ -32,7 +32,7 @@ export default function NewProject() {
         validationSchema: Yup.object({
             title: Yup.string().required("Required"),
             stack: Yup.string().required("Required"),
-            github_link: Yup.string().required("Required"),
+            github_link: Yup.string(),
             start_date: Yup.string(),
             description_path: Yup.string(),
         }),
