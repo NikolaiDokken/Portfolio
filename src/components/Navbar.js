@@ -56,9 +56,9 @@ export default function Navbar() {
                         <div className="bar3"></div>
                     </button>
                     <div id="sidenav" className="sidenav">
-                        <Link to="/">Hjem</Link>
-                        <Link to="/projects/">Prosjekter</Link>
-                        <Link to="/about/">Om meg</Link>
+                        <Link to="/">Home</Link>
+                        <Link to="/projects/">Projects</Link>
+                        <Link to="/about/">About Me</Link>
                     </div>
                 </div>
             )}

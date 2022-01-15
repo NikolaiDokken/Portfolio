@@ -4,7 +4,7 @@ import { ref, getDownloadURL } from "@firebase/storage";
 import { storage } from "../utils/firebase";
 
 export default function ProjectCard({ project }) {
-    const { title, stack, preview, color } = project;
+    const { title, stack, preview } = project;
     const [previewUrl, setPreviewUrl] = useState("");
 
     useEffect(() => {
@@ -17,19 +17,7 @@ export default function ProjectCard({ project }) {
     }, [preview]);
 
     return (
-        <div
-            className={`${styles.card} ${
-                color === "red"
-                    ? styles.red
-                    : color === "blue"
-                    ? styles.blue
-                    : color === "green"
-                    ? styles.green
-                    : color === "orange"
-                    ? styles.orange
-                    : styles.blue
-            }`}
-        >
+        <div className={styles.card}>
             <div className={styles.imageContainer}>
                 <img
                     src={previewUrl}
