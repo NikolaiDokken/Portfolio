@@ -30,15 +30,20 @@ export default function Projects() {
                 <h3>Projects I've been part of & websites I've made</h3>
             </div>
             <div className={styles.cards}>
-                {projects.map((project) => (
-                    <Link
-                        to={"/projects/" + project.id}
-                        key={project.id}
-                        style={{ margin: "0 5px 0 5px" }}
-                    >
-                        <ProjectCard project={project} />
-                    </Link>
-                ))}
+                {projects
+                    .sort(
+                        (a, b) =>
+                            new Date(b.start_date) - new Date(a.start_date)
+                    )
+                    .map((project) => (
+                        <Link
+                            to={"/projects/" + project.id}
+                            key={project.id}
+                            style={{ margin: "0 5px 0 5px" }}
+                        >
+                            <ProjectCard project={project} />
+                        </Link>
+                    ))}
             </div>
         </div>
     );
