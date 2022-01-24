@@ -59,7 +59,7 @@ export default function ProjectDetails() {
                 <div>
                     <div className={styles.backChevron} />
                     <Link className={styles.backBtn} to="/projects">
-                        Tilbake
+                        Go Back
                     </Link>
                 </div>
                 {authUser && (
