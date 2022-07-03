@@ -5,7 +5,6 @@ Portfolio website for showing my experience, skills, and projects. Built with:
 * Firebase
 * React
 * Javascript
-* Nice-UI design system (check it out [here](https://github.com/NikolaiDokken/Nice-UI))
 
 You can view the website [here](https://nikolaidokken.no). 
 ## Setup
