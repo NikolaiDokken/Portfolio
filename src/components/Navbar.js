@@ -1,99 +1,107 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "../styles/global.css";
+import React, { useState } from "react";
+// import "../styles/global.css";
 import useFirebaseAuthentication from "../utils/useFirebaseAuth";
-import { signOut } from "@firebase/auth";
-import { auth } from "../utils/firebase";
+import { signInWithGoogle, signOutFromApp } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
+import {
+    Avatar,
+    Box,
+    Divider,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    AppBar,
+    Toolbar,
+    IconButton,
+    Button,
+    Drawer,
+    Tooltip,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+
+const navItems = [
+    { name: "Home", path: "/" },
+    { name: "Projects", path: "/projects" },
+    { name: "About Me", path: "/about" },
+];
 
 export default function Navbar() {
     const navigate = useNavigate();
     const authUser = useFirebaseAuthentication();
-    const size = useWindowSize();
-    const [navOpen, setNavOpen] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
 
-    /* Set the width of the side navigation to 250px */
-    const toggleNav = () => {
-        document.getElementById("hamburger").classList.toggle("change");
-        document.getElementById("sidenav").style.width = !navOpen
-            ? "250px"
-            : "0px";
-        setNavOpen(!navOpen);
-    };
+    const drawer = (
+        <Box onClick={() => setMobileOpen(!mobileOpen)}>
+            <IconButton size="large">
+                <CloseIcon sx={{ m: 1 }} />
+            </IconButton>
+            <Divider />
+            <List>
+                {navItems.map((item) => (
+                    <ListItem key={item.name} disablePadding>
+                        <ListItemButton sx={{ textAlign: "center" }} onClick={() => navigate(item.path)}>
+                            <ListItemText primary={item.name} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+        </Box>
+    );
 
     return (
-        <nav>
-            <div></div>
-            {size.width > 600 ? (
-                <div className="links">
-                    <Link to="/">Home</Link>
-                    <Link to="/projects">Projects</Link>
-                    <Link to="/about">About Me</Link>
-                    {authUser ? (
-                        <Link to="/admin">Admin</Link>
-                    ) : (
-                        <Link to="/login">Admin</Link>
-                    )}
-                    {authUser && (
-                        <button
-                            onClick={() => {
-                                signOut(auth).then(() => navigate("/login"));
-                            }}
-                        >
-                            Sign out
-                        </button>
-                    )}
-                </div>
-            ) : (
-                <div className="links">
-                    <button
-                        id="hamburger"
-                        className="hamburger"
-                        onClick={toggleNav}
+        <Box sx={{ display: "flex" }}>
+            <AppBar component="nav" elevation={0} color="transparent" position="sticky">
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={() => setMobileOpen(!mobileOpen)}
+                        sx={{ display: { md: "none" } }}
                     >
-                        <div className="bar1"></div>
-                        <div className="bar2"></div>
-                        <div className="bar3"></div>
-                    </button>
-                    <div id="sidenav" className="sidenav">
-                        <Link to="/">Home</Link>
-                        <Link to="/projects/">Projects</Link>
-                        <Link to="/about/">About Me</Link>
-                    </div>
-                </div>
-            )}
-        </nav>
+                        <MenuIcon sx={{ m: 1 }} />
+                    </IconButton>
+                    <Box sx={{ flexGrow: 1, display: { xs: "none", md: "block" } }} />
+                    <Box sx={{ display: { xs: "none", md: "flex" } }}>
+                        {navItems.map((item) => (
+                            <Button key={item} color="inherit" onClick={() => navigate(item.path)}>
+                                {item.name}
+                            </Button>
+                        ))}
+                        {authUser ? (
+                            <Tooltip title="Sign out">
+                                <Avatar
+                                    src={authUser.photoURL}
+                                    onClick={signOutFromApp}
+                                    sx={{ ml: 2, cursor: "pointer" }}
+                                />
+                            </Tooltip>
+                        ) : (
+                            <Button color="inherit" onClick={signInWithGoogle}>
+                                Login
+                            </Button>
+                        )}
+                    </Box>
+                </Toolbar>
+            </AppBar>
+            <Box component="nav">
+                <Drawer
+                    variant="temporary"
+                    open={mobileOpen}
+                    onClose={() => setMobileOpen(!mobileOpen)}
+                    ModalProps={{
+                        keepMounted: true, // Better open performance on mobile.
+                    }}
+                    sx={{
+                        display: { xs: "block", md: "none" },
+                        "& .MuiDrawer-paper": { boxSizing: "border-box", width: 1 },
+                    }}
+                >
+                    {drawer}
+                </Drawer>
+            </Box>
+        </Box>
     );
-}
-
-// Hook
-function useWindowSize() {
-    // Initialize state with undefined width/height so server and client renders match
-    // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
-    const [windowSize, setWindowSize] = useState({
-        width: undefined,
-        height: undefined,
-    });
-
-    useEffect(() => {
-        // Handler to call on window resize
-        function handleResize() {
-            // Set window width/height to state
-            setWindowSize({
-                width: window.innerWidth,
-                height: window.innerHeight,
-            });
-        }
-
-        // Add event listener
-        window.addEventListener("resize", handleResize);
-
-        // Call handler right away so state gets updated with initial window size
-        handleResize();
-
-        // Remove event listener on cleanup
-        return () => window.removeEventListener("resize", handleResize);
-    }, []); // Empty array ensures that effect is only run on mount
-
-    return windowSize;
 }
