@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
-import styles from "../styles/project-details.module.css";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getFileFromStorage, handleDelete, handleGet } from "../utils/utils";
 import useFirebaseAuthentication from "../utils/useFirebaseAuth";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { ref, getDownloadURL } from "@firebase/storage";
 import { storage } from "../utils/firebase";
+import { Button, Box, Typography, IconButton } from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Row from "../components/Row";
 
 export default function ProjectDetails() {
     const authUser = useFirebaseAuthentication();
@@ -27,11 +31,7 @@ export default function ProjectDetails() {
             setProject(project);
             if (project.description_path) {
                 getFileFromStorage(project.description_path)
-                    .then((url) =>
-                        fetch(url).then((response) =>
-                            response.text().then((md) => setDescription(md))
-                        )
-                    )
+                    .then((url) => fetch(url).then((response) => response.text().then((md) => setDescription(md))))
                     .catch((err) => console.log(err.message));
             }
             if (project.image) {
@@ -54,43 +54,31 @@ export default function ProjectDetails() {
     };
 
     return (
-        <div className={styles.details}>
-            <div style={{ flexDirection: "row", marginTop: -50 }}>
-                <div>
-                    <div className={styles.backChevron} />
-                    <Link className={styles.backBtn} to="/projects">
-                        Go Back
-                    </Link>
-                </div>
+        <Box>
+            <Button onClick={() => navigate("/projects")} startIcon={<ArrowBackIosIcon />}>
+                Go Back
+            </Button>
+            <Row>
+                <Typography variant="h2" fontWeight={"bold"} sx={{ mr: 1 }}>
+                    {project.title}
+                </Typography>
                 {authUser && (
-                    <div>
-                        <button onClick={handleEditProject}>Edit</button>
-                        <button onClick={handleDeleteProject}>Delete</button>
-                    </div>
+                    <>
+                        <IconButton aria-label="edit" size="large" onClick={handleEditProject}>
+                            <EditIcon />
+                        </IconButton>
+                        <IconButton aria-label="delete" size="large" onClick={handleDeleteProject}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </>
                 )}
-            </div>
-            <h2>{project.title}</h2>
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                }}
-            >
-                <h3
-                    style={{
-                        padding: 0,
-                        margin: "0 8px 0 0",
-                    }}
-                >
+            </Row>
+            <Row>
+                <Typography variant="h3" sx={{ mr: 1 }}>
                     {project.stack}
-                </h3>
+                </Typography>
                 {project.github_link && (
-                    <a
-                        href={project.github_link}
-                        target="_blank"
-                        rel="noreferrer"
-                    >
+                    <a href={project.github_link} target="_blank" rel="noreferrer">
                         <img
                             src="/static/github_logo.png"
                             style={{ width: 40, height: 40, color: "white" }}
@@ -98,13 +86,9 @@ export default function ProjectDetails() {
                         ></img>
                     </a>
                 )}
-            </div>
-            <img
-                style={{ width: "100%", maxHeight: 600, objectFit: "cover" }}
-                src={image}
-                alt="Thumbnail"
-            ></img>
-            <ReactMarkdown>{description}</ReactMarkdown>
-        </div>
+            </Row>
+            <img style={{ width: "100%", maxHeight: 600, objectFit: "cover" }} src={image} alt="Thumbnail"></img>
+            <ReactMarkdown style={{ "& a": { color: "white" } }}>{description}</ReactMarkdown>
+        </Box>
     );
 }

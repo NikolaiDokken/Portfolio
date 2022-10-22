@@ -2,18 +2,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import {
-    handleNew,
-    handleGet,
-    handleEdit,
-    getFileFromStorage,
-} from "../utils/utils";
+import { handleNew, handleGet, handleEdit, getFileFromStorage } from "../utils/utils";
 import { useNavigate } from "react-router-dom";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-
-import "../styles/admin.css";
 import { ref, uploadBytes, getDownloadURL } from "@firebase/storage";
 import { storage } from "../utils/firebase";
+import { Button, Stack, TextField } from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 export default function NewProject() {
     const params = useParams();
@@ -38,15 +33,11 @@ export default function NewProject() {
         }),
         onSubmit: (values) => {
             const imageFile = document.getElementById("image_input").files[0];
-            const previewFile =
-                document.getElementById("preview_input").files[0];
+            const previewFile = document.getElementById("preview_input").files[0];
 
             const submitValues = {
                 ...values,
-                description_path:
-                    "projects/description/" +
-                    values.title.toLowerCase().replaceAll(" ", "_") +
-                    ".md",
+                description_path: "projects/description/" + values.title.toLowerCase().replaceAll(" ", "_") + ".md",
                 image: imageFile
                     ? "projects/image/" +
                       values.title.toLowerCase().replaceAll(" ", "_") +
@@ -61,53 +52,27 @@ export default function NewProject() {
                     : values.preview,
             };
             const mdFile = new Blob([description], { type: "text/plain" });
-            const storageRefDescription = ref(
-                storage,
-                submitValues.description_path
-            );
+            const storageRefDescription = ref(storage, submitValues.description_path);
             const storageRefImage = ref(storage, submitValues.image);
             const storageRefPreview = ref(storage, submitValues.preview);
             if (params.id) {
-                handleEdit("projects", params.id, submitValues).then(
-                    (projectId) => {
-                        const descriptionUpload = uploadBytes(
-                            storageRefDescription,
-                            mdFile
-                        );
-                        const imageUpload = imageFile
-                            ? uploadBytes(storageRefImage, imageFile)
-                            : null;
+                handleEdit("projects", params.id, submitValues).then((projectId) => {
+                    const descriptionUpload = uploadBytes(storageRefDescription, mdFile);
+                    const imageUpload = imageFile ? uploadBytes(storageRefImage, imageFile) : null;
 
-                        const previewUpload = previewFile
-                            ? uploadBytes(storageRefPreview, previewFile)
-                            : null;
+                    const previewUpload = previewFile ? uploadBytes(storageRefPreview, previewFile) : null;
 
-                        Promise.all([
-                            descriptionUpload,
-                            imageUpload,
-                            previewUpload,
-                        ]).then((values) => {
-                            navigate("/projects/" + projectId);
-                        });
-                    }
-                );
+                    Promise.all([descriptionUpload, imageUpload, previewUpload]).then((values) => {
+                        navigate("/projects/" + projectId);
+                    });
+                });
             } else {
                 handleNew("projects", submitValues).then((projectId) => {
-                    const descriptionUpload = uploadBytes(
-                        storageRefDescription,
-                        mdFile
-                    );
+                    const descriptionUpload = uploadBytes(storageRefDescription, mdFile);
                     const imageUpload = uploadBytes(storageRefImage, imageFile);
-                    const previewUpload = uploadBytes(
-                        storageRefPreview,
-                        previewFile
-                    );
+                    const previewUpload = uploadBytes(storageRefPreview, previewFile);
 
-                    Promise.all([
-                        descriptionUpload,
-                        imageUpload,
-                        previewUpload,
-                    ]).then((values) => {
+                    Promise.all([descriptionUpload, imageUpload, previewUpload]).then((values) => {
                         navigate("/projects/" + projectId);
                     });
                 });
@@ -125,11 +90,7 @@ export default function NewProject() {
                         if (project.description_path) {
                             getFileFromStorage(project.description_path)
                                 .then((url) =>
-                                    fetch(url).then((response) =>
-                                        response
-                                            .text()
-                                            .then((md) => setDescription(md))
-                                    )
+                                    fetch(url).then((response) => response.text().then((md) => setDescription(md)))
                                 )
                                 .catch((err) => console.log(err.message));
                         }
@@ -167,85 +128,87 @@ export default function NewProject() {
         <div>
             <h1>Add new project</h1>
             <form onSubmit={formik.handleSubmit}>
-                <label>Title</label>
-                <input
-                    id="title"
-                    name="title"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.title}
-                />
-                {formik.touched.title && formik.errors.title ? (
-                    <div>{formik.errors.title}</div>
-                ) : null}
-
-                <label>Stack</label>
-                <input
-                    id="stack"
-                    name="stack"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.stack}
-                />
-                {formik.touched.stack && formik.errors.stack ? (
-                    <div>{formik.errors.stack}</div>
-                ) : null}
-
-                <label>Image</label>
-                <input id="image_input" type="file" accept="image/*" />
-                <img style={{ height: 100 }} src={image} alt="Project"></img>
-
-                <label>Preview</label>
-                <input id="preview_input" type="file" accept="image/*" />
-                <img
-                    style={{ height: 100 }}
-                    src={preview}
-                    alt="Project preview"
-                ></img>
-
-                <label>Github</label>
-                <input
-                    id="github_link"
-                    name="github_link"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.github_link}
-                />
-                {formik.touched.github_link && formik.errors.github_link ? (
-                    <div>{formik.errors.github_link}</div>
-                ) : null}
-
-                <label>Start date</label>
-                <input
-                    id="start_date"
-                    name="start_date"
-                    type="date"
-                    onChange={formik.handleChange}
-                    value={formik.values.start_date}
-                />
-                {formik.touched.github_link && formik.errors.github_link ? (
-                    <div>{formik.errors.github_link}</div>
-                ) : null}
-
-                <label>Description </label>
-                <div style={{ display: "flex" }}>
-                    <textarea
-                        name="description_md"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        style={{ flex: 1 }}
+                <Stack spacing={2}>
+                    <TextField
+                        id="title"
+                        name="title"
+                        type="text"
+                        label="Title"
+                        onChange={formik.handleChange}
+                        value={formik.values.title}
+                        size="small"
                     />
-                    <div style={{ flex: 0.01 }} />
-                    <div style={{ flex: 1 }}>
-                        <ReactMarkdown>{description}</ReactMarkdown>
-                    </div>
-                </div>
-                {formik.touched.description_md &&
-                formik.errors.description_md ? (
-                    <div>{formik.errors.description_md}</div>
-                ) : null}
+                    {formik.touched.title && formik.errors.title ? <div>{formik.errors.title}</div> : null}
 
-                <input type="submit" value="Submit" />
+                    <TextField
+                        id="stack"
+                        name="stack"
+                        type="text"
+                        onChange={formik.handleChange}
+                        value={formik.values.stack}
+                        label="Stack"
+                        size="small"
+                    />
+                    {formik.touched.stack && formik.errors.stack ? <div>{formik.errors.stack}</div> : null}
+
+                    <label>Image</label>
+                    <input id="image_input" type="file" accept="image/*" />
+                    {image && <img style={{ height: 100 }} src={image} alt="Project"></img>}
+
+                    <label>Preview</label>
+                    <input id="preview_input" type="file" accept="image/*" />
+                    {preview && <img style={{ height: 100 }} src={preview} alt="Project preview"></img>}
+
+                    <TextField
+                        id="github_link"
+                        name="github_link"
+                        type="text"
+                        onChange={formik.handleChange}
+                        value={formik.values.github_link}
+                        label="Github URL"
+                        size="small"
+                    />
+                    {formik.touched.github_link && formik.errors.github_link ? (
+                        <div>{formik.errors.github_link}</div>
+                    ) : null}
+
+                    <TextField
+                        id="start_date"
+                        name="start_date"
+                        type="date"
+                        onChange={formik.handleChange}
+                        value={formik.values.start_date}
+                        label="Start date"
+                        size="small"
+                    />
+                    {formik.touched.github_link && formik.errors.github_link ? (
+                        <div>{formik.errors.github_link}</div>
+                    ) : null}
+
+                    <Grid2 container spacing={2}>
+                        <Grid2 xs={6}>
+                            <TextField
+                                id="description_md"
+                                name="description_md"
+                                multiline
+                                rows={10}
+                                fullWidth
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                label="Description"
+                            />
+                        </Grid2>
+                        <Grid2 xs={6}>
+                            <ReactMarkdown>{description}</ReactMarkdown>
+                        </Grid2>
+                    </Grid2>
+                    {formik.touched.description_md && formik.errors.description_md ? (
+                        <div>{formik.errors.description_md}</div>
+                    ) : null}
+
+                    <input type="submit" value="Submit" />
+                    <Button type="submit">Submit</Button>
+                </Stack>
             </form>
         </div>
     );

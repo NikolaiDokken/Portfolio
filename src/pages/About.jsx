@@ -1,65 +1,49 @@
 import React, { useEffect, useState } from "react";
-import styles from "../styles/about.module.css";
 import db from "../utils/firebase";
 import { getDocs, collection } from "firebase/firestore";
 import ExpRow from "../components/ExpRow";
+import { Typography } from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { MainDivider, SubDivider } from "../components/Dividers";
 
 export default function About() {
     const [experience, setExperience] = useState([]);
 
     useEffect(() => {
         getDocs(collection(db, "experience")).then((values) => {
-            setExperience(
-                values.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-            );
+            setExperience(values.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
         });
     }, []);
 
     return (
-        <div className={styles.about}>
-            <div
-                style={
-                    window.innerWidth > 600
-                        ? { display: "flex", alignItems: "center" }
-                        : {
-                              display: "flex",
-                              alignItems: "center",
-                              flexDirection: "column",
-                          }
-                }
-            >
-                <img
-                    src={"/static/me.png"}
-                    style={{
-                        width: 250,
-                        maxWidth: "100%",
-                        borderRadius: "50%",
-                        marginRight: window.innerWidth > 600 ? 32 : 0,
-                    }}
-                    alt="Headshot"
-                />
-                <div style={{ textAlign: "center" }}>
-                    <h2>
-                        This is me
-                        <span role="img" aria-label="me">
-                            👨🏼‍💼
-                        </span>
-                    </h2>
-                    <h3 style={{ margin: 0, padding: 0 }}>
-                        I like programming as much as I like working with
-                        people. Other than that I really enjoy skiing, boating,
-                        and a cold beer with friends.
-                    </h3>
-                </div>
-            </div>
+        <div>
+            <Grid2 container justifyContent={"space-around"} sx={{ my: 4 }} spacing={1}>
+                <Grid2 xs={12} md={4} display="flex" justifyContent="center">
+                    <img
+                        src={"/static/me.png"}
+                        style={{
+                            width: 250,
+                            maxWidth: "100%",
+                            borderRadius: "50%",
+                        }}
+                        alt="Headshot"
+                    />
+                </Grid2>
+                <Grid2 xs={12} md={8} textAlign={"center"}>
+                    <Typography variant="h2" fontWeight={"bold"}>
+                        This is me 👨🏼‍💼
+                    </Typography>
+                    <Typography variant="h4" fontWeight={"light"} sx={{ mt: 0 }}>
+                        I like programming as much as I like working with people. Other than that I really enjoy skiing,
+                        boating, and a cold beer with friends.
+                    </Typography>
+                </Grid2>
+            </Grid2>
             <section>
-                <h3>
-                    Work Experience -{" "}
-                    <span role="img" aria-label="work-experience">
-                        💼
-                    </span>
-                </h3>
-                <div className={styles.divider} />
+                <Typography variant="h4" fontWeight={"light"}>
+                    Work Experience 💼
+                </Typography>
+                <MainDivider />
                 {experience
                     .filter((exp) => exp.type === "Work Experience")
                     .sort((a, b) => {
@@ -68,22 +52,17 @@ export default function About() {
                     .map((job, index) => (
                         <div key={index}>
                             <ExpRow experience={job} />
-                            {index !==
-                                experience.filter(
-                                    (exp) => exp.type === "Work Experience"
-                                ).length -
-                                    1 && <div className={styles.subdivider} />}
+                            {index !== experience.filter((exp) => exp.type === "Work Experience").length - 1 && (
+                                <SubDivider />
+                            )}
                         </div>
                     ))}
             </section>
             <section>
-                <h3>
-                    Education -{" "}
-                    <span role="img" aria-label="education">
-                        🎓
-                    </span>
-                </h3>
-                <div className={styles.divider} />
+                <Typography variant="h4" fontWeight={"light"}>
+                    Education 🎓
+                </Typography>
+                <MainDivider />
                 {experience
                     .filter((exp) => exp.type === "Education")
                     .sort((a, b) => {
@@ -92,11 +71,8 @@ export default function About() {
                     .map((edu, index) => (
                         <div key={index}>
                             <ExpRow experience={edu} />
-                            {index !==
-                            experience.filter((exp) => exp.type === "Education")
-                                .length -
-                                1 ? (
-                                <div className={styles.subdivider} />
+                            {index !== experience.filter((exp) => exp.type === "Education").length - 1 ? (
+                                <SubDivider />
                             ) : (
                                 ""
                             )}

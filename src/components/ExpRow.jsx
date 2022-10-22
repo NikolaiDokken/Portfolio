@@ -2,9 +2,21 @@ import React, { useEffect, useState } from "react";
 import { ref, getDownloadURL } from "@firebase/storage";
 import { storage } from "../utils/firebase";
 import moment from "moment";
-import styles from "../styles/about.module.css";
 import useFirebaseAuthentication from "../utils/useFirebaseAuth";
 import { useNavigate } from "react-router-dom";
+import Row from "./Row";
+import { Box, IconButton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+
+import {
+    Timeline,
+    TimelineItem,
+    TimelineSeparator,
+    TimelineDot,
+    TimelineConnector,
+    TimelineContent,
+    timelineItemClasses,
+} from "@mui/lab";
 
 export default function ExpRow({ experience }) {
     const authUser = useFirebaseAuthentication();
@@ -15,9 +27,7 @@ export default function ExpRow({ experience }) {
         return (
             moment(experience.start_date).format("MMM YYYY") +
             " - " +
-            (experience.end_date
-                ? moment(experience.end_date).format("MMM YYYY")
-                : "Nå")
+            (experience.end_date ? moment(experience.end_date).format("MMM YYYY") : "Nå")
         );
     };
     const getDuration = () => {
@@ -36,9 +46,7 @@ export default function ExpRow({ experience }) {
         });
         const months = maxDate.diff(minDate, "months");
         return Math.floor(months / 12) > 0
-            ? (Math.floor(months / 12) > 1
-                  ? Math.floor(months / 12) + " years"
-                  : Math.floor(months / 12) + " year") +
+            ? (Math.floor(months / 12) > 1 ? Math.floor(months / 12) + " years" : Math.floor(months / 12) + " year") +
                   (months % 12 > 0 ? ", " + (months % 12) + " mnd" : "")
             : months > 0
             ? months + " mnd"
@@ -56,14 +64,7 @@ export default function ExpRow({ experience }) {
 
     return (
         <div>
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginBottom: 8,
-                }}
-            >
+            <Row additionalSx={{ mb: 1 }}>
                 <img
                     src={src}
                     alt="Organization logo"
@@ -74,58 +75,62 @@ export default function ExpRow({ experience }) {
                         marginRight: 16,
                     }}
                 />
-                <div style={{ flex: 1 }}>
-                    {experience.experiences.length === 1 ? (
-                        <div>
-                            <h4>{experience.experiences[0].title}</h4>
-                            <p>{experience.organization}</p>
-                            <p style={{ fontSize: 14 }}>
-                                {experience.experiences[0].subtitle}
-                            </p>
-                            <p style={{ fontSize: 14 }}>
-                                {getFromToDateString(experience.experiences[0])}{" "}
-                                &#x2E31; {getDuration()}
-                            </p>
-                        </div>
-                    ) : (
-                        <div>
-                            <h4 style={{ fontSize: 18 }}>
-                                {experience.organization}
-                            </h4>
-                            <p>{getDuration()}</p>
-                        </div>
-                    )}
-                </div>
-                {authUser && (
-                    <button
-                        onClick={() =>
-                            navigate("/admin/edit-experience/" + experience.id)
-                        }
-                    >
-                        Edit
-                    </button>
+                {experience.experiences.length === 1 ? (
+                    <Box sx={{ "& p": { margin: 0 }, "& h4": { margin: 0 }, flex: 1 }}>
+                        <h4>{experience.experiences[0].title}</h4>
+                        <p>{experience.organization}</p>
+                        <p style={{ fontSize: 14 }}>{experience.experiences[0].subtitle}</p>
+                        <p style={{ fontSize: 14 }}>
+                            {getFromToDateString(experience.experiences[0])} &#x2E31; {getDuration()}
+                        </p>
+                    </Box>
+                ) : (
+                    <Box sx={{ "& p": { margin: 0 }, "& h4": { margin: 0 }, flex: 1 }}>
+                        <h4 style={{ fontSize: 18 }}>{experience.organization}</h4>
+                        <p>{getDuration()}</p>
+                    </Box>
                 )}
-            </div>
-            {experience.experiences.length > 1
-                ? experience.experiences
-                      .sort((a, b) => {
-                          return (
-                              new Date(b.start_date) - new Date(a.start_date)
-                          );
-                      })
-                      .map((position, index) => (
-                          <div className={styles.experience} key={index}>
-                              {index < experience.experiences.length - 1 ? (
-                                  <div className={styles.trail} />
-                              ) : (
-                                  ""
-                              )}
-                              <h4>{position.title}</h4>
-                              <p>{position.subtitle}</p>
-                              <p>{getFromToDateString(position)}</p>
-                          </div>
-                      ))
-                : ""}
+                {authUser && (
+                    <IconButton
+                        aria-label="edit"
+                        size="large"
+                        onClick={() => navigate("/admin/edit-experience/" + experience.id)}
+                    >
+                        <EditIcon />
+                    </IconButton>
+                )}
+            </Row>
+            {experience.experiences.length > 1 && (
+                <Timeline
+                    sx={{
+                        [`& .${timelineItemClasses.root}:before`]: {
+                            flex: 0,
+                            padding: 0,
+                        },
+                        m: 0,
+                    }}
+                >
+                    {experience.experiences
+                        .sort((a, b) => {
+                            return new Date(b.start_date) - new Date(a.start_date);
+                        })
+                        .map((position, index) => (
+                            <TimelineItem key={index}>
+                                <TimelineSeparator>
+                                    <TimelineDot />
+                                    {index < experience.experiences.length - 1 && <TimelineConnector />}
+                                </TimelineSeparator>
+                                <TimelineContent>
+                                    <Box sx={{ "& p": { margin: 0 }, "& h4": { margin: 0 }, flex: 1 }}>
+                                        <h4>{position.title}</h4>
+                                        <p>{position.subtitle}</p>
+                                        <p>{getFromToDateString(position)}</p>
+                                    </Box>
+                                </TimelineContent>
+                            </TimelineItem>
+                        ))}
+                </Timeline>
+            )}
         </div>
     );
 }
