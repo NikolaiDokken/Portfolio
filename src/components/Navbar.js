@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import {
     Avatar,
     Box,
-    Divider,
     List,
     ListItem,
     ListItemButton,
@@ -20,6 +19,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import { MainDivider, SubDivider } from "../components/Dividers";
 
 const navItems = [
     { name: "Home", path: "/" },
@@ -34,10 +34,10 @@ export default function Navbar() {
 
     const drawer = (
         <Box onClick={() => setMobileOpen(!mobileOpen)}>
-            <IconButton size="large">
+            <IconButton size="large" sx={{ ml: 2, mt: 1 }}>
                 <CloseIcon sx={{ m: 1 }} />
             </IconButton>
-            <Divider />
+            <MainDivider />
             <List>
                 {navItems.map((item) => (
                     <ListItem key={item.name} disablePadding>
@@ -46,6 +46,18 @@ export default function Navbar() {
                         </ListItemButton>
                     </ListItem>
                 ))}
+                <Box sx={{ position: "fixed", bottom: 0, width: 1 }}>
+                    <SubDivider />
+                    <ListItem>
+                        <ListItemButton
+                            sx={{ textAlign: "center" }}
+                            onClick={authUser ? signOutFromApp : signInWithGoogle}
+                        >
+                            {authUser && <Avatar src={authUser.photoURL} alt={authUser.displayName} />}
+                            <ListItemText primary={authUser ? "Sign out" : "Login"} />
+                        </ListItemButton>
+                    </ListItem>
+                </Box>
             </List>
         </Box>
     );
@@ -53,16 +65,18 @@ export default function Navbar() {
     return (
         <Box sx={{ display: "flex" }}>
             <AppBar component="nav" elevation={0} color="transparent" position="sticky">
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        edge="start"
-                        onClick={() => setMobileOpen(!mobileOpen)}
-                        sx={{ display: { md: "none" } }}
-                    >
-                        <MenuIcon sx={{ m: 1 }} />
-                    </IconButton>
+                <Toolbar sx={{ px: 0, py: 1 }}>
+                    {!mobileOpen && (
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            edge="start"
+                            onClick={() => setMobileOpen(!mobileOpen)}
+                            sx={{ display: { md: "none" } }}
+                        >
+                            <MenuIcon sx={{ m: 1 }} />
+                        </IconButton>
+                    )}
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "block" } }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
                         {navItems.map((item) => (
@@ -74,8 +88,9 @@ export default function Navbar() {
                             <Tooltip title="Sign out">
                                 <Avatar
                                     src={authUser.photoURL}
+                                    alt={authUser.displayName}
                                     onClick={signOutFromApp}
-                                    sx={{ ml: 2, cursor: "pointer" }}
+                                    sx={{ ml: 1, cursor: "pointer" }}
                                 />
                             </Tooltip>
                         ) : (
@@ -96,7 +111,11 @@ export default function Navbar() {
                     }}
                     sx={{
                         display: { xs: "block", md: "none" },
-                        "& .MuiDrawer-paper": { boxSizing: "border-box", width: 1 },
+                        "& .MuiDrawer-paper": {
+                            boxSizing: "border-box",
+                            width: 1,
+                            backgroundColor: "rgba(0, 0, 0, 0.9)",
+                        },
                     }}
                 >
                     {drawer}

@@ -186,7 +186,7 @@ export default function NewProject() {
                     ) : null}
 
                     <Grid2 container spacing={2}>
-                        <Grid2 xs={6}>
+                        <Grid2 xs={6} sx={{ pl: 0 }}>
                             <TextField
                                 id="description_md"
                                 name="description_md"
@@ -206,7 +206,6 @@ export default function NewProject() {
                         <div>{formik.errors.description_md}</div>
                     ) : null}
 
-                    <input type="submit" value="Submit" />
                     <Button type="submit">Submit</Button>
                 </Stack>
             </form>
