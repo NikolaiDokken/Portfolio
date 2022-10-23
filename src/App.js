@@ -8,11 +8,11 @@ import Admin from "./pages/Admin";
 import About from "./pages/About";
 import Layout from "./components/Layout";
 import ProjectDetails from "./pages/ProjectDetails";
-import useFirebaseAuthentication from "./utils/useFirebaseAuth";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
+import { useIsAdmin } from "./utils";
 
 export default function App() {
-    const authUser = useFirebaseAuthentication();
+    const isAdmin = useIsAdmin();
 
     const theme = createTheme({
         palette: {
@@ -34,7 +34,7 @@ export default function App() {
                         <Route path="/projects" element={<Projects />} />
                         <Route path="/projects/:id" element={<ProjectDetails />} />
                         <Route path="/about" element={<About />} />
-                        {authUser && (
+                        {isAdmin && (
                             <>
                                 <Route path="/admin" element={<Admin />} />
                                 <Route path="/admin/new-project" element={<NewProject />} />

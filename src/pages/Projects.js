@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 import db from "../utils/firebase";
 import { getDocs, collection } from "firebase/firestore";
 import { Box, Typography } from "@mui/material";
+import { useIsAdmin } from "../utils";
 
 export default function Projects() {
     const [projects, setProjects] = useState([{ title: "Loading", id: "Initial" }]);
+    const isAdmin = useIsAdmin();
 
     useEffect(() => {
         getDocs(collection(db, "projects"))
@@ -29,6 +31,11 @@ export default function Projects() {
                 </Typography>
             </Box>
             <Box sx={{ display: "flex", flexWrap: "nowrap", overflowX: "auto", mt: 5 }}>
+                {isAdmin && (
+                    <Link to={"/admin/new-project"}>
+                        <ProjectCard isNewProject={true} />
+                    </Link>
+                )}
                 {projects
                     .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))
                     .map((project) => (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getFileFromStorage, handleDelete, handleGet } from "../utils/utils";
-import useFirebaseAuthentication from "../utils/useFirebaseAuth";
+import { useIsAdmin } from "../utils";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { ref, getDownloadURL } from "@firebase/storage";
 import { storage } from "../utils/firebase";
@@ -12,7 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Row from "../components/Row";
 
 export default function ProjectDetails() {
-    const authUser = useFirebaseAuthentication();
+    const isAdmin = useIsAdmin();
     const params = useParams();
     const navigate = useNavigate();
     const [project, setProject] = useState({
@@ -62,7 +62,7 @@ export default function ProjectDetails() {
                 <Typography variant="h2" fontWeight={"bold"} sx={{ mr: 1 }}>
                     {project.title}
                 </Typography>
-                {authUser && (
+                {isAdmin && (
                     <>
                         <IconButton aria-label="edit" size="large" onClick={handleEditProject}>
                             <EditIcon />

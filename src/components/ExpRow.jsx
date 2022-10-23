@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { ref, getDownloadURL } from "@firebase/storage";
 import { storage } from "../utils/firebase";
 import moment from "moment";
-import useFirebaseAuthentication from "../utils/useFirebaseAuth";
 import { useNavigate } from "react-router-dom";
 import Row from "./Row";
 import { Box, IconButton } from "@mui/material";
@@ -18,8 +17,7 @@ import {
     timelineItemClasses,
 } from "@mui/lab";
 
-export default function ExpRow({ experience }) {
-    const authUser = useFirebaseAuthentication();
+export default function ExpRow({ experience, isAdmin }) {
     const navigate = useNavigate();
     const [src, setSrc] = useState("");
 
@@ -90,7 +88,7 @@ export default function ExpRow({ experience }) {
                         <p>{getDuration()}</p>
                     </Box>
                 )}
-                {authUser && (
+                {isAdmin && (
                     <IconButton
                         aria-label="edit"
                         size="large"

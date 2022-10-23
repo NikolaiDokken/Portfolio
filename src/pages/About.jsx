@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import db from "../utils/firebase";
 import { getDocs, collection } from "firebase/firestore";
 import ExpRow from "../components/ExpRow";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { MainDivider, SubDivider } from "../components/Dividers";
+import { useIsAdmin } from "../utils";
+import { useNavigate } from "react-router-dom";
 
 export default function About() {
     const [experience, setExperience] = useState([]);
+    const isAdmin = useIsAdmin();
+    const navigate = useNavigate();
 
     useEffect(() => {
         getDocs(collection(db, "experience")).then((values) => {
@@ -39,9 +43,14 @@ export default function About() {
                     </Typography>
                 </Grid2>
             </Grid2>
+            {isAdmin && (
+                <Button onClick={() => navigate("/admin/new-experience")} fullWidth>
+                    Add experience
+                </Button>
+            )}
             <section>
                 <Typography variant="h4" fontWeight={"light"}>
-                    Work Experience 💼
+                    Employment 💼
                 </Typography>
                 <MainDivider />
                 {experience
@@ -70,7 +79,7 @@ export default function About() {
                     })
                     .map((edu, index) => (
                         <div key={index}>
-                            <ExpRow experience={edu} />
+                            <ExpRow experience={edu} isAdmin={isAdmin} />
                             {index !== experience.filter((exp) => exp.type === "Education").length - 1 ? (
                                 <SubDivider />
                             ) : (
