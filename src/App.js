@@ -1,11 +1,11 @@
 import React from "react";
 import Home from "./pages/Home";
-import Projects from "./pages/Projects";
+import Projects from "./pages/projects";
 import { Routes, Route, HashRouter } from "react-router-dom";
 import NewProject from "./pages/NewProject";
 import NewExperience from "./pages/NewExperience";
 import Admin from "./pages/Admin";
-import About from "./pages/About";
+import About from "./pages/about";
 import Layout from "./components/Layout";
 import ProjectDetails from "./pages/ProjectDetails";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";

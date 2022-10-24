@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import ProjectCard from "../components/ProjectCard";
 import { Link } from "react-router-dom";
-import db from "../utils/firebase";
+import db from "../../utils/firebase";
 import { getDocs, collection } from "firebase/firestore";
 import { Box, Typography } from "@mui/material";
-import { useIsAdmin } from "../utils";
+import { useIsAdmin } from "../../utils";
+import ProjectCard from "./components/ProjectCard";
+import PlaceholderCard from "./components/PlaceholderCard";
 
 export default function Projects() {
-    const [projects, setProjects] = useState([{ title: "Loading", id: "Initial" }]);
+    const [projects, setProjects] = useState([]);
     const isAdmin = useIsAdmin();
 
     useEffect(() => {
@@ -36,9 +37,17 @@ export default function Projects() {
                         <ProjectCard isNewProject={true} />
                     </Link>
                 )}
+                {projects.length === 0 &&
+                    Array(10)
+                        .fill()
+                        .map((placeholder, index) => (
+                            <Box sx={{ mx: "5px" }}>
+                                <PlaceholderCard />
+                            </Box>
+                        ))}
                 {projects
                     .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))
-                    .map((project) => (
+                    .map((project, index) => (
                         <Link to={"/projects/" + project.id} key={project.id} style={{ margin: "0 5px 0 5px" }}>
                             <ProjectCard project={project} />
                         </Link>
