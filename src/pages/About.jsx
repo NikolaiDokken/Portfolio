@@ -60,7 +60,7 @@ export default function About() {
                     })
                     .map((job, index) => (
                         <div key={index}>
-                            <ExpRow experience={job} />
+                            <ExpRow experience={job} isAdmin={isAdmin} />
                             {index !== experience.filter((exp) => exp.type === "Work Experience").length - 1 && (
                                 <SubDivider />
                             )}
