@@ -1,13 +1,13 @@
 import React from "react";
 import Home from "./pages/Home";
 import Projects from "./pages/projects";
-import { Routes, Route, HashRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import NewProject from "./pages/NewProject";
 import NewExperience from "./pages/NewExperience";
 import Admin from "./pages/Admin";
 import About from "./pages/about";
 import Layout from "./components/Layout";
-import ProjectDetails from "./pages/ProjectDetails";
+import ProjectDetails from "./pages/project-details";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import { useIsAdmin } from "./utils";
 
@@ -27,7 +27,7 @@ export default function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <HashRouter>
+            <BrowserRouter>
                 <Layout>
                     <Routes>
                         <Route path="/" element={<Home />} />
@@ -53,7 +53,7 @@ export default function App() {
                         />
                     </Routes>
                 </Layout>
-            </HashRouter>
+            </BrowserRouter>
         </ThemeProvider>
     );
 }
