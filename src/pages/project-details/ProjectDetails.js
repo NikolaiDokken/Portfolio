@@ -1,30 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getFileFromStorage, handleDelete, handleGet } from "../utils/utils";
-import { useIsAdmin } from "../utils";
+import { getFileFromStorage, handleDelete, handleGet } from "../../utils/utils";
+import { useIsAdmin } from "../../utils";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { ref, getDownloadURL } from "@firebase/storage";
-import { storage } from "../utils/firebase";
-import { Button, Box, Typography, IconButton } from "@mui/material";
+import { storage } from "../../utils/firebase";
+import { Button, Box, Typography, IconButton, Skeleton, Stack } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Row from "../components/Row";
+import Row from "../../components/Row";
+import PlaceholderProject from "./components/PlaceholderProject";
 
 export default function ProjectDetails() {
     const isAdmin = useIsAdmin();
     const params = useParams();
     const navigate = useNavigate();
-    const [project, setProject] = useState({
-        id: "",
-        title: "",
-        stack: "",
-        description_md: "",
-        github_link: "",
-        start_date: new Date(),
-    });
+    const [project, setProject] = useState();
     const [description, setDescription] = useState(null);
     const [image, setImage] = useState(null);
+    const [imgLoading, setImgLoading] = useState(true);
 
     useEffect(() => {
         handleGet("projects", params.id).then((project) => {
@@ -52,6 +47,10 @@ export default function ProjectDetails() {
             .then(() => navigate("/projects"))
             .catch((err) => console.log(err.message));
     };
+
+    if (!project) {
+        return <PlaceholderProject />;
+    }
 
     return (
         <Box>
@@ -87,7 +86,20 @@ export default function ProjectDetails() {
                     </a>
                 )}
             </Row>
-            <img style={{ width: "100%", maxHeight: 600, objectFit: "cover" }} src={image} alt="Thumbnail"></img>
+            <img
+                style={imgLoading ? { display: "none" } : { width: "100%", maxHeight: 600, objectFit: "cover" }}
+                src={image}
+                alt="Thumbnail"
+                onLoad={() => setImgLoading(false)}
+            />
+            {imgLoading && <Skeleton variant="rectangular" height={300} />}
+            {!description && (
+                <Stack spacing={2} sx={{ mt: 2 }}>
+                    <Skeleton variant="rounded" height={100} />
+                    <Skeleton variant="rounded" height={100} />
+                    <Skeleton variant="rounded" height={100} />
+                </Stack>
+            )}
             <ReactMarkdown style={{ "& a": { color: "white" } }}>{description}</ReactMarkdown>
         </Box>
     );
