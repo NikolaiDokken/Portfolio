@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { ref, getDownloadURL } from "@firebase/storage";
-import { storage } from "../utils/firebase";
+import { storage } from "../../../utils/firebase";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import Row from "./Row";
-import { Box, IconButton } from "@mui/material";
+import Row from "../../../components/Row";
+import { Box, IconButton, Skeleton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 
 import {
@@ -20,6 +20,7 @@ import {
 export default function ExpRow({ experience, isAdmin }) {
     const navigate = useNavigate();
     const [src, setSrc] = useState("");
+    const [imgLoading, setImgLoading] = useState(true);
 
     const getFromToDateString = (experience) => {
         return (
@@ -66,13 +67,21 @@ export default function ExpRow({ experience, isAdmin }) {
                 <img
                     src={src}
                     alt="Organization logo"
-                    style={{
-                        maxWidth: 50,
-                        maxHeight: 50,
-                        borderRadius: 5,
-                        marginRight: 16,
-                    }}
+                    style={
+                        imgLoading
+                            ? { display: "none" }
+                            : {
+                                  maxWidth: 50,
+                                  maxHeight: 50,
+                                  borderRadius: 5,
+                                  marginRight: 16,
+                              }
+                    }
+                    onLoad={() => setImgLoading(false)}
                 />
+                {imgLoading && (
+                    <Skeleton variant="rectangular" width={50} height={50} sx={{ mr: 2, borderRadius: "5px" }} />
+                )}
                 {experience.experiences.length === 1 ? (
                     <Box sx={{ "& p": { margin: 0 }, "& h4": { margin: 0 }, flex: 1 }}>
                         <h4>{experience.experiences[0].title}</h4>

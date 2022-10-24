@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import db from "../utils/firebase";
+import db from "../../utils/firebase";
 import { getDocs, collection } from "firebase/firestore";
-import ExpRow from "../components/ExpRow";
-import { Button, Typography } from "@mui/material";
+import ExpRow from "./components/ExpRow";
+import { Button, Skeleton, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { MainDivider, SubDivider } from "../components/Dividers";
-import { useIsAdmin } from "../utils";
+import { MainDivider, SubDivider } from "../../components/Dividers";
+import { useIsAdmin } from "../../utils";
 import { useNavigate } from "react-router-dom";
+import PlaceholderRow from "./components/PlaceholderRow";
 
 export default function About() {
     const [experience, setExperience] = useState([]);
+    const [imgLoading, setImgLoading] = useState(true);
     const isAdmin = useIsAdmin();
     const navigate = useNavigate();
 
@@ -25,13 +27,20 @@ export default function About() {
                 <Grid2 xs={12} md={4} display="flex" justifyContent="center">
                     <img
                         src={"/static/me.png"}
-                        style={{
-                            width: 250,
-                            maxWidth: "100%",
-                            borderRadius: "50%",
-                        }}
-                        alt="Headshot"
+                        style={
+                            imgLoading
+                                ? { display: "none" }
+                                : {
+                                      width: 250,
+                                      maxWidth: "100%",
+                                      borderRadius: "50%",
+                                  }
+                        }
+                        loading="lazy"
+                        alt=""
+                        onLoad={() => setImgLoading(false)}
                     />
+                    {imgLoading && <Skeleton variant="circular" width={250} height={250} />}
                 </Grid2>
                 <Grid2 xs={12} md={8} textAlign={"center"}>
                     <Typography variant="h2" fontWeight={"bold"}>
@@ -53,6 +62,7 @@ export default function About() {
                     Employment 💼
                 </Typography>
                 <MainDivider />
+                {experience.length === 0 && <PlaceholderRow />}
                 {experience
                     .filter((exp) => exp.type === "Work Experience")
                     .sort((a, b) => {
@@ -72,6 +82,7 @@ export default function About() {
                     Education 🎓
                 </Typography>
                 <MainDivider />
+                {experience.length === 0 && <PlaceholderRow />}
                 {experience
                     .filter((exp) => exp.type === "Education")
                     .sort((a, b) => {
