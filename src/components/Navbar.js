@@ -82,7 +82,13 @@ export default function Navbar({ theme, setTheme }) {
                     )}
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "block" } }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        <Select name="theme" value={theme} onChange={(e) => setTheme(e.target.value)} size="small">
+                        <Select
+                            name="theme"
+                            size="small"
+                            value={theme}
+                            onChange={(e) => setTheme(e.target.value)}
+                            sx={{ mr: 2, minWidth: "150px" }}
+                        >
                             {Object.keys(themes).map((themeKey) => (
                                 <MenuItem key={themeKey} value={themeKey}>
                                     {themeKey}
