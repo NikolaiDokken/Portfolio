@@ -3,10 +3,10 @@ import Navbar from "./Navbar";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
 
-export default function Layout({ children }) {
+export default function Layout({ children, theme, setTheme }) {
     return (
         <Box sx={{ maxWidth: "1200px", margin: "0 auto", px: 4 }}>
-            <Navbar />
+            <Navbar theme={theme} setTheme={setTheme} />
             <Box>{children}</Box>
             <Box component="footer" sx={{ display: "flex", justifyContent: "center", p: 8 }}>
                 <Typography variant="p" textAlign={"center"}>

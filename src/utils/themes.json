@@ -1,0 +1,57 @@
+{
+    "Nikolai": {
+        "palette": {
+            "mode": "dark",
+            "primary": { "main": "#00FFFF" }
+        },
+        "typography": {
+            "fontFamily": "'Ubuntu', sans-serif",
+            "h2": { "fontSize": "3rem" }
+        }
+    },
+    "Sopra Steria": {
+        "palette": {
+            "mode": "light",
+            "primary": {
+                "main": "#db1d2b"
+            },
+            "secondary": {
+                "main": "#f47216"
+            }
+        },
+        "typography": {
+            "fontFamily": "'Hurme Geometric Sans 4'"
+        }
+    },
+    "Bekk": {
+        "palette": {
+            "mode": "dark",
+            "primary": {
+                "main": "#ffffff"
+            },
+            "secondary": {
+                "main": "#ffffff"
+            },
+            "background": {
+                "default": "#000000"
+            }
+        },
+        "typography": {
+            "fontFamily": "'Newzald-Book'"
+        }
+    },
+    "Accenture": {
+        "palette": {
+            "mode": "light",
+            "primary": {
+                "main": "#A100FF"
+            },
+            "secondary": {
+                "main": "#004DFF"
+            }
+        },
+        "typography": {
+            "fontFamily": "'graphik'"
+        }
+    }
+}

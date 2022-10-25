@@ -16,10 +16,13 @@ import {
     Button,
     Drawer,
     Tooltip,
+    Select,
+    MenuItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { MainDivider, SubDivider } from "../components/Dividers";
+import themes from "../utils/themes.json";
 
 const navItems = [
     { name: "Home", path: "/" },
@@ -27,7 +30,7 @@ const navItems = [
     { name: "About Me", path: "/about" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ theme, setTheme }) {
     const navigate = useNavigate();
     const authUser = useFirebaseAuthentication();
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -79,6 +82,13 @@ export default function Navbar() {
                     )}
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "block" } }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
+                        <Select name="theme" value={theme} onChange={(e) => setTheme(e.target.value)} size="small">
+                            {Object.keys(themes).map((themeKey) => (
+                                <MenuItem key={themeKey} value={themeKey}>
+                                    {themeKey}
+                                </MenuItem>
+                            ))}
+                        </Select>
                         {navItems.map((item) => (
                             <Button key={item} color="inherit" onClick={() => navigate(item.path)}>
                                 {item.name}
@@ -90,7 +100,7 @@ export default function Navbar() {
                                     src={authUser.photoURL}
                                     alt={authUser.displayName}
                                     onClick={signOutFromApp}
-                                    sx={{ ml: 1, cursor: "pointer" }}
+                                    sx={{ mx: 1, cursor: "pointer" }}
                                 />
                             </Tooltip>
                         ) : (

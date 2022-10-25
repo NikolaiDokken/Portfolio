@@ -1,11 +1,4 @@
-import {
-    collection,
-    addDoc,
-    updateDoc,
-    doc,
-    deleteDoc,
-    getDoc,
-} from "firebase/firestore";
+import { collection, addDoc, updateDoc, doc, deleteDoc, getDoc } from "firebase/firestore";
 import db, { storage } from "./firebase";
 import { ref, getDownloadURL } from "@firebase/storage";
 
@@ -37,4 +30,12 @@ export const getFileFromStorage = async (path) => {
     const storageRef = ref(storage, path);
     const url = await getDownloadURL(storageRef);
     return url;
+};
+
+export const writeToSessionStorage = (key, value) => {
+    window.sessionStorage.setItem(key, value);
+};
+
+export const readFromSessionStorage = (key) => {
+    return window.sessionStorage.getItem(key);
 };

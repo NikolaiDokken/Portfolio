@@ -1,0 +1,86 @@
+@font-face {
+    font-family: "graphikblack";
+    src: url("graphikblack-webfont.woff2") format("woff2"), url("graphikblack-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "graphikblack";
+    src: url("graphikblackitalic-webfont.woff2") format("woff2"), url("graphikblackitalic-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "graphik";
+    src: url("graphikbold-webfont.woff2") format("woff2"), url("graphikbold-webfont.woff") format("woff");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "graphik";
+    src: url("graphikbolditalic-webfont.woff2") format("woff2"), url("graphikbolditalic-webfont.woff") format("woff");
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "graphik";
+    src: url("graphikextralight-webfont.woff2") format("woff2"), url("graphikextralight-webfont.woff") format("woff");
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "graphik";
+    src: url("graphikextralightitalic-webfont.woff2") format("woff2"),
+        url("graphikextralightitalic-webfont.woff") format("woff");
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "graphik";
+    src: url("graphiklight-webfont.woff2") format("woff2"), url("graphiklight-webfont.woff") format("woff");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "graphiklight_italic";
+    src: url("graphiklightitalic-webfont.woff2") format("woff2"), url("graphiklightitalic-webfont.woff") format("woff");
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "graphik";
+    src: url("graphikmedium-webfont.woff2") format("woff2"), url("graphikmedium-webfont.woff") format("woff");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "graphik";
+    src: url("graphikmediumitalic-webfont.woff2") format("woff2"),
+        url("graphikmediumitalic-webfont.woff") format("woff");
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "graphik";
+    src: url("graphikregular-webfont.woff2") format("woff2"), url("graphikregular-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "graphik";
+    src: url("graphikregularitalic-webfont.woff2") format("woff2"),
+        url("graphikregularitalic-webfont.woff") format("woff");
+    font-weight: normal;
+    font-style: italic;
+}
