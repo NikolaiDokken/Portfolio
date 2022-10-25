@@ -11,10 +11,20 @@ import ProjectDetails from "./pages/project-details";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import { useIsAdmin } from "./utils";
 import themes from "./utils/themes.json";
+import { writeToSessionStorage, readFromSessionStorage } from "./utils/utils";
 
 export default function App() {
     const isAdmin = useIsAdmin();
-    const [theme, setTheme] = useState("Nikolai");
+    const [theme, setTheme] = useState("");
+
+    useEffect(() => {
+        const readTheme = readFromSessionStorage("theme");
+        if (readTheme) {
+            setTheme(readTheme);
+        } else {
+            setTheme("Nikolai");
+        }
+    }, []);
 
     useEffect(() => {
         if (theme === "Nikolai") {
@@ -24,7 +34,12 @@ export default function App() {
             document.body.style.background = null;
             document.body.style.backgroundRepeat = "repeat";
         }
+        writeToSessionStorage("theme", theme);
     }, [theme]);
+
+    if (!theme) {
+        return <div></div>;
+    }
 
     return (
         <ThemeProvider theme={createTheme(themes[theme])}>
