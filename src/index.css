@@ -1,9 +1,0 @@
-html,
-body {
-    min-height: 100%;
-}
-
-body {
-    background: radial-gradient(at top left, rgb(97, 40, 255) 0%, rgb(20, 0, 60) 100%);
-    background-repeat: no-repeat;
-}

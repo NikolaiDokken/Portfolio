@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Home from "./pages/Home";
 import Projects from "./pages/projects";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
@@ -10,25 +10,27 @@ import Layout from "./components/Layout";
 import ProjectDetails from "./pages/project-details";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import { useIsAdmin } from "./utils";
+import themes from "./utils/themes.json";
 
 export default function App() {
     const isAdmin = useIsAdmin();
+    const [theme, setTheme] = useState("Nikolai");
 
-    const theme = createTheme({
-        palette: {
-            mode: "dark",
-            primary: { main: "#00FFFF" },
-        },
-        typography: {
-            fontFamily: ['"Ubuntu"', "sans-serif"].join(","),
-            h2: { fontSize: "3rem" },
-        },
-    });
+    useEffect(() => {
+        if (theme === "Nikolai") {
+            document.body.style.background = "radial-gradient(at top left, rgb(97, 40, 255) 0%, rgb(20, 0, 60) 100%)";
+            document.body.style.backgroundRepeat = "no-repeat";
+        } else {
+            document.body.style.background = null;
+            document.body.style.backgroundRepeat = "repeat";
+        }
+    }, [theme]);
+
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={createTheme(themes[theme])}>
             <CssBaseline />
             <BrowserRouter>
-                <Layout>
+                <Layout theme={theme} setTheme={setTheme}>
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/projects" element={<Projects />} />
