@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import db from "../../utils/firebase";
 import { getDocs, collection } from "firebase/firestore";
 import ExpRow from "./components/ExpRow";
 import { Button, Skeleton, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { MainDivider, SubDivider } from "../../components/Dividers";
-import { useIsAdmin } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import PlaceholderRow from "./components/PlaceholderRow";
+import { UserContext } from "../../App";
 
 export default function About() {
     const [experience, setExperience] = useState([]);
     const [imgLoading, setImgLoading] = useState(true);
-    const isAdmin = useIsAdmin();
+    const { isAdmin } = useContext(UserContext);
     const navigate = useNavigate();
 
     useEffect(() => {

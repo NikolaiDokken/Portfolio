@@ -1,4 +1,4 @@
 import useFirebaseAuthentication from "./useFirebaseAuth";
-import useIsAdmin from "./useIsAdmin";
+import themes from "./themes.json";
 
-export { useIsAdmin, useFirebaseAuthentication };
+export { themes, useFirebaseAuthentication };

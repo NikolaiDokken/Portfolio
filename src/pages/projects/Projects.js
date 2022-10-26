@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import db from "../../utils/firebase";
 import { getDocs, collection } from "firebase/firestore";
 import { Box, Typography } from "@mui/material";
-import { useIsAdmin } from "../../utils";
 import ProjectCard from "./components/ProjectCard";
 import PlaceholderCard from "./components/PlaceholderCard";
+import { UserContext } from "../../App";
 
 export default function Projects() {
     const [projects, setProjects] = useState([]);
-    const isAdmin = useIsAdmin();
+    const { isAdmin } = useContext(UserContext);
 
     useEffect(() => {
         getDocs(collection(db, "projects"))

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import Home from "./pages/Home";
 import Projects from "./pages/projects";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
@@ -9,12 +9,14 @@ import About from "./pages/about";
 import Layout from "./components/Layout";
 import ProjectDetails from "./pages/project-details";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
-import { useIsAdmin } from "./utils";
+import { useFirebaseAuthentication } from "./utils";
 import themes from "./utils/themes.json";
 import { writeToSessionStorage, readFromSessionStorage } from "./utils/utils";
 
+export const UserContext = createContext();
+
 export default function App() {
-    const isAdmin = useIsAdmin();
+    const { authUser, isAdmin } = useFirebaseAuthentication();
     const [themeName, setThemeName] = useState("");
 
     useEffect(() => {
@@ -42,35 +44,37 @@ export default function App() {
     }
 
     return (
-        <ThemeProvider theme={createTheme(themes[themeName])}>
-            <CssBaseline />
-            <BrowserRouter>
-                <Layout themeName={themeName} setThemeName={setThemeName}>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/projects" element={<Projects />} />
-                        <Route path="/projects/:id" element={<ProjectDetails />} />
-                        <Route path="/about" element={<About />} />
-                        {isAdmin && (
-                            <>
-                                <Route path="/admin" element={<Admin />} />
-                                <Route path="/admin/new-project" element={<NewProject />} />
-                                <Route path="/admin/edit-project/:id" element={<NewProject />} />
-                                <Route path="/admin/new-experience" element={<NewExperience />} />
-                                <Route path="/admin/edit-experience/:id" element={<NewExperience />} />
-                            </>
-                        )}
-                        <Route
-                            path="*"
-                            element={
-                                <main style={{ padding: "1rem" }}>
-                                    <p>There's nothing here!</p>
-                                </main>
-                            }
-                        />
-                    </Routes>
-                </Layout>
-            </BrowserRouter>
-        </ThemeProvider>
+        <UserContext.Provider value={{ authUser: authUser, isAdmin: isAdmin }}>
+            <ThemeProvider theme={createTheme(themes[themeName])}>
+                <CssBaseline />
+                <BrowserRouter>
+                    <Layout themeName={themeName} setThemeName={setThemeName}>
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/projects" element={<Projects />} />
+                            <Route path="/projects/:id" element={<ProjectDetails />} />
+                            <Route path="/about" element={<About />} />
+                            {isAdmin && (
+                                <>
+                                    <Route path="/admin" element={<Admin />} />
+                                    <Route path="/admin/new-project" element={<NewProject />} />
+                                    <Route path="/admin/edit-project/:id" element={<NewProject />} />
+                                    <Route path="/admin/new-experience" element={<NewExperience />} />
+                                    <Route path="/admin/edit-experience/:id" element={<NewExperience />} />
+                                </>
+                            )}
+                            <Route
+                                path="*"
+                                element={
+                                    <main style={{ padding: "1rem" }}>
+                                        <p>There's nothing here!</p>
+                                    </main>
+                                }
+                            />
+                        </Routes>
+                    </Layout>
+                </BrowserRouter>
+            </ThemeProvider>
+        </UserContext.Provider>
     );
 }

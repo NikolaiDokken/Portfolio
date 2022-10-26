@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import useFirebaseAuthentication from "../utils/useFirebaseAuth";
+import React, { useContext, useState } from "react";
 import { signInWithGoogle, signOutFromApp } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import {
@@ -23,7 +22,8 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { SubDivider } from "../components/Dividers";
-import themes from "../utils/themes.json";
+import { themes } from "../utils";
+import { UserContext } from "../App";
 
 const navItems = [
     { name: "Home", path: "/" },
@@ -35,7 +35,7 @@ const drawerWidth = 250;
 
 export default function Navbar({ themeName, setThemeName }) {
     const navigate = useNavigate();
-    const authUser = useFirebaseAuthentication();
+    const { authUser } = useContext(UserContext);
     const [mobileOpen, setMobileOpen] = useState(false);
     const theme = useTheme();
 
