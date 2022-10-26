@@ -39,13 +39,13 @@ export default function Navbar({ themeName, setThemeName }) {
     const [mobileOpen, setMobileOpen] = useState(false);
     const theme = useTheme();
 
-    const themeSelect = (
+    const themeSelect = (drawer = false) => (
         <Select
-            name="theme"
+            name="themeSelect"
             size="small"
             value={themeName}
             onChange={(e) => setThemeName(e.target.value)}
-            sx={{ width: 1 }}
+            sx={drawer ? { width: 1 } : { minWidth: "150px" }}
         >
             {Object.keys(themes).map((themeKey) => (
                 <MenuItem key={themeKey} value={themeKey}>
@@ -78,7 +78,7 @@ export default function Navbar({ themeName, setThemeName }) {
                         </ListItemButton>
                     )}
                 </ListItem>
-                <ListItem>{themeSelect}</ListItem>
+                <ListItem>{themeSelect(true)}</ListItem>
                 <SubDivider />
                 <Box onClick={() => setMobileOpen(!mobileOpen)}>
                     {navItems.map((item) => (
@@ -108,9 +108,9 @@ export default function Navbar({ themeName, setThemeName }) {
                     </IconButton>
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "block" } }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        {themeSelect}
-                        {navItems.map((item) => (
-                            <Button key={item.name} color="inherit" onClick={() => navigate(item.path)}>
+                        {themeSelect()}
+                        {navItems.map((item, index) => (
+                            <Button key={index} color="inherit" onClick={() => navigate(item.path)}>
                                 {item.name}
                             </Button>
                         ))}
@@ -131,7 +131,7 @@ export default function Navbar({ themeName, setThemeName }) {
                     </Box>
                 </Toolbar>
             </AppBar>
-            <Box component={"nav"}>
+            <Box component="nav">
                 <Drawer
                     variant="temporary"
                     open={mobileOpen}
@@ -139,7 +139,12 @@ export default function Navbar({ themeName, setThemeName }) {
                     ModalProps={{
                         keepMounted: true, // Better open performance on mobile.
                     }}
-                    sx={{ "& .MuiDrawer-paper": { borderRight: "1px solid", borderColor: theme.palette.primary.main } }}
+                    sx={{
+                        "& .MuiDrawer-paper": {
+                            borderRight: "1px solid",
+                            borderColor: theme.palette.primary.main,
+                        },
+                    }}
                 >
                     {drawer}
                 </Drawer>
