@@ -35,31 +35,35 @@ export default function NewExperience() {
         }),
         onSubmit: (values) => {
             const file = document.getElementById("logo_input").files[0];
-            const submitValues = {
+            let submitValues = {
                 ...values,
                 start_date: values.experiences.sort((a, b) => {
                     return new Date(b.start_date) - new Date(a.start_date);
                 })[0].start_date,
-                logo: file ? "experience/" + values.organization.toLowerCase().replaceAll(" ", "_") : values.logo,
             };
-            const storageRef = ref(storage, submitValues.logo);
-            if (params.id) {
-                handleEdit("experience", params.id, submitValues).then((expId) => {
-                    if (file) {
-                        uploadBytes(storageRef, file).then((snapshot) => navigate("/about"));
-                    } else {
-                        navigate("/about");
-                    }
-                });
+
+            if (file) {
+                const storageRef = ref(storage, "experience/" + values.organization.toLowerCase().replaceAll(" ", "_"));
+
+                uploadBytes(storageRef, file).then((snapshot) =>
+                    getDownloadURL(snapshot.ref)
+                        .then((downloadURL) => {
+                            submitValues = { ...submitValues, logo: downloadURL };
+
+                            if (params.id) {
+                                return handleEdit("experience", params.id, submitValues);
+                            } else {
+                                return handleNew("experience", submitValues);
+                            }
+                        })
+                        .then(() => navigate("/about"))
+                );
             } else {
-                handleNew("experience", submitValues).then((expId) => {
-                    // Only upload img if experience is success
-                    if (file) {
-                        uploadBytes(storageRef, file).then((snapshot) => navigate("/about"));
-                    } else {
-                        navigate("/about");
-                    }
-                });
+                if (params.id) {
+                    handleEdit("experience", params.id, submitValues);
+                } else {
+                    formik.setFieldError("logo", "You must upload an image");
+                }
             }
         },
     });
@@ -71,12 +75,7 @@ export default function NewExperience() {
                 .then((exp) => {
                     if (exp) {
                         setValues(exp);
-                        if (exp.logo) {
-                            const imageRef = ref(storage, exp.logo);
-                            getDownloadURL(imageRef)
-                                .then((url) => setLogo(url))
-                                .catch((err) => console.log(err.message));
-                        }
+                        setLogo(exp.logo);
                     }
                 })
                 .catch((err) => console.log(err.message));
@@ -120,23 +119,11 @@ export default function NewExperience() {
 
                     <label>Logo</label>
                     <input id="logo_input" type="file" accept="image/*" />
+                    {formik.touched.logo && formik.errors.logo ? <div>{formik.errors.logo}</div> : null}
                     {logo && <img style={{ height: 100 }} src={logo} alt="Logo"></img>}
 
                     {formik.values.experiences.map((exp, index) => (
-                        <Stack key={exp.title} spacing={2}>
-                            {formik.values.experiences.length > 1 && (
-                                <Button
-                                    onClick={() =>
-                                        formik.setFieldValue(
-                                            "experiences",
-                                            formik.values.experiences.filter((exp, i) => i !== index)
-                                        )
-                                    }
-                                >
-                                    Remove
-                                </Button>
-                            )}
-
+                        <Stack key={index} spacing={2}>
                             <TextField
                                 id="title"
                                 name={"experiences[" + index + "].title"}
@@ -173,6 +160,18 @@ export default function NewExperience() {
                                 label="Start Date"
                                 size="small"
                             />
+                            {formik.values.experiences.length > 1 && (
+                                <Button
+                                    onClick={() =>
+                                        formik.setFieldValue(
+                                            "experiences",
+                                            formik.values.experiences.filter((exp, i) => i !== index)
+                                        )
+                                    }
+                                >
+                                    Remove
+                                </Button>
+                            )}
                         </Stack>
                     ))}
 
