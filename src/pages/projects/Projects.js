@@ -41,7 +41,7 @@ export default function Projects() {
                     Array(10)
                         .fill()
                         .map((placeholder, index) => (
-                            <Box sx={{ mx: "5px" }}>
+                            <Box sx={{ mx: "5px" }} key={index}>
                                 <PlaceholderCard />
                             </Box>
                         ))}
