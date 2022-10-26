@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { handleNew, handleGet, handleEdit, getFileFromStorage } from "../utils/utils";
+import { handleNew, handleGet, handleEdit } from "../utils/utils";
 import { useNavigate } from "react-router-dom";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { ref, uploadBytes, getDownloadURL } from "@firebase/storage";
@@ -20,7 +20,6 @@ export default function NewProject() {
         initialValues: {
             title: "",
             stack: "",
-            description_path: "",
             github_link: "",
             start_date: new Date().toISOString().substring(0, 10),
         },
@@ -31,52 +30,53 @@ export default function NewProject() {
             start_date: Yup.string(),
             description_path: Yup.string(),
         }),
-        onSubmit: (values) => {
+        onSubmit: (formValues) => {
             const imageFile = document.getElementById("image_input").files[0];
             const previewFile = document.getElementById("preview_input").files[0];
-
-            const submitValues = {
-                ...values,
-                description_path: "projects/description/" + values.title.toLowerCase().replaceAll(" ", "_") + ".md",
-                image: imageFile
-                    ? "projects/image/" +
-                      values.title.toLowerCase().replaceAll(" ", "_") +
-                      "." +
-                      imageFile.type.split("/")[1]
-                    : values.image,
-                preview: previewFile
-                    ? "projects/preview/" +
-                      values.title.toLowerCase().replaceAll(" ", "_") +
-                      "." +
-                      previewFile.type.split("/")[1]
-                    : values.preview,
-            };
             const mdFile = new Blob([description], { type: "text/plain" });
-            const storageRefDescription = ref(storage, submitValues.description_path);
-            const storageRefImage = ref(storage, submitValues.image);
-            const storageRefPreview = ref(storage, submitValues.preview);
-            if (params.id) {
-                handleEdit("projects", params.id, submitValues).then((projectId) => {
-                    const descriptionUpload = uploadBytes(storageRefDescription, mdFile);
-                    const imageUpload = imageFile ? uploadBytes(storageRefImage, imageFile) : null;
 
-                    const previewUpload = previewFile ? uploadBytes(storageRefPreview, previewFile) : null;
+            const storageRefDescription = ref(
+                storage,
+                "projects/description/" + formValues.title.toLowerCase().replaceAll(" ", "_")
+            );
+            const storageRefImage = ref(
+                storage,
+                "projects/image/" + formValues.title.toLowerCase().replaceAll(" ", "_")
+            );
+            const storageRefPreview = ref(
+                storage,
+                "projects/preview/" + formValues.title.toLowerCase().replaceAll(" ", "_")
+            );
 
-                    Promise.all([descriptionUpload, imageUpload, previewUpload]).then((values) => {
-                        navigate("/projects/" + projectId);
-                    });
+            const descriptionUpload = uploadBytes(storageRefDescription, mdFile);
+            const imageUpload = imageFile ? uploadBytes(storageRefImage, imageFile) : null;
+            const previewUpload = previewFile ? uploadBytes(storageRefPreview, previewFile) : null;
+
+            console.log("Hei 0");
+            Promise.all([descriptionUpload, imageUpload, previewUpload]).then((uploadValues) => {
+                console.log("Hei 1");
+                const descriptionDownloadURL = uploadValues[0] ? getDownloadURL(uploadValues[0].ref) : null;
+                const imageDownloadURL = uploadValues[1] ? getDownloadURL(uploadValues[1].ref) : null;
+                const previewDownloadURL = uploadValues[2] ? getDownloadURL(uploadValues[2].ref) : null;
+
+                console.log("Hei 2");
+                Promise.all([descriptionDownloadURL, imageDownloadURL, previewDownloadURL]).then((urlValues) => {
+                    const submitValues = {
+                        ...formValues,
+                        descriptionURL: urlValues[0],
+                        imageURL: urlValues[1] || image,
+                        previewURL: urlValues[2] || preview,
+                    };
+                    console.log("Hei 3");
+                    if (params.id) {
+                        handleEdit("projects", params.id, submitValues).then((projectId) =>
+                            navigate("/projects/" + projectId)
+                        );
+                    } else {
+                        handleNew("projects", submitValues).then((projectId) => navigate("/projects/" + projectId));
+                    }
                 });
-            } else {
-                handleNew("projects", submitValues).then((projectId) => {
-                    const descriptionUpload = uploadBytes(storageRefDescription, mdFile);
-                    const imageUpload = uploadBytes(storageRefImage, imageFile);
-                    const previewUpload = uploadBytes(storageRefPreview, previewFile);
-
-                    Promise.all([descriptionUpload, imageUpload, previewUpload]).then((values) => {
-                        navigate("/projects/" + projectId);
-                    });
-                });
-            }
+            });
         },
     });
 
@@ -87,25 +87,11 @@ export default function NewProject() {
                 .then((project) => {
                     if (project) {
                         setValues(project);
-                        if (project.description_path) {
-                            getFileFromStorage(project.description_path)
-                                .then((url) =>
-                                    fetch(url).then((response) => response.text().then((md) => setDescription(md)))
-                                )
-                                .catch((err) => console.log(err.message));
-                        }
-                        if (project.image) {
-                            const imageRef = ref(storage, project.image);
-                            getDownloadURL(imageRef)
-                                .then((url) => setImage(url))
-                                .catch((err) => console.log(err.message));
-                        }
-                        if (project.preview) {
-                            const imageRef = ref(storage, project.preview);
-                            getDownloadURL(imageRef)
-                                .then((url) => setPreview(url))
-                                .catch((err) => console.log(err.message));
-                        }
+                        setImage(project.imageURL);
+                        setPreview(project.previewURL);
+                        fetch(project.descriptionURL).then((response) =>
+                            response.text().then((md) => setDescription(md))
+                        );
                     }
                 })
                 .catch((err) => console.log(err.message));

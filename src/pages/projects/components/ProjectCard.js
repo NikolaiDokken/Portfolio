@@ -1,25 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { ref, getDownloadURL } from "@firebase/storage";
-import { storage } from "../../../utils/firebase";
+import React, { useState } from "react";
 import { Box, Skeleton, Typography, useTheme } from "@mui/material";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import GradientCard from "../../../components/GradientCard";
 
 export default function ProjectCard({ project, isNewProject = false }) {
-    const [previewUrl, setPreviewUrl] = useState("");
-    const { title, stack, preview } = project || ("", "", "");
+    const { title, stack, previewURL } = project || ("", "", "");
     const [imgLoading, setImgLoading] = useState(true);
 
     const theme = useTheme();
-
-    useEffect(() => {
-        if (preview) {
-            const imageRef = ref(storage, preview);
-            getDownloadURL(imageRef)
-                .then((url) => setPreviewUrl(url))
-                .catch((err) => console.log(err.message));
-        }
-    }, [preview]);
 
     if (isNewProject) {
         return (
@@ -48,7 +36,7 @@ export default function ProjectCard({ project, isNewProject = false }) {
         <GradientCard>
             <Box sx={{ height: "100px", width: "100%", textAlign: "center", padding: 0 }}>
                 <img
-                    src={previewUrl}
+                    src={previewURL}
                     style={imgLoading ? { display: "none" } : { maxWidth: "100%", maxHeight: "100%" }}
                     alt={""}
                     onLoad={() => setImgLoading(false)}
