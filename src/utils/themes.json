@@ -38,6 +38,18 @@
         },
         "typography": {
             "fontFamily": "'DIN'"
+        },
+        "components": {
+            "MuiDrawer": {
+                "defaultProps": {
+                    "PaperProps": {
+                        "sx": { "background": "#000000" }
+                    },
+                    "sx": {
+                        "borderRight": "1px solid white"
+                    }
+                }
+            }
         }
     },
     "Accenture": {

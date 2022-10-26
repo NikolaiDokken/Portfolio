@@ -123,7 +123,7 @@ export default function NewExperience() {
                     {logo && <img style={{ height: 100 }} src={logo} alt="Logo"></img>}
 
                     {formik.values.experiences.map((exp, index) => (
-                        <Stack key={index} spacing={2}>
+                        <Stack key={exp.title} spacing={2}>
                             {formik.values.experiences.length > 1 && (
                                 <Button
                                     onClick={() =>

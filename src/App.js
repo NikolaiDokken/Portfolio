@@ -15,37 +15,37 @@ import { writeToSessionStorage, readFromSessionStorage } from "./utils/utils";
 
 export default function App() {
     const isAdmin = useIsAdmin();
-    const [theme, setTheme] = useState("");
+    const [themeName, setThemeName] = useState("");
 
     useEffect(() => {
         const readTheme = readFromSessionStorage("theme");
         if (readTheme) {
-            setTheme(readTheme);
+            setThemeName(readTheme);
         } else {
-            setTheme("Nikolai");
+            setThemeName("Nikolai");
         }
     }, []);
 
     useEffect(() => {
-        if (theme === "Nikolai") {
+        if (themeName === "Nikolai") {
             document.body.style.background = "radial-gradient(at top left, rgb(97, 40, 255) 0%, rgb(20, 0, 60) 100%)";
             document.body.style.backgroundRepeat = "no-repeat";
         } else {
             document.body.style.background = null;
             document.body.style.backgroundRepeat = "repeat";
         }
-        writeToSessionStorage("theme", theme);
-    }, [theme]);
+        writeToSessionStorage("theme", themeName);
+    }, [themeName]);
 
-    if (!theme) {
+    if (!themeName) {
         return <div></div>;
     }
 
     return (
-        <ThemeProvider theme={createTheme(themes[theme])}>
+        <ThemeProvider theme={createTheme(themes[themeName])}>
             <CssBaseline />
             <BrowserRouter>
-                <Layout theme={theme} setTheme={setTheme}>
+                <Layout themeName={themeName} setThemeName={setThemeName}>
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/projects" element={<Projects />} />
