@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getFileFromStorage, handleDelete, handleGet } from "../../utils/utils";
+import { handleDelete, handleGet } from "../../utils/utils";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { ref, getDownloadURL } from "@firebase/storage";
-import { storage } from "../../utils/firebase";
 import { Button, Box, Typography, IconButton, Skeleton, Stack } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import EditIcon from "@mui/icons-material/Edit";
@@ -18,23 +16,12 @@ export default function ProjectDetails() {
     const navigate = useNavigate();
     const [project, setProject] = useState();
     const [description, setDescription] = useState(null);
-    const [image, setImage] = useState(null);
     const [imgLoading, setImgLoading] = useState(true);
 
     useEffect(() => {
         handleGet("projects", params.id).then((project) => {
             setProject(project);
-            if (project.description_path) {
-                getFileFromStorage(project.description_path)
-                    .then((url) => fetch(url).then((response) => response.text().then((md) => setDescription(md))))
-                    .catch((err) => console.log(err.message));
-            }
-            if (project.image) {
-                const imageRef = ref(storage, project.image);
-                getDownloadURL(imageRef)
-                    .then((url) => setImage(url))
-                    .catch((err) => console.log(err.message));
-            }
+            fetch(project.descriptionURL).then((response) => response.text().then((md) => setDescription(md)));
         });
     }, [params.id]);
 
@@ -88,7 +75,7 @@ export default function ProjectDetails() {
             </Row>
             <img
                 style={imgLoading ? { display: "none" } : { width: "100%", maxHeight: 600, objectFit: "cover" }}
-                src={image}
+                src={project.imageURL}
                 alt="Thumbnail"
                 onLoad={() => setImgLoading(false)}
             />

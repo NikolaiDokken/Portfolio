@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { ref, getDownloadURL } from "@firebase/storage";
-import { storage } from "../../../utils/firebase";
+import React, { useState } from "react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import Row from "../../../components/Row";
@@ -19,7 +17,6 @@ import {
 
 export default function ExpRow({ experience, isAdmin }) {
     const navigate = useNavigate();
-    const [src, setSrc] = useState("");
     const [imgLoading, setImgLoading] = useState(true);
 
     const getFromToDateString = (experience) => {
@@ -52,20 +49,11 @@ export default function ExpRow({ experience, isAdmin }) {
             : "";
     };
 
-    useEffect(() => {
-        if (experience.logo) {
-            const imageRef = ref(storage, experience.logo);
-            getDownloadURL(imageRef)
-                .then((url) => setSrc(url))
-                .catch((err) => console.log(err.message));
-        }
-    }, [experience.logo]);
-
     return (
         <div>
             <Row additionalSx={{ mb: 1 }}>
                 <img
-                    src={src}
+                    src={experience.logo}
                     alt="Organization logo"
                     style={
                         imgLoading
