@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getFileFromStorage, handleDelete, handleGet } from "../../utils/utils";
-import { useIsAdmin } from "../../utils";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { ref, getDownloadURL } from "@firebase/storage";
 import { storage } from "../../utils/firebase";
@@ -11,9 +10,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Row from "../../components/Row";
 import PlaceholderProject from "./components/PlaceholderProject";
+import { UserContext } from "../../App";
 
 export default function ProjectDetails() {
-    const isAdmin = useIsAdmin();
+    const { isAdmin } = useContext(UserContext);
     const params = useParams();
     const navigate = useNavigate();
     const [project, setProject] = useState();
