@@ -1,13 +1,13 @@
 ---
 title: Shotterud
 publishDate: 2020-00-20 00:00:00
-model: /assets/stock-4.jpg
+model: /assets/models/shotterud.glb
 img: /assets/work/shotterud.jpeg
 description: |
-  A fun background roulette game for parties
+    A fun background roulette game for parties
 tags:
-  - React
-  - Material UI
+    - React
+    - Material UI
 ---
 
 🔗 [**Visit the website**](https://nikolaidokken.github.io/Shotterud/)

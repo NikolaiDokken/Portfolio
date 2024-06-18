@@ -1,17 +1,17 @@
 ---
 title: Norwegian Ocean Racing and Cruising Club
 publishDate: 2023-03-22 12:00:00
-model: /assets/models/words.glb
+model: /assets/models/sailboat.glb
 img: /assets/work/nhk.jpg
 description: |
-  A sailing club's brand new website with extra member features
+    A sailing club's brand new website with extra member features
 tags:
-  - React & TypeScript
-  - Supabase
-  - Accessibility
+    - React & TypeScript
+    - Supabase
+    - Accessibility
 ---
-##### [🔗 Visit the website here](https://havseilerklubben.no/)
 
+##### [🔗 Visit the website here](https://havseilerklubben.no/)
 
 After hearing that the Norwegian Ocean Racing and Cruising Club needed a website, I quickly put a demo together that could be presented at their next board meeting. Even though I did not have the chance to present the demo myself, I later learned that the board had liked the site so much that they wanted to proceed with the development of it, and that I now had secured the contract for their new website.
 
