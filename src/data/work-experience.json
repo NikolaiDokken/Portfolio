@@ -1,0 +1,58 @@
+[
+    {
+        "company": "Accenture",
+        "roles": [
+            {
+                "role": "Custom Software Engineer",
+                "title": "Senior Analyst",
+                "start": "2023-08-21",
+                "end": null
+            }
+        ] 
+    },
+    {
+        "company": "Bekk",
+        "roles": [
+            {
+                "role": "Software Developer",
+                "title": "Summer Intern",
+                "start": "2022-06-21",
+                "end": "2022-08-05"
+            }
+        ]
+    },
+    {
+        "company": "Sopra Steria",
+        "roles": [
+            {
+                "role": "",
+                "title": "Software Developer",
+                "start": "2021-06-21",
+                "end": "2022-07-30"
+            }
+        ]
+    },
+    {
+        "company": "WAID",
+        "roles": [
+            {
+                "role": "Fullstack Consultant",
+                "title": "Software Developer",
+                "start": "2022-02-15",
+                "end": "2023-06-30"
+            },
+            {
+                "role": "Lead Software Developer",
+                "title": "Software Developer",
+                "start": "2021-02-02",
+                "end": "2022-02-02"
+            },
+            {
+                "role": "Software Developer",
+                "title": "Software Developer",
+                "start": "2020-02-01",
+                "end": "2021-02-01"
+            }
+        ]
+    }
+]
