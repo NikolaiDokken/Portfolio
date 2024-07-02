@@ -2,7 +2,7 @@
 title: Algorithm Visualizer
 publishDate: 2019-11-25 12:00:00
 model: /assets/models/grid.glb
-img: /assets/work/algoviz.jpeg
+img: /src/assets/work/algoviz.jpeg
 description: |
     A website that visualizes shortest path algorithms
 tags:

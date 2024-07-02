@@ -2,7 +2,7 @@
 title: Cocktail Encyclopedia
 publishDate: 2021-03-25 00:00:00
 model: /assets/models/cocktail.glb
-img: /assets/work/cocktails.jpeg
+img: /src/assets/work/cocktails.jpeg
 description: |
     An encyclopedia of cocktails and their ingredients
 tags:

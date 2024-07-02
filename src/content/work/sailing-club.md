@@ -2,7 +2,7 @@
 title: Norwegian Ocean Racing and Cruising Club
 publishDate: 2023-03-22 12:00:00
 model: /assets/models/sailboat.glb
-img: /assets/work/nhk.jpg
+img: /src/assets/work/nhk.jpg
 description: |
     A sailing club's brand new website with extra member features
 tags:

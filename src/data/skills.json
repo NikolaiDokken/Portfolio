@@ -1,0 +1,54 @@
+[
+    {
+        "skill": "React",
+        "rating": 9
+    },
+    {
+        "skill": "TypeScript",
+        "rating": 9
+    },
+    {
+        "skill": "Jest",
+        "rating": 8
+    },
+    {
+        "skill": "Java",
+        "rating": 8
+    },
+    {
+        "skill": "JUnit",
+        "rating": 9
+    },
+    {
+        "skill": "Mockito",
+        "rating": 8
+    },
+    {
+        "skill": "Spring",
+        "rating": 8
+    },
+    {
+        "skill": "Python",
+        "rating": 7
+    },
+    {
+        "skill": "TDD",
+        "rating": 8
+    },
+    {
+        "skill": "Splunk",
+        "rating": 6
+    },
+    {
+        "skill": "Jenkins",
+        "rating": 6
+    },
+    {
+        "skill": "RAG",
+        "rating": 5
+    },
+    {
+        "skill": "Function Calling",
+        "rating": 7
+    }
+]

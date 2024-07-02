@@ -2,7 +2,7 @@
 title: Formula 1 App
 publishDate: 2021-06-30 00:00:00
 model: /assets/models/f1.glb
-img: /assets/work/f1.png
+img: /src/assets/work/f1.png
 description: |
     We designed a whodunnit-style game to introduce Markdown formatting. Suspense — suspicion — syntax!
 tags:

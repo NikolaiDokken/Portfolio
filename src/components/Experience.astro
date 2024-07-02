@@ -1,0 +1,141 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from "astro:assets";
+
+interface Role {
+    title: string;
+    role?: string;
+    dates: string;
+}
+
+interface Experience {
+    company: string;
+    dates?: string;
+    logo: string;
+    roles: Role[];
+}
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/logos/*.{jpeg,jpg,png}');
+const { experiences } = Astro.props;
+---
+
+<section class="stack gap-4">
+    {experiences.map((experience: Experience) => 
+        <div>
+            <div class="row align-center gap-4">
+                <Image
+                    alt={experience.company + " logo"}
+                    src={images[experience.logo]()}
+                    class="image"
+                    />
+                {experience.roles.length === 1 ? 
+                    <section>
+                        <p class="title">{experience.roles[0].title}</p>
+                        <p class="subtitle">{experience.company}</p>
+                        {experience.roles[0].role && <p class="subtitle">{experience.roles[0].role}</p>}
+                        <p class="subtitle">{experience.roles[0].dates}</p>
+                    </section>
+                :
+                    <section>
+                        <p class="title">{experience.company}</p>
+                        <p class="subtitle">{experience.dates}</p>
+                    </section>
+                }
+            </div>
+            {experience.roles.length > 1 && 
+                <div class="mt-8">
+                    {experience.roles.map((role: Role, index: number) => 
+                        <div class="row gap-4">
+                            <div class="stack">
+                                <div class="dot" />
+                                {index < (experience.roles.length-1) && 
+                                    <div class="line mt-8" />
+                                }
+                            </div>
+                            <section>
+                                <p class="title">{role.title}</p>
+                                <p class="subtitle">{role.role}</p>
+                                <p class="subtitle">{role.dates}</p>
+                            </section> 
+                        </div>
+                    )}
+                </div>
+            }
+        </div>
+    )}
+</section>
+
+<style>
+	.box {
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+		background-color: var(--gray-999_40);
+		box-shadow: var(--shadow-sm);
+	}
+
+    .image {
+        height: fit-content;
+        height: 70px;
+        width: 70px;
+        border-radius: 6px;
+    }
+
+    .title {
+        font-size: var(--text-md);
+        font-weight: 600;
+    }
+    
+    .subtitle {
+        font-size: var(--text-sm);
+    }
+
+    .dot {
+        background-color: var(--gray-400);
+        height: 10px;
+        width: 10px;
+        border-radius: 10px;
+        margin-left: 30px;
+        margin-right: 30px;
+        margin-top: 10px;
+    }
+
+    .line {
+        width: 2px;
+        height: 50px;
+        margin-left: 34px;
+        margin-right: 34px;
+        background-color: var(--gray-800);
+    }
+
+	.skills {
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+	}
+
+	.skills h2 {
+		font-size: var(--text-lg);
+	}
+
+	.skills p {
+		color: var(--gray-400);
+	}
+
+	@media (min-width: 50em) {
+		.box {
+			border-radius: 1.5rem;
+			padding: 2.5rem;
+		}
+
+		.skills {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 5rem;
+		}
+
+		.skills h2 {
+			font-size: var(--text-2xl);
+		}
+	}
+</style>

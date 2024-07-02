@@ -1,0 +1,33 @@
+---
+const { skill, rating } = Astro.props;
+---
+
+<section class="row align-center gap-8">
+    <p class="text">{skill}</p>
+    <div class="row flex gap-2">
+        {Array.from({length: 10}).map((_, index: number) => 
+            <div class={"cell" + (index < rating ? " colored" : "")} />
+        )}
+    </div>
+</section>
+
+<style>
+    .text {
+        width: 155px;
+        max-width: 20%;
+    }
+    .cell {
+        height: 16px;
+        flex: 1;
+        background: var(--gradient-subtle);
+        border-radius: 2px;
+    }
+
+    .colored {
+        background: var(--gradient-accent-orange);
+    }
+
+    .flex {
+        flex: 1
+    }
+</style>

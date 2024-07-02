@@ -2,7 +2,7 @@
 
 My fourth iteration of my own portfolio. This time I wanted to dumb things down; I was never updating content often enough that a database and login feature was needed. Additionally, I realized that the content is really what I want to show - projects and prior experience.
 
-Astro is all about content first, loading it as quickly as possible, with as little JavaScript as possible. Even though I like designing webpages, I got to admit there are great designs out there, and this time it is all about the content, which is why I started out with [Astro's Portfolio template](https://github.com/withastro/astro/tree/main/examples/portfolio). I really liked its structure, and was quickly able to add my personal touch to it - like 3D models for each project, or more visual entries for work experience.
+Astro is all about content first, loading it as quickly as possible, with as little JavaScript as possible. Even though I like designing webpages, I got to admit there are great designs out there, and this time it is all about the content, which is why I started out with [Astro's Portfolio template](https://github.com/withastro/astro/tree/main/examples/portfolio). I really liked its structure, and was quickly able to add my personal touch to it - like 3D models for each project, or more visual entries for work experience and skills.
 
 ## 🧞 Commands
 

@@ -2,7 +2,7 @@
 title: Shotterud
 publishDate: 2020-00-20 00:00:00
 model: /assets/models/shotterud.glb
-img: /assets/work/shotterud.jpeg
+img: /src/assets/work/shotterud.jpeg
 description: |
     A fun background roulette game for parties
 tags:

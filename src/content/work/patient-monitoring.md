@@ -2,7 +2,7 @@
 title: Patient Monitoring App
 publishDate: 2020-08-20 12:00:00
 model: /assets/models/monitoring.glb
-img: /assets/work/infiniwell.png
+img: /src/assets/work/infiniwell.png
 description: |
     An application that allows remote monitoring of patients
 tags:

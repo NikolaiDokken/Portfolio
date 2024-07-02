@@ -3,6 +3,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 import ContactCTA from '../components/ContactCTA.astro';
 import Hero from '../components/Hero.astro';
+import Experience from '../components/Experience.astro';
+import workExperience from "../data/work-experience.json";
+import education from "../data/education.json";
+import skills from "../data/skills.json";
+import SkillBar from '../components/SkillBar.astro';
+import Image from 'astro/components/Image.astro';
+import Skydiving from "../assets/about.jpg";
+
+interface Skill {
+    skill: string;
+    rating: number;
+}
 ---
 
 <BaseLayout title="About | Nikolai Dokken" description="About Nikolai Dokken's background and experience">
@@ -12,46 +24,38 @@ import Hero from '../components/Hero.astro';
 				title="This is me"
 				tagline="Thanks for stopping by. Read below to learn more about myself and my background."
 			>
-				<img
+				<Image
+                    loading="eager"
 					width="1553"
 					height="873"
-					src="/assets/about.jpg"
+					src={Skydiving}
 					alt="Nikolai Dokken tandem skydiving"
 				/>
 			</Hero>
 
 			<section>
 				<h2 class="section-title">Background</h2>
-				<div class="content">
-					<p>
-						I'm a 25 year old from Oslo, Norway, who always had a passion for computers and video games. 
-						This led me down the path of programming and compuer science. I like programming as much as I like working with people. 
-						Other than that I really enjoy skiing, boating, disc golf and a cold beer with friends.
-					</p>
-				</div>
+                <p>
+                    I'm a 25 year old from Oslo, Norway, who always had a passion for computers and video games. 
+                    This led me down the path of programming and compuer science. I like programming as much as I like working with people. 
+                    Other than that I really enjoy skiing, boating, disc golf and a cold beer with friends.
+                </p>
 			</section>
 			<section>
 				<h2 class="section-title">Experience</h2>
-				<div class="content">
-					<p>Aug 2023-Now: Custom Software Engineer Senior Analyst @ Accenture</p>
-					<p>Summer 2022: Summer Internship @ Bekk</p>
-					<p>Summer 2021: Summer Internship @ Sopra Steria</p>
-					<p>2020-2023: Software Developer @ WAID</p>
-				</div>
+                <Experience experiences={workExperience} />
 			</section>
 			<section>
 				<h2 class="section-title">Education</h2>
-				<div class="content">
-					<p>2021-2023: Master in Computer Science at Norwegian University of Science and Technology</p>
-					<p>Fall 2023: Extended Studies at University of California San Diego</p>
-					<p>2018-2021: Bachelor in Computer Engineering at Norwegian University of Science and Technology</p>
-				</div>
+                <Experience experiences={education} />
 			</section>
 			<section>
 				<h2 class="section-title">Skills</h2>
-				<div class="content">
-					<p>officia unde omnis</p>
-				</div>
+                <div class="stack gap-2">
+                    {skills.sort((a, b) => b.rating - a.rating).map((skill: Skill) => 
+                        <SkillBar skill={skill.skill} rating={skill.rating} />
+                    )}
+                </div>
 			</section>
 		</main>
 

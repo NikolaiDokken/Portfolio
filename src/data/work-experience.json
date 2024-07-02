@@ -1,57 +1,56 @@
 [
     {
         "company": "Accenture",
+        "logo": "/src/assets/logos/accenture.jpg",
         "roles": [
             {
                 "role": "Custom Software Engineer",
                 "title": "Senior Analyst",
-                "start": "2023-08-21",
-                "end": null
+                "dates": "Aug 2023 - Now"
             }
-        ] 
+        ]
     },
     {
         "company": "Bekk",
+        "logo": "/src/assets/logos/bekk.jpg",
         "roles": [
             {
                 "role": "Software Developer",
                 "title": "Summer Intern",
-                "start": "2022-06-21",
-                "end": "2022-08-05"
+                "dates": "Jun 2022 - Aug 2022"
             }
         ]
     },
     {
         "company": "Sopra Steria",
+        "logo": "/src/assets/logos/soprasteria.png",
         "roles": [
             {
-                "role": "",
-                "title": "Software Developer",
-                "start": "2021-06-21",
-                "end": "2022-07-30"
+                "role": "Software Developer",
+                "title": "Summer Intern",
+                "dates": "Jun 2021 - Jul 2021"
             }
         ]
     },
     {
         "company": "WAID",
+        "logo": "/src/assets/logos/waid.jpeg",
+        "dates": "Feb 2020 - Jun 2023",
         "roles": [
             {
-                "role": "Fullstack Consultant",
-                "title": "Software Developer",
-                "start": "2022-02-15",
-                "end": "2023-06-30"
+                "role": "Part Time",
+                "title": "Fullstack Consultant",
+                "dates": "Feb 2022 - Jun 2023"
             },
             {
-                "role": "Lead Software Developer",
-                "title": "Software Developer",
-                "start": "2021-02-02",
-                "end": "2022-02-02"
+                "role": "Part Time",
+                "title": "Lead Software Developer",
+                "dates": "Feb 2021 - Feb 2022"
             },
             {
-                "role": "Software Developer",
+                "role": "Part Time",
                 "title": "Software Developer",
-                "start": "2020-02-01",
-                "end": "2021-02-01"
+                "dates": "Feb 2020 - Feb 2021"
             }
         ]
     }

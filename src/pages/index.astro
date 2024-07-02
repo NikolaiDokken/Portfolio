@@ -1,5 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+// Asset imports
+import portrait from "../assets/portrait.jpg";
 
 // Layout import — provides basic page elements: <head>, <nav>, <footer> etc.
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -41,11 +45,12 @@ const projects = (await getCollection('work'))
 					</div>
 				</Hero>
 
-				<img
+				<Image
+                    loading={"eager"}
+                    src={portrait}
 					alt="Nikolai Dokken smiling in a white shirt and suit jacket"
 					width="480"
 					height="620"
-					src="/assets/portrait.jpg"
 				/>
 			</header>
 
@@ -79,6 +84,7 @@ const projects = (await getCollection('work'))
 				</div>
 			</section>
 
+            {/*
 			<section class="section with-background bg-variant">
 				<header class="section-header stack gap-2 lg:gap-4">
 					<h3>Mentions</h3>
@@ -87,19 +93,20 @@ const projects = (await getCollection('work'))
 						a look below to learn more.
 					</p>
 				</header>
-
+                
 				<div class="gallery">
 					<Grid variant="small">
 						{
-							['Medium', 'BuzzFeed', 'The Next Web', 'awwwards.', 'TechCrunch'].map((brand) => (
-								<li class="mention-card">
+                            ['Medium', 'BuzzFeed', 'The Next Web', 'awwwards.', 'TechCrunch'].map((brand) => (
+                                <li class="mention-card">
 									<p>{brand}</p>
 								</li>
-							))
-						}
-					</Grid>
-				</div>
-			</section>
+                                ))
+                            }
+                        </Grid>
+                    </div>
+                </section>
+            */}
 		</main>
 
 		<ContactCTA />
