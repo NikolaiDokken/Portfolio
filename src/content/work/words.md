@@ -11,7 +11,7 @@ tags:
     - Game AI
 ---
 
-##### [🔗 Play the game here](https://mp-wordle.web.app/)
+🔗 [Play the game here](https://mp-wordle.web.app/)
 
 ## Master Thesis
 
@@ -41,25 +41,10 @@ The easy opponent would act as a simple baseline, and did not consider anything 
 
 The medium agent would consider its grid with regards to the possibility of creating a word before placing a letter. However, it would do so in a greedy manner. For every cell, it would check if placing any letter there would form a 5 letter word. If not, it would move on to the next cell. If no letter in any cell forms a 5-letter word, repeat the process for 4, and then 3-letter words.
 
-```ts
-// Pseudocode-ish
-const move = null;
-availableCells.some((cell) => {
-  return alphabet.some(letter => {
-    if (canCreateWord) {
-      move = {cell, letter};
-      return true;
-    }
-    return false;
-  }
-}
-return move;
-```
-
 ##### Hard Opponent - MiniMax with AlphaBeta Pruning
 
-This algorithm was implemented after finishing the Monte Carlo Search Tree (MCTS) algorithm, to see which of them would be more efficient. The MiniMax algorithm works by traversing a tree, simulating each player's move. It always assumes that each player plays their best with regards to maximizing their score.
+This algorithm was implemented after finishing the Monte Carlo Search Tree (MCTS) algorithm, to see which of them would be more efficient. The MiniMax algorithm works by traversing a tree, simulating each player's move. It always assumes that each player plays their best with regards to maximizing their score. As traversing the complete game tree would take a really long time and would be computationally infeasible, the algorithm uses AlphaBeta pruning to prune nodes not worthy of expansion. This essentially means not expanding nodes (examining moves) that are not relevant because the other player will not allow the move to be made - given that they are playing optimally.
 
 ##### Extreme Opponent - Monte Carlo Tree Search
 
-This adversary works by examining every possible move from the current game state, and simulating a bunch of games from each possible move. The move that results in the most amount of simulated wins after x time, is the move the adversary will make. A benefit of this algorithm is that it can simulate games for as long as we want it to - it can stop its simulations at any time and see what move led to the most wins. For our game we had to make a trade off between waiting time and how good we wanted the adversary to be.
+This adversary works by examining every possible move from the current game state, and simulating a bunch of games from each possible move. The move that results in the most amount of simulated wins after x time, is the move the adversary will make. A benefit of this algorithm is that it can simulate games for as long as we want it to - it can stop its simulations at any time and see what move led to the most wins. For our game we had to make a trade off between waiting time and how difficult we wanted the adversary to be.

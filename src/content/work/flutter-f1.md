@@ -4,7 +4,7 @@ publishDate: 2021-06-30 00:00:00
 model: /assets/models/f1.glb
 img: /src/assets/work/f1.png
 description: |
-    We designed a whodunnit-style game to introduce Markdown formatting. Suspense — suspicion — syntax!
+    An F1 app with calendar, standings and a 'Is it rawe ceek yet?' page
 tags:
     - Flutter
 ---
