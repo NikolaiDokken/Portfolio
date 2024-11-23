@@ -10,7 +10,7 @@ tags:
     - Material UI
 ---
 
-🔗 [**Visit the website**](https://nikolaidokken.github.io/Shotterud/)
+🔗 [**Visit the website**](https://shotterud.nikolaidokken.no)
 
 ### Need to kick off your pregame?
 
