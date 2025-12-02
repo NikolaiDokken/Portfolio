@@ -1,0 +1,26 @@
+---
+import Layout from "./Layout.astro";
+
+const { frontmatter } = Astro.props;
+---
+
+<Layout pageTitle={frontmatter.title}>
+  <div class="meta-info">
+    <div>By {frontmatter.author}</div>
+    <div>Published {frontmatter.publishedDate.toISOString().split("T")[0]}</div>
+  </div>
+  <div class="content">
+    <slot />
+  </div>
+</Layout>
+
+<style>
+  .meta-info div {
+    color: gray;
+    font-size: small;
+  }
+
+  .content {
+    margin-bottom: 32px;
+  }
+</style>

@@ -1,0 +1,41 @@
+---
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import "../styles/global.css";
+
+const { pageTitle } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/n_logo.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Nikolai Dokken</title>
+  </head>
+  <body>
+    <div class="center-container">
+      <Breadcrumbs />
+      <h1>{pageTitle}</h1>
+      <slot />
+    </div>
+  </body>
+</html>
+
+<style>
+  .center-container {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .center-container h1 {
+    margin-bottom: 8px;
+  }
+
+  @media (min-width: 768px) {
+    .center-container {
+      width: 60%;
+    }
+  }
+</style>

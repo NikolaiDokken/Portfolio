@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+
+const { posts, title  } = Astro.props;
+
+const sortedPosts = posts.sort((a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf());
+---
+
+<div>
+  <h3>{title}</h3>
+  <ul class="posts">
+    {
+      sortedPosts.map((post) => (
+        <li>
+          <span>{post.data.publishedDate.toISOString().split("T")[0]}</span>
+          <a href={`/posts/${post.data.slug}`}>{post.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .posts {
+    list-style-type: none;
+    list-style-position: inside;
+    padding-left: 0;
+    margin-bottom:0;
+  }
+
+  .posts li {
+    margin-bottom: 6px;
+  }
+
+  .posts-link {
+    font-size: 12px;
+  }
+</style>

@@ -1,15 +1,15 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection, z } from "astro:content";
+import { glob } from "astro/loaders";
 
-export const collections = {
-	work: defineCollection({
-		type: 'content',
-		schema: z.object({
-			title: z.string(),
-			description: z.string(),
-			publishDate: z.coerce.date(),
-			tags: z.array(z.string()),
-			model: z.string(),
-			img: z.string()
-		}),
-	}),
-};
+const posts = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/posts" }),
+  schema: z.object({
+    title: z.string(),
+    slug: z.string(),
+    publishedDate: z.coerce.date(),
+    type: z.enum(["post", "project"]),
+    author: z.string()
+  }),
+});
+
+export const collections = { posts };

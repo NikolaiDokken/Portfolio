@@ -1,0 +1,15 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import PostList from "../../components/posts/PostList.astro"
+
+const allPosts = await getCollection("posts");
+
+const posts = allPosts.filter(post => post.data.type === "post");
+const projects = allPosts.filter(post => post.data.type === "project");
+---
+
+<Layout pageTitle="Posts">
+    <PostList posts={posts} title="Posts" />
+    <PostList posts={projects} title="Projects" />
+</Layout>

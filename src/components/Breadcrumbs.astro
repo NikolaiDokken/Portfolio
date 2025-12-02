@@ -1,0 +1,60 @@
+---
+const currentPath = Astro.url.pathname; // with leading '/'  e.g /cars/toyota/sedans/toyota-crown
+
+const SEPARATOR = "/";
+
+const getBreadcrumbs = (path: string) => {
+  if (!path || path === SEPARATOR) return [];
+
+  if (path.endsWith(SEPARATOR)) {
+    path = path.slice(0, path.length - 1);
+  }
+  console.log(path.split(SEPARATOR));
+  return path.split(SEPARATOR);
+};
+
+const breadcrumbs = getBreadcrumbs(currentPath);
+---
+
+{
+  breadcrumbs.length > 0 && (
+    <div class="breadcrumb-row">
+      {breadcrumbs.map((breadcrumb, index) => (
+        <div class="breadcrumb">
+          {index > 0 && <p class="separator">{SEPARATOR}</p>}
+          {index == breadcrumbs.length - 1 ? (
+            <p>{breadcrumb}</p>
+          ) : (
+            <a href={breadcrumbs.slice(0, index + 1).join(SEPARATOR) || "/"}>{breadcrumb || "Home"}</a>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+<style>
+  .breadcrumb-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 16px 0 24px 0;
+  }
+
+  .breadcrumb {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .breadcrumb a,
+  p {
+    color: inherit;
+    text-transform: capitalize;
+  }
+
+  .separator {
+    margin: 0 16px 0 16px;
+    font-weight: 700;
+  }
+</style>
