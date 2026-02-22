@@ -1,0 +1,256 @@
+---
+import workExperience from "../../data/work-experience.json";
+import education from "../../data/education.json";
+
+const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const span = (cls: string, text: string) => `<span class="${cls}">${esc(text)}</span>`;
+
+type Role = { title?: string; role?: string; dates?: string };
+type Entry = { company: string; roles: Role[] };
+
+function buildTree(data: Entry[], rootDir: string): string {
+  const lines: string[] = [""];
+  lines.push(span("tree-dir", rootDir + "/"));
+
+  data.forEach((entry, ci) => {
+    const isLast = ci === data.length - 1;
+    const cc = isLast ? "└──" : "├──";
+    const cont = isLast ? "    " : "│   ";
+
+    lines.push(`${span("tree-struct", cc)} ${span("tree-dir", entry.company.toLowerCase() + "/")}`);
+
+    const renderRole = (r: Role, prefix: string) => {
+      const fields: [string, string, string][] = [];
+      if (r.title) fields.push(["title:", "  ", r.title]);
+      if (r.role) fields.push(["role:", "   ", r.role]);
+      if (r.dates) fields.push(["period:", " ", r.dates]);
+      fields.forEach(([key, pad, val], fi) => {
+        const lastField = fi === fields.length - 1;
+        lines.push(
+          `${span("tree-struct", prefix + " " + (lastField ? "└──" : "├──"))} ${span("tree-key", key)}${pad}${span("tree-val", val)}`,
+        );
+      });
+    };
+
+    if (entry.roles.length === 1) {
+      renderRole(entry.roles[0], cont);
+    } else {
+      entry.roles.forEach((r, ri) => {
+        const lastRole = ri === entry.roles.length - 1;
+        const rc = lastRole ? "└──" : "├──";
+        const rcont = lastRole ? "    " : "│   ";
+        lines.push(`${span("tree-struct", cont + " " + rc)} ${span("tree-dir", `[${ri}]/`)}`);
+        renderRole(r, cont + " " + rcont);
+      });
+    }
+
+    if (!isLast) lines.push(span("tree-struct", "│"));
+  });
+
+  return lines.join("\n");
+}
+
+const expTree = buildTree(workExperience as Entry[], "work-experience");
+const eduTree = buildTree(education as Entry[], "education");
+---
+
+<div id="exp-block" class="tree-block">
+  <div class="tab-row">
+    <button data-target="exp" class="tab active">./work-experience/</button>
+    <button data-target="edu" class="tab">./education/</button>
+  </div>
+  <pre
+    id="exp-terminal"><span class="prompt">$</span><span id="exp-cmd" /><span class="exp-cursor">▊</span><button id="exp-restart" aria-label="Restart animation">↺</button><code id="exp-output" set:html={expTree} /></pre>
+</div>
+
+<script is:inline define:vars={{ expTree, eduTree }}>
+  const block = document.getElementById("exp-block");
+  const cmdEl = document.getElementById("exp-cmd");
+  const cursor = block.querySelector(".exp-cursor");
+  const output = document.getElementById("exp-output");
+  const restartBtn = document.getElementById("exp-restart");
+  const tabs = block.querySelectorAll("[data-target]");
+
+  const makeCmd = (name) => ` ls -la ${name}`;
+
+  const trees = { exp: expTree, edu: eduTree };
+  const commands = {};
+  tabs.forEach((tab) => {
+    commands[tab.dataset.target] = makeCmd(tab.textContent);
+  });
+
+  let activeTarget = "exp";
+  let i = 0;
+  let command = commands[activeTarget];
+
+  output.style.opacity = "0";
+  output.style.maxHeight = "0";
+
+  function typeChar() {
+    if (i < command.length) {
+      cmdEl.textContent += command[i];
+      i++;
+      setTimeout(typeChar, 55);
+    } else {
+      cursor.classList.add("done");
+      setTimeout(() => {
+        cursor.style.display = "none";
+        output.style.transition = "max-height 0.55s ease, opacity 0.4s ease";
+        output.style.maxHeight = output.scrollHeight + "px";
+        output.style.opacity = "1";
+        restartBtn.style.opacity = "1";
+        restartBtn.style.pointerEvents = "auto";
+        function cleanup(e) {
+          if (e.propertyName === "max-height") {
+            output.removeEventListener("transitionend", cleanup);
+            output.style.maxHeight = "none";
+            output.style.overflow = "visible";
+          }
+        }
+        output.addEventListener("transitionend", cleanup);
+      }, 150);
+    }
+  }
+
+  function runAnimation() {
+    cmdEl.textContent = "";
+    cursor.style.display = "";
+    cursor.classList.remove("done");
+    restartBtn.style.opacity = "0";
+    restartBtn.style.pointerEvents = "none";
+    output.style.transition = "none";
+    output.style.opacity = "0";
+    output.style.maxHeight = "0";
+    output.style.overflow = "hidden";
+    i = 0;
+    setTimeout(typeChar, 300);
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const target = tab.dataset.target;
+      if (target === activeTarget) return;
+
+      tabs.forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
+
+      activeTarget = target;
+      command = commands[target];
+      output.innerHTML = trees[target];
+      runAnimation();
+    });
+  });
+
+  restartBtn.addEventListener("click", () => {
+    runAnimation();
+  });
+
+  typeChar();
+</script>
+
+<style>
+  .tree-block {
+    background-color: snow;
+    color: #1a1a1a;
+    padding: 1.5rem;
+    border-radius: 2px;
+    font-size: 0.85rem;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 24px;
+  }
+
+  .tab-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tab {
+    all: unset;
+    font-family: inherit;
+    font-size: inherit;
+    color: #b0a898;
+    cursor: pointer;
+    padding-bottom: 3px;
+    border-bottom: 2px solid transparent;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .tab.active {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+  }
+
+  .tab:hover:not(.active) {
+    color: #1a1a1a;
+  }
+
+  pre {
+    margin: 0;
+    font-family: inherit;
+    overflow-x: auto;
+  }
+
+  code {
+    font-family: inherit;
+    display: block;
+    overflow: hidden;
+  }
+
+  .prompt {
+    color: #16a34a;
+  }
+
+  #exp-restart {
+    all: unset;
+    margin-left: 0.6ch;
+    color: #b0a898;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      color 0.15s ease,
+      opacity 0.3s ease;
+  }
+
+  #exp-restart:hover {
+    color: #1a1a1a;
+  }
+
+  :global(.tree-struct) {
+    color: #b0a898;
+  }
+  :global(.tree-dir) {
+    color: #2563eb;
+  }
+  :global(.tree-key) {
+    color: #0891b2;
+  }
+  :global(.tree-val) {
+    color: #1a1a1a;
+  }
+
+  .exp-cursor {
+    animation: exp-blink 1s step-end infinite;
+  }
+
+  .exp-cursor.done {
+    animation: none;
+  }
+
+  @keyframes exp-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+</style>

@@ -1,0 +1,39 @@
+[
+  {
+    "company": "University of California San Diego",
+    "logo": "/src/assets/logos/ucsd.jpeg",
+    "roles": [
+      {
+        "title": "Extended Studies",
+        "dates": "Sep 2022 - Dec 2022"
+      }
+    ]
+  },
+  {
+    "company": "Norwegian University of Science and Technology",
+    "dates": "Aug 2018 - Jun 2023",
+    "logo": "/src/assets/logos/ntnu.png",
+    "roles": [
+      {
+        "title": "Computer Science",
+        "role": "Master in Technology",
+        "dates": "Aug 2021 - Jun 2023"
+      },
+      {
+        "title": "Computer Engineering",
+        "role": "Bachelor in Engineering",
+        "dates": "Aug 2018 - May 2021"
+      }
+    ]
+  },
+  {
+    "company": "Nadderud Upper Secondary School",
+    "logo": "/src/assets/logos/nadderud.png",
+    "roles": [
+      {
+        "title": "General University Admissions Certification",
+        "dates": "Aug 2015 - Jun 2018"
+      }
+    ]
+  }
+]
