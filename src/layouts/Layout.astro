@@ -27,6 +27,8 @@ const { pageTitle } = Astro.props;
   .center-container {
     width: 100%;
     margin: 0 auto;
+    padding: 0 16px;
+    box-sizing: border-box;
   }
 
   .center-container h1 {
@@ -36,6 +38,7 @@ const { pageTitle } = Astro.props;
   @media (min-width: 768px) {
     .center-container {
       width: 60%;
+      padding: 0;
     }
   }
 </style>

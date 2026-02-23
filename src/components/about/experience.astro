@@ -71,7 +71,7 @@ const eduTree = buildTree(education as Entry[], "education");
   const restartBtn = document.getElementById("exp-restart");
   const tabs = block.querySelectorAll("[data-target]");
 
-  const makeCmd = (name) => ` ls -la ${name}`;
+  const makeCmd = (name) => ` tree ${name}`;
 
   const trees = { exp: expTree, edu: eduTree };
   const commands = {};
@@ -152,7 +152,6 @@ const eduTree = buildTree(education as Entry[], "education");
   .tree-block {
     background-color: snow;
     color: #1a1a1a;
-    padding: 1.5rem;
     border-radius: 2px;
     font-size: 0.85rem;
     display: block;
