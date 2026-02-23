@@ -4,7 +4,7 @@ publishedDate: 2023-03-22 12:00:00
 author: Nikolai Dokken
 slug: sailing-club
 layout: ../../layouts/PostLayout.astro
-type: project
+tags: ["project"]
 ---
 
 🔗 [Visit the website here](https://havseilerklubben.no/)

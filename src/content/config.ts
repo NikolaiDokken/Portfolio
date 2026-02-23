@@ -7,7 +7,7 @@ const posts = defineCollection({
     title: z.string(),
     slug: z.string(),
     publishedDate: z.coerce.date(),
-    type: z.enum(["post", "project"]),
+    tags: z.array(z.string()),
     author: z.string()
   }),
 });

@@ -4,7 +4,7 @@ publishedDate: "2021-06-30"
 author: Nikolai Dokken
 slug: f1-app
 layout: ../../layouts/PostLayout.astro
-type: project
+tags: ["project"]
 ---
 
 

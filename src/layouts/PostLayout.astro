@@ -8,6 +8,15 @@ const { frontmatter } = Astro.props;
   <div class="meta-info">
     <div>By {frontmatter.author}</div>
     <div>Published {frontmatter.publishedDate.toISOString().split("T")[0]}</div>
+    {
+      frontmatter.tags?.length > 0 && (
+        <div class="tags">
+          {frontmatter.tags.map((tag: string) => (
+            <span class="tag">#{tag}</span>
+          ))}
+        </div>
+      )
+    }
   </div>
   <div class="content">
     <slot />
@@ -18,6 +27,19 @@ const { frontmatter } = Astro.props;
   .meta-info div {
     color: gray;
     font-size: small;
+  }
+
+  .tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .tag {
+    color: gray;
+    padding: 1px 4px;
+    opacity: 0.8;
   }
 
   .content {

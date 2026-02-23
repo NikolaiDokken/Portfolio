@@ -4,7 +4,7 @@ publishedDate: 2020-08-20 12:00:00
 author: Nikolai Dokken
 slug: patient-monitoring
 layout: ../../layouts/PostLayout.astro
-type: project
+tags: ["project"]
 ---
 
 ### Bachelor Thesis

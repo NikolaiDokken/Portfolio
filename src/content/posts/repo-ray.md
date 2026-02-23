@@ -4,7 +4,7 @@ publishedDate: "2026-02-22"
 author: Nikolai Dokken
 slug: repo-ray
 layout: ../../layouts/PostLayout.astro
-type: project
+tags: ["project", "devtools"]
 ---
 
 🔗 [**Visit the website here**](https://nikolaidokken.github.io/algorithmVisualizer/)

@@ -4,7 +4,7 @@ author: Nikolai Dokken
 title: Lazygit
 slug: lazygit
 publishedDate: "2024-06-24"
-type: post
+tags: ["post"]
 ---
 
 Lazygit is a tool I use to make my life as a developer easier. Although I recommend everyone to understand the basics of git and common git operations before using it, it can make your life so much easier when it comes to performing regular tasks like switching branches, merging, rebasing, cherrypicking commits, and much more.

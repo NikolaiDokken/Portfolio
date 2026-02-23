@@ -4,7 +4,7 @@ publishedDate: "2021-03-25"
 author: Nikolai Dokken
 slug: cocktail-encyclopedia
 layout: ../../layouts/PostLayout.astro
-type: project
+tags: ["project"]
 ---
 
 🔗 [**Visit the website**](https://nikolaidokken.github.io/cocktail-encyclopedia/)

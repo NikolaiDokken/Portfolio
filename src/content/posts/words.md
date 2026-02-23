@@ -4,7 +4,7 @@ publishedDate: 2023-06-29 12:00:00
 author: Nikolai Dokken
 slug: word-game
 layout: ../../layouts/PostLayout.astro
-type: project
+tags: ["project"]
 ---
 
 🔗 [Play the game here](https://mp-wordle.web.app/)

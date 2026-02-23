@@ -4,7 +4,7 @@ author: Nikolai Dokken
 title: Movies
 slug: movies
 publishedDate: "2024-06-24"
-type: post
+tags: ["post"]
 ---
 
 # Movie
