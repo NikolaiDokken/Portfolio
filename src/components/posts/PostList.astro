@@ -1,7 +1,5 @@
 ---
-import { getCollection } from "astro:content";
-
-const { posts, title  } = Astro.props;
+const { posts, title } = Astro.props;
 
 const sortedPosts = posts.sort((a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf());
 ---
@@ -12,8 +10,9 @@ const sortedPosts = posts.sort((a, b) => b.data.publishedDate.valueOf() - a.data
     {
       sortedPosts.map((post) => (
         <li>
-          <span>{post.data.publishedDate.toISOString().split("T")[0]}</span>
           <a href={`/posts/${post.data.slug}`}>{post.data.title}</a>
+          <span class="dots" />
+          <span class="date">{post.data.publishedDate.toISOString().split("T")[0]}</span>
         </li>
       ))
     }
@@ -25,14 +24,26 @@ const sortedPosts = posts.sort((a, b) => b.data.publishedDate.valueOf() - a.data
     list-style-type: none;
     list-style-position: inside;
     padding-left: 0;
-    margin-bottom:0;
+    margin-bottom: 0;
   }
 
   .posts li {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
     margin-bottom: 6px;
   }
 
-  .posts-link {
+  .dots {
+    flex: 1;
+    border-bottom: 1px dashed currentColor;
+    opacity: 0.3;
+    margin-bottom: 3px;
+  }
+
+  .date {
+    white-space: nowrap;
     font-size: 12px;
+    opacity: 0.6;
   }
 </style>
