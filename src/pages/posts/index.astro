@@ -1,15 +1,9 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import PostList from "../../components/posts/PostList.astro"
-
-const allPosts = await getCollection("posts");
-
-const posts = allPosts.filter(post => post.data.tags.includes("post"));
-const projects = allPosts.filter(post => post.data.tags.includes("project"));
+import PostList from "../../components/posts/PostList.astro";
 ---
 
 <Layout pageTitle="Posts">
-    <PostList posts={posts} title="Posts" />
-    <PostList posts={projects} title="Projects" />
+  <PostList title="Posts" tag="post" />
+  <PostList title="Projects" tag="project" />
 </Layout>

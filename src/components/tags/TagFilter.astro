@@ -1,0 +1,47 @@
+---
+interface Props {
+  tags: string[];
+  activeTag?: string;
+}
+
+const { tags, activeTag } = Astro.props;
+---
+
+<div class="tag-filter">
+  <a href="/tags" class:list={["tag", { active: !activeTag }]}>all</a>
+  {tags.map(tag => (
+    <a href={`/tags/${tag}`} class:list={["tag", { active: tag === activeTag }]}>#{tag}</a>
+  ))}
+</div>
+
+<style>
+  .tag-filter {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 2px 6px;
+    text-decoration: none;
+    border: 1px solid gray;
+    color: gray;
+    opacity: 0.7;
+  }
+
+  .tag.active {
+    background-color: black;
+    color: snow;
+    border-color: black;
+    opacity: 1;
+  }
+
+  .tag:hover {
+    background-color: black;
+    color: snow;
+    border-color: black;
+    opacity: 1;
+  }
+</style>

@@ -1,7 +1,13 @@
 ---
-const { posts, title } = Astro.props;
+import { getCollection } from "astro:content";
 
-const sortedPosts = posts.sort((a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf());
+const { title, limit, tag } = Astro.props;
+
+const allPosts = await getCollection("posts");
+
+const sortedPosts = (tag ? allPosts.filter((p) => p.data.tags.includes(tag)) : allPosts)
+  .sort((a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf())
+  .slice(0, limit ?? allPosts.length);
 ---
 
 <div>
@@ -17,6 +23,13 @@ const sortedPosts = posts.sort((a, b) => b.data.publishedDate.valueOf() - a.data
       ))
     }
   </ul>
+  {
+    limit && (
+      <a class="see-all" href="/posts">
+        {"See all posts >"}
+      </a>
+    )
+  }
 </div>
 
 <style>
@@ -45,5 +58,9 @@ const sortedPosts = posts.sort((a, b) => b.data.publishedDate.valueOf() - a.data
     white-space: nowrap;
     font-size: 12px;
     opacity: 0.6;
+  }
+
+  .see-all {
+    font-size: 12px;
   }
 </style>
