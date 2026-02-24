@@ -6,8 +6,6 @@ const { frontmatter } = Astro.props;
 
 <Layout pageTitle={frontmatter.title}>
   <div class="meta-info">
-    <div>By {frontmatter.author}</div>
-    <div>Published {frontmatter.publishedDate.toISOString().split("T")[0]}</div>
     {
       frontmatter.tags?.length > 0 && (
         <div class="tags">
@@ -17,6 +15,11 @@ const { frontmatter } = Astro.props;
         </div>
       )
     }
+    <div class="meta-row">
+      <span>By {frontmatter.author}</span>
+      <span class="dots"></span>
+      <span>{frontmatter.publishedDate.toISOString().split("T")[0]}</span>
+    </div>
   </div>
   <div class="content">
     <slot />
@@ -24,22 +27,36 @@ const { frontmatter } = Astro.props;
 </Layout>
 
 <style>
-  .meta-info div {
+  .meta-info {
     color: gray;
     font-size: small;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .dots {
+    flex: 1;
+    border-bottom: 1px dashed currentColor;
+    opacity: 0.3;
+    margin-bottom: 3px;
   }
 
   .tags {
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
-    margin-top: 4px;
+    margin-bottom: 12px;
   }
 
   .tag {
-    color: gray;
-    padding: 1px 4px;
-    opacity: 0.8;
+    font-size: 11px;
+    background-color: black;
+    color: snow;
+    padding: 2px 6px;
   }
 
   .content {
