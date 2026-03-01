@@ -1,0 +1,6 @@
+{
+  "framework": "gatsby",
+  "buildCommand": "gatsby build --prefix-paths",
+  "outputDirectory": "public",
+  "installCommand": "npm install"
+}

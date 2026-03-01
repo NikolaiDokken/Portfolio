@@ -1,6 +1,5 @@
 {
   "name": "gatsby-starter-hello-world",
-  "homepage": "https://nikolaidokken.github.io/portfolio-v2",
   "private": true,
   "description": "A simplified bare-bones starter for Gatsby",
   "version": "0.1.0",
@@ -15,7 +14,7 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
-    "gatsby": "^2.26.1",
+    "gatsby": "^3.0.0",
     "gatsby-plugin-image": "^1.0.0",
     "gatsby-plugin-sharp": "^3.0.0",
     "gatsby-source-filesystem": "^3.0.0",
@@ -34,5 +33,8 @@
   },
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"
+  },
+  "overrides": {
+    "postcss": "^8.0.0"
   }
 }
