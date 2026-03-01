@@ -45,17 +45,20 @@ export default function App() {
             fullpageApi.moveTo(pageNr, 0);
           }
           return (
-            <div id="fullpage-wrapper">
-              {pages.map((Page, index) => (
-                <div className="section" key={index}>
-                  <Page.component
-                    changePage={changePage}
-                    pages={index === 1 ? pages : null}
-                    mobile={!navigationBool}
-                  />
-                </div>
-              ))}
-            </div>
+            <ReactFullpage.Wrapper>
+              {pages.map((Page, index) => {
+                const PageComponent = Page.component;
+                return (
+                  <div className="section" key={index}>
+                    <PageComponent
+                      changePage={changePage}
+                      pages={index === 1 ? pages : null}
+                      mobile={!navigationBool}
+                    />
+                  </div>
+                );
+              })}
+            </ReactFullpage.Wrapper>
           );
         }}
       />

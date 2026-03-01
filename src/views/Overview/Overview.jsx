@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function(props) {
+export default function Overview(props) {
   const classes = useStyles();
 
   return (
