@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../styles/projects.module.css";
+import * as styles from "../styles/projects.module.css";
 
 export default function ProjectCard({ project }) {
 	const { title, stack, thumb, color } = project.frontmatter;

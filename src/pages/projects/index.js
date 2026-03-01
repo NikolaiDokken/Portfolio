@@ -2,7 +2,7 @@ import React from "react";
 import { graphql, Link } from "gatsby";
 import Layout from "../../components/Layout";
 import ProjectCard from "../../components/ProjectCard";
-import styles from "../../styles/projects.module.css";
+import * as styles from "../../styles/projects.module.css";
 
 export default function Projects({ data }) {
 	const projects = data.allMarkdownRemark.nodes;

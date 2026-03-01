@@ -1,7 +1,7 @@
 import { graphql, Link } from "gatsby";
 import React from "react";
 import Layout from "../components/Layout";
-import styles from "../styles/project-details.module.css";
+import * as styles from "../styles/project-details.module.css";
 import { GatsbyImage } from "gatsby-plugin-image";
 
 export default function ProjectDetails({ data }) {
