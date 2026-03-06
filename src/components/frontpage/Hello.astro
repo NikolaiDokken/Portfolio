@@ -1,0 +1,63 @@
+<p class="hello">
+  Welcome to my <span id="hw-word"></span><span class="hw-cursor">▊</span>
+</p>
+<p>
+  It has evolved along with my skills and interests. You can check out previous evolutions below or read more about me <a
+    href="/about">here</a
+  >.
+</p>
+
+<script is:inline>
+  const words = ["portfolio.", "website.", "playground.", "blog.", "work in progress.", "ideas."];
+  const el = document.getElementById("hw-word");
+
+  let wordIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+
+  function tick() {
+    const word = words[wordIndex];
+
+    if (isDeleting) {
+      el.textContent = word.slice(0, --charIndex);
+      if (charIndex === 0) {
+        isDeleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+        setTimeout(tick, 400);
+      } else {
+        setTimeout(tick, 40);
+      }
+    } else {
+      el.textContent = word.slice(0, ++charIndex);
+      if (charIndex === word.length) {
+        isDeleting = true;
+        setTimeout(tick, 1500);
+      } else {
+        setTimeout(tick, 80);
+      }
+    }
+  }
+
+  setTimeout(tick, 600);
+</script>
+
+<style>
+  .hello {
+    font-weight: bold;
+  }
+
+  .hw-cursor {
+    animation: hw-blink 1s step-end infinite;
+    font-size: 0.85em;
+  }
+
+  @keyframes hw-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+</style>

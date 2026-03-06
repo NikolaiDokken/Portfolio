@@ -1,0 +1,47 @@
+---
+const versions = [
+  { url: "https://v1.nikolaidokken.no" },
+  { url: "https://v2.nikolaidokken.no" },
+  { url: "https://v3.nikolaidokken.no" },
+  { url: "https://v4.nikolaidokken.no" },
+  { url: "https://v5.nikolaidokken.no", current: true },
+];
+---
+
+<div class="versions">
+  <span class="label">Evolutions:</span>
+  {
+    versions.map(({ url, current }, index) =>
+      current ? (
+        <span>{`[v${index + 1}*]`}</span>
+      ) : (
+        <a href={url} target="_blank" rel="noopener noreferrer" class="version-link">
+          {`[v${index + 1}]`}
+        </a>
+      ),
+    )
+  }
+</div>
+
+<style>
+  .versions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .label {
+    color: #b0a898;
+  }
+
+  .version-link {
+    text-decoration: none;
+  }
+
+  .version-link.current {
+    color: #0891b2;
+  }
+</style>
