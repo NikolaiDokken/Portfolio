@@ -8,7 +8,7 @@ const posts = defineCollection({
     slug: z.string(),
     publishedDate: z.coerce.date(),
     tags: z.array(z.string()),
-    author: z.string()
+    author: z.string(),
   }),
 });
 
