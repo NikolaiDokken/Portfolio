@@ -10,6 +10,15 @@ import VersionHistory from "../components/frontpage/VersionHistory.astro";
   <Socials />
   <Hello />
   <VersionHistory />
-  <PostList title="Recent Posts" limit={5} tag="post" />
-  <PostList title="Recent Projects" limit={5} tag="project" />
+  <div class="content-zone">
+    <PostList title="Recent Posts" limit={5} tag="post" />
+    <PostList title="Recent Projects" limit={5} tag="project" />
+  </div>
 </Layout>
+
+<style>
+  .content-zone {
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+  }
+</style>
