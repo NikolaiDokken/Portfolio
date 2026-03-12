@@ -2,7 +2,7 @@ html,
 body {
   margin: 0;
   width: 100%;
-  font-family: "Jetbrains Mono", monospace;
+  font-family: var(--font-jetbrains-mono), monospace;
   background-color: snow;
 }
 
@@ -22,60 +22,4 @@ a:hover {
   .center-container {
     width: 60%;
   }
-}
-
-@font-face {
-  font-family: "Space Mono";
-  src: url("/fonts/space_mono/SpaceMono-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Space Mono";
-  src: url("/fonts/space_mono/SpaceMono-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: bold;
-}
-
-@font-face {
-  font-family: "Space Mono";
-  src: url("/fonts/space_mono/SpaceMono-Italic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Space Mono";
-  src: url("/fonts/space_mono/SpaceMono-BoldItalic.ttf") format("truetype");
-  font-weight: 700;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Jetbrains Mono";
-  src: url("/fonts/jetbrains_mono/JetBrainsMono-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Jetbrains Mono";
-  src: url("/fonts/jetbrains_mono/JetBrainsMono-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: bold;
-}
-
-@font-face {
-  font-family: "Jetbrains Mono";
-  src: url("/fonts/jetbrains_mono/JetBrainsMono-Italic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "Jetbrains Mono";
-  src: url("/fonts/jetbrains_mono/JetBrainsMono-BoldItalic.ttf") format("truetype");
-  font-weight: 700;
-  font-style: italic;
 }
