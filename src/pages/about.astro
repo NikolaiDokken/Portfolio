@@ -1,10 +1,42 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Experience from "../components/about/experience.astro";
-import Intro from "../components/about/Intro.md";
+import Intro from "../components/about/Intro.astro";
+import Volvo from "../components/about/Volvo.astro";
 ---
 
 <Layout pageTitle="This is me">
   <Intro />
+  <div id="volvo-easter-egg" aria-hidden="true">
+    <Volvo />
+  </div>
   <Experience />
 </Layout>
+
+<style>
+  #volvo-easter-egg {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s ease;
+    overflow: hidden;
+  }
+
+  #volvo-easter-egg > :global(*) {
+    min-height: 0;
+  }
+
+  #volvo-easter-egg.visible {
+    grid-template-rows: 1fr;
+    margin-bottom: 1.5rem;
+  }
+</style>
+
+<script>
+  const trigger = document.getElementById("car-trigger");
+  const egg = document.getElementById("volvo-easter-egg");
+
+  trigger?.addEventListener("click", () => {
+    const isVisible = egg?.classList.toggle("visible");
+    egg?.setAttribute("aria-hidden", String(!isVisible));
+  });
+</script>
