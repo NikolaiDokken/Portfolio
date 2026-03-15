@@ -1,0 +1,323 @@
+---
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("posts");
+const tags = [...new Set(allPosts.flatMap((p) => p.data.tags))];
+
+const tagNodes = tags.map((tag) => ({ id: `tag:${tag}`, label: tag, type: "tag" }));
+const postNodes = allPosts.map((p) => ({
+  id: `post:${p.data.slug}`,
+  label: p.data.title,
+  slug: p.data.slug,
+  tags: p.data.tags,
+  type: "post",
+}));
+
+const nodes = [...tagNodes, ...postNodes];
+const edges = allPosts.flatMap((p) =>
+  p.data.tags.map((tag) => ({ source: `tag:${tag}`, target: `post:${p.data.slug}` })),
+);
+
+const postCountByTag: Record<string, number> = {};
+tags.forEach((t) => (postCountByTag[t] = 0));
+allPosts.forEach((p) => p.data.tags.forEach((t) => postCountByTag[t]++));
+
+const maxCount = Math.max(...Object.values(postCountByTag));
+const minCount = Math.min(...Object.values(postCountByTag));
+
+const TAG_FONT_MIN = 13;
+const TAG_FONT_MAX = 18;
+
+const tagFontSize = (tag: string) => {
+  const t = maxCount === minCount ? 1 : (postCountByTag[tag] - minCount) / (maxCount - minCount);
+  return TAG_FONT_MIN + t * (TAG_FONT_MAX - TAG_FONT_MIN);
+};
+
+// Approximate collision radius for a tag label (half text width)
+const tagCollisionR = (tag: string) => {
+  const fs = tagFontSize(tag);
+  return (`#${tag}`.length * fs * 0.6) / 2 + 8;
+};
+
+const nodesWithMeta = nodes.map((n) => ({
+  ...n,
+  fontSize: n.type === "tag" ? tagFontSize(n.label) : undefined,
+  collisionR: n.type === "tag" ? tagCollisionR(n.label) : 7,
+}));
+
+const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
+---
+
+<h3>Explore posts</h3>
+<div class="graph-wrapper">
+  <svg id="post-graph" aria-label="Post graph" data-graph={graphData}></svg>
+</div>
+
+<script>
+  import {
+    forceSimulation,
+    forceLink,
+    forceManyBody,
+    forceCenter,
+    forceCollide,
+    type SimulationNodeDatum,
+    type SimulationLinkDatum,
+  } from "d3-force";
+  import { select } from "d3-selection";
+  import { drag } from "d3-drag";
+
+  interface GraphNode extends SimulationNodeDatum {
+    id: string;
+    label: string;
+    type: "tag" | "post";
+    slug?: string;
+    tags?: string[];
+    fontSize?: number;
+    collisionR: number;
+  }
+
+  interface GraphEdge extends SimulationLinkDatum<GraphNode> {
+    source: string | GraphNode;
+    target: string | GraphNode;
+  }
+
+  const svgEl = document.getElementById("post-graph") as SVGSVGElement;
+  const { nodes, edges } = JSON.parse(svgEl.dataset.graph!) as {
+    nodes: GraphNode[];
+    edges: GraphEdge[];
+  };
+
+  const wrapper = svgEl.parentElement!;
+  const W = wrapper.clientWidth || 600;
+  const H = 420; // must match `height` in the CSS below
+
+  const FONT = "var(--font-jetbrains-mono, monospace)";
+  const COLOR_INK = "#111";
+  const COLOR_POST_FILL = "snow";
+  const COLOR_POST_STROKE = "#111";
+  const COLOR_EDGE = "#ccc";
+  const COLOR_EDGE_HOVER = "#111";
+  const POST_R = 7;
+  const LABEL_FONT_SIZE = 10;
+  const CHAR_WIDTH_RATIO = 0.6; // approximate em ratio for monospace
+
+  const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
+  const isTouch = window.matchMedia("(hover: none)").matches;
+
+  svgEl.setAttribute("viewBox", `0 0 ${W} ${H}`);
+
+  const svg = select(svgEl);
+
+  // ── Layers ────────────────────────────────────────────────────────────────────
+  const edgeGroup = svg.append("g").attr("class", "edges");
+  const nodeGroup = svg.append("g").attr("class", "nodes");
+  const labelGroup = svg.append("g").attr("class", "labels").style("pointer-events", "none");
+
+  // ── Edges ─────────────────────────────────────────────────────────────────────
+  const linkEls = edgeGroup
+    .selectAll("line")
+    .data(edges)
+    .join("line")
+    .attr("stroke", COLOR_EDGE)
+    .attr("stroke-width", 1);
+
+  // ── Nodes ─────────────────────────────────────────────────────────────────────
+  const nodeEls = nodeGroup
+    .selectAll<SVGGElement, GraphNode>("g")
+    .data(nodes, (d) => d.id)
+    .join("g")
+    .attr("class", (d) => `node node-${d.type}`)
+    .style("cursor", "pointer");
+
+  // Post circles
+  nodeEls
+    .filter((d) => d.type === "post")
+    .append("circle")
+    .attr("r", POST_R)
+    .attr("fill", COLOR_POST_FILL)
+    .attr("stroke", COLOR_POST_STROKE)
+    .attr("stroke-width", 1.5);
+
+  // Tag labels (floating text with snow halo)
+  nodeEls
+    .filter((d) => d.type === "tag")
+    .append("text")
+    .text((d) => `#${d.label}`)
+    .attr("text-anchor", "middle")
+    .attr("dominant-baseline", "central")
+    .attr("fill", COLOR_INK)
+    .attr("stroke", "snow")
+    .attr("stroke-width", 6)
+    .attr("paint-order", "stroke fill")
+    .attr("font-family", FONT)
+    .attr("font-size", (d) => d.fontSize ?? 13)
+    .attr("font-weight", "bold")
+    .style("user-select", "none");
+
+  // ── Post hover labels ─────────────────────────────────────────────────────────
+  const labelEls = labelGroup
+    .selectAll<SVGTextElement, GraphNode>("text")
+    .data(
+      nodes.filter((n) => n.type === "post"),
+      (d) => d.id,
+    )
+    .join("text")
+    .text((d) => d.label)
+    .attr("text-anchor", "middle")
+    .attr("fill", COLOR_INK)
+    .attr("font-family", FONT)
+    .attr("font-size", LABEL_FONT_SIZE)
+    .attr("opacity", 0)
+    .style("transition", "opacity 0.15s");
+
+  // ── Hover highlight ───────────────────────────────────────────────────────────
+  function getConnected(id: string): Set<string> {
+    const s = new Set([id]);
+    edges.forEach((e) => {
+      const srcId = (e.source as GraphNode).id;
+      const tgtId = (e.target as GraphNode).id;
+      if (srcId === id) s.add(tgtId);
+      if (tgtId === id) s.add(srcId);
+    });
+    return s;
+  }
+
+  function highlight(activeId: string | null) {
+    const connected = activeId ? getConnected(activeId) : null;
+
+    nodeEls.style("opacity", (d) => (!connected || connected.has(d.id) ? 1 : 0.15));
+
+    linkEls
+      .attr("stroke", (e) => {
+        if (!connected) return COLOR_EDGE;
+        const s = (e.source as GraphNode).id;
+        const t = (e.target as GraphNode).id;
+        return connected.has(s) && connected.has(t) ? COLOR_EDGE_HOVER : COLOR_EDGE;
+      })
+      .style("opacity", (e) => {
+        if (!connected) return 1;
+        const s = (e.source as GraphNode).id;
+        const t = (e.target as GraphNode).id;
+        return connected.has(s) && connected.has(t) ? 1 : 0.1;
+      });
+
+    labelEls.attr("opacity", (d) => (connected && connected.has(d.id) ? 1 : 0));
+  }
+
+  // ── Interaction — desktop hover / mobile tap-to-preview ──────────────────────
+  function navigateTo(d: GraphNode) {
+    window.location.href = d.type === "tag" ? `/tags/${d.label}` : `/posts/${d.slug}`;
+  }
+
+  let tappedId: string | null = null;
+  // Desktop: highlight on hover
+  nodeEls
+    .on("mouseenter", (_e, d) => {
+      if (!isTouch) highlight(d.id);
+    })
+    .on("mouseleave", () => {
+      if (!isTouch) highlight(null);
+    });
+
+  nodeEls.on("click", (e, d) => {
+    if (!isTouch) {
+      navigateTo(d);
+      return;
+    }
+
+    e.stopPropagation();
+
+    if (tappedId === d.id) {
+      // Second tap on same node — navigate
+      navigateTo(d);
+    } else {
+      // First tap — show label and highlight
+      tappedId = d.id;
+      highlight(d.id);
+    }
+  });
+
+  // Tap on background clears selection
+  svg.on("click", () => {
+    if (isTouch && tappedId) {
+      tappedId = null;
+      highlight(null);
+    }
+  });
+
+  // ── Drag ──────────────────────────────────────────────────────────────────────
+  const dragBehavior = drag<SVGGElement, GraphNode>()
+    .on("start", (event, d) => {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    })
+    .on("drag", (event, d) => {
+      d.fx = event.x;
+      d.fy = event.y;
+    })
+    .on("end", (event, d) => {
+      if (!event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    });
+
+  nodeEls.call(dragBehavior);
+
+  // ── Simulation ────────────────────────────────────────────────────────────────
+  const simulation = forceSimulation<GraphNode>(nodes)
+    .force(
+      "link",
+      forceLink<GraphNode, GraphEdge>(edges)
+        .id((d) => d.id)
+        .distance(120)
+        .strength(0.5),
+    )
+    .force("charge", forceManyBody().strength(-300))
+    .force("center", forceCenter(W / 2, H / 2).strength(0.05))
+    .force(
+      "collide",
+      forceCollide<GraphNode>()
+        .radius((d) => d.collisionR + 6)
+        .strength(1),
+    )
+    .on("tick", () => {
+      // Clamp nodes within bounds
+      nodes.forEach((n) => {
+        n.x = clamp(n.x!, n.collisionR + 4, W - n.collisionR - 4);
+        n.y = clamp(n.y!, n.collisionR + 4, H - n.collisionR - 4);
+      });
+
+      linkEls
+        .attr("x1", (e) => (e.source as GraphNode).x!)
+        .attr("y1", (e) => (e.source as GraphNode).y!)
+        .attr("x2", (e) => (e.target as GraphNode).x!)
+        .attr("y2", (e) => (e.target as GraphNode).y!);
+
+      nodeEls.attr("transform", (d) => `translate(${d.x},${d.y})`);
+
+      labelEls
+        .attr("x", (d) => {
+          const halfW = (d.label.length * LABEL_FONT_SIZE * CHAR_WIDTH_RATIO) / 2;
+          return clamp(d.x!, halfW + 4, W - halfW - 4);
+        })
+        .attr("y", (d) => {
+          const labelY = d.y! - POST_R - 5;
+          return labelY < 12 ? d.y! + POST_R + 12 : labelY;
+        });
+    });
+</script>
+
+<style>
+  .graph-wrapper {
+    margin-top: 2rem;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #post-graph {
+    display: block;
+    width: 100%;
+    height: 420px; /* keep in sync with H constant in script */
+  }
+</style>

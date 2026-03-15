@@ -25,8 +25,8 @@ const sortedPosts = (tag ? allPosts.filter((p) => p.data.tags.includes(tag)) : a
   </ul>
   {
     limit && (
-      <a class="see-all" href="/posts">
-        {"See all posts >"}
+      <a class="see-all" href={tag ? `/tags/${tag}` : "/tags"}>
+        {"See all >"}
       </a>
     )
   }

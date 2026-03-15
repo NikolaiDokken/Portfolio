@@ -9,9 +9,17 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^6.0.3"
+    "astro": "^6.0.3",
+    "d3-drag": "^3.0.0",
+    "d3-force": "^3.0.0",
+    "d3-selection": "^3.0.0"
   },
   "engines": {
     "node": "24.x"
+  },
+  "devDependencies": {
+    "@types/d3-drag": "^3.0.7",
+    "@types/d3-force": "^3.0.10",
+    "@types/d3-selection": "^3.0.11"
   }
 }

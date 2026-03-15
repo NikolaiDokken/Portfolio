@@ -4,16 +4,14 @@ import Layout from "../layouts/Layout.astro";
 import Socials from "../components/Socials.astro";
 import PostList from "../components/posts/PostList.astro";
 import VersionHistory from "../components/frontpage/VersionHistory.astro";
+import PostGraph from "../components/frontpage/PostGraph.astro";
 ---
 
 <Layout pageTitle="Nikolai Dokken">
   <Socials />
   <Hello />
   <VersionHistory />
-  <div class="content-zone">
-    <PostList title="Recent Posts" limit={5} tag="post" />
-    <PostList title="Recent Projects" limit={5} tag="project" />
-  </div>
+  <PostGraph />
 </Layout>
 
 <style>
