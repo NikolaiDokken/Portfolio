@@ -11,7 +11,7 @@ const sortedPosts = (tag ? allPosts.filter((p) => p.data.tags.includes(tag)) : a
 ---
 
 <div>
-  <h3>{title}</h3>
+  {title && <h3>{title}</h3>}
   <ul class="posts">
     {
       sortedPosts.map((post) => (

@@ -1,0 +1,84 @@
+---
+import PostGraph from "./PostGraph.astro";
+import PostList from "../posts/PostList.astro";
+---
+
+<div class="explorer-header">
+  <h3>Explore posts</h3>
+  <div class="view-toggle" role="group" aria-label="View mode">
+    <button id="btn-graph" class="toggle-btn active" aria-pressed="true">Graph</button>
+    <button id="btn-list" class="toggle-btn" aria-pressed="false">List</button>
+  </div>
+</div>
+
+<div id="graph-view">
+  <PostGraph />
+</div>
+<div id="list-view" hidden>
+  <PostList limit={10} />
+</div>
+
+<script>
+  const btnGraph = document.getElementById("btn-graph")!;
+  const btnList = document.getElementById("btn-list")!;
+  const graphView = document.getElementById("graph-view")!;
+  const listView = document.getElementById("list-view")!;
+
+  function setView(view: "graph" | "list") {
+    const isGraph = view === "graph";
+    graphView.hidden = !isGraph;
+    listView.hidden = isGraph;
+    btnGraph.classList.toggle("active", isGraph);
+    btnList.classList.toggle("active", !isGraph);
+    btnGraph.setAttribute("aria-pressed", String(isGraph));
+    btnList.setAttribute("aria-pressed", String(!isGraph));
+  }
+
+  btnGraph.addEventListener("click", () => setView("graph"));
+  btnList.addEventListener("click", () => setView("list"));
+</script>
+
+<style>
+  .explorer-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .explorer-header h3 {
+    margin: 0;
+  }
+
+  .view-toggle {
+    display: flex;
+    gap: 4px;
+  }
+
+  .toggle-btn {
+    background: none;
+    border: 1px solid gray;
+    color: gray;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    opacity: 0.7;
+    padding: 2px 6px;
+  }
+
+  .toggle-btn.active {
+    background-color: black;
+    border-color: black;
+    color: snow;
+    cursor: default;
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  .toggle-btn:hover:not(.active) {
+    background-color: black;
+    border-color: black;
+    color: snow;
+    opacity: 1;
+  }
+</style>

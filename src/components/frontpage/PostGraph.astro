@@ -48,7 +48,6 @@ const nodesWithMeta = nodes.map((n) => ({
 const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
 ---
 
-<h3>Explore posts</h3>
 <div class="graph-wrapper">
   <svg id="post-graph" aria-label="Post graph" data-graph={graphData}></svg>
 </div>
