@@ -1,9 +1,13 @@
 ---
 import { Font } from "astro:assets";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
 import "../styles/global.css";
 
 const { pageTitle } = Astro.props;
+
+const path = Astro.url.pathname;
+const hasBreadcrumbs = path !== "/" && path.replace(/\/$/, "") !== "";
 ---
 
 <!doctype html>
@@ -19,8 +23,18 @@ const { pageTitle } = Astro.props;
   </head>
   <body>
     <div class="center-container">
-      <Breadcrumbs />
-      <h1>{pageTitle}</h1>
+      {hasBreadcrumbs && (
+        <div class="nav-row">
+          <Breadcrumbs />
+          <div class="toggle-slot">
+            <ThemeToggle />
+          </div>
+        </div>
+      )}
+      <div class="title-row">
+        <h1>{pageTitle}</h1>
+        {!hasBreadcrumbs && <ThemeToggle />}
+      </div>
       <slot />
     </div>
   </body>
@@ -34,8 +48,33 @@ const { pageTitle } = Astro.props;
     box-sizing: border-box;
   }
 
-  .center-container h1 {
-    margin-bottom: 8px;
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 16px 0 24px 0;
+  }
+
+  /* When breadcrumbs are present they push the toggle to the right naturally;
+     without them the toggle still sits at the end of the row. */
+  .nav-row :global(.breadcrumb-row) {
+    flex: 1;
+    margin: 0;   /* breadcrumb-row has its own margin — reset it here */
+  }
+
+  .toggle-slot {
+    flex-shrink: 0;
+  }
+
+  .title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 16px 0 8px 0;
+  }
+
+  .title-row h1 {
+    margin: 0;
   }
 
   @media (min-width: 768px) {

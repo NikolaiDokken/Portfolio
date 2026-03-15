@@ -26,22 +26,22 @@ const { tags, activeTag } = Astro.props;
     font-size: 11px;
     padding: 2px 6px;
     text-decoration: none;
-    border: 1px solid gray;
-    color: gray;
+    border: 1px solid var(--color-interactive);
+    color: var(--color-interactive);
     opacity: 0.7;
   }
 
   .tag.active {
-    background-color: black;
-    color: snow;
-    border-color: black;
+    background-color: var(--color-interactive-bg);
+    color: var(--color-interactive-fg);
+    border-color: var(--color-interactive-bg);
     opacity: 1;
   }
 
   .tag:hover {
-    background-color: black;
-    color: snow;
-    border-color: black;
+    background-color: var(--color-interactive-bg);
+    color: var(--color-interactive-fg);
+    border-color: var(--color-interactive-bg);
     opacity: 1;
   }
 </style>

@@ -1,9 +1,64 @@
+/* ── Theme tokens ─────────────────────────────────────────────────────────── */
+:root {
+  /* Surfaces */
+  --color-bg: #fffafa; /* snow */
+  --color-surface: #fffafa; /* cards, pre blocks, inline surfaces */
+
+  /* Text */
+  --color-ink: #1a1a1a; /* primary text */
+  --color-ink-muted: #b0a898; /* secondary / de-emphasised text */
+
+  /* Interactive — default (border/text only, no fill) */
+  --color-interactive: gray;
+
+  /* Interactive — active / hover (filled) */
+  --color-interactive-bg: #1a1a1a;
+  --color-interactive-fg: #fffafa;
+
+  /* Edges / borders */
+  --color-edge: #ccc;
+  --color-edge-hover: #1a1a1a;
+
+  /* Accents */
+  --color-accent-blue: #2563eb;
+  --color-accent-cyan: #0891b2;
+  --color-accent-green: #16a34a;
+}
+
+[data-theme="dark"] {
+  /* Surfaces */
+  --color-bg: #141414;
+  --color-surface: #1e1e1e;
+
+  /* Text */
+  --color-ink: #e8e0d5;
+  --color-ink-muted: #6b6357;
+
+  /* Interactive — default */
+  --color-interactive: #6b6357;
+
+  /* Interactive — active / hover */
+  --color-interactive-bg: #e8e0d5;
+  --color-interactive-fg: #141414;
+
+  /* Edges / borders */
+  --color-edge: #333;
+  --color-edge-hover: #e8e0d5;
+
+  /* Accents */
+  --color-accent-blue: #60a5fa;
+  --color-accent-cyan: #22d3ee;
+  --color-accent-green: #4ade80;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
 html,
 body {
   margin: 0;
   width: 100%;
   font-family: var(--font-jetbrains-mono), monospace;
-  background-color: snow;
+  background-color: var(--color-bg);
+  color: var(--color-ink);
 }
 
 a {
@@ -13,8 +68,8 @@ a {
 }
 
 a:hover {
-  background-color: black;
-  color: snow;
+  background-color: var(--color-interactive-bg);
+  color: var(--color-interactive-fg);
   text-decoration: none;
 }
 
@@ -22,4 +77,21 @@ a:hover {
   .center-container {
     width: 60%;
   }
+}
+
+/* ── Shiki dual-theme code blocks ────────────────────────────────────────── */
+[data-theme="dark"] .astro-code,
+[data-theme="dark"] .astro-code span {
+  color: var(--shiki-dark) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+.astro-code {
+  background-color: var(--color-bg) !important;
+}
+
+.astro-code span {
+  background-color: var(--color-surface) !important;
 }

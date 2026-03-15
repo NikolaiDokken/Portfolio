@@ -91,11 +91,14 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
   const H = 420; // must match `height` in the CSS below
 
   const FONT = "var(--font-jetbrains-mono, monospace)";
-  const COLOR_INK = "#111";
-  const COLOR_POST_FILL = "snow";
-  const COLOR_POST_STROKE = "#111";
-  const COLOR_EDGE = "#ccc";
-  const COLOR_EDGE_HOVER = "#111";
+
+  // Read colors from CSS custom properties so they update with the theme
+  const css = getComputedStyle(document.documentElement);
+  const COLOR_INK = css.getPropertyValue("--color-ink").trim();
+  const COLOR_POST_FILL = css.getPropertyValue("--color-bg").trim();
+  const COLOR_POST_STROKE = css.getPropertyValue("--color-ink").trim();
+  const COLOR_EDGE = css.getPropertyValue("--color-edge").trim();
+  const COLOR_EDGE_HOVER = css.getPropertyValue("--color-edge-hover").trim();
   const POST_R = 7;
   const LABEL_FONT_SIZE = 10;
   const CHAR_WIDTH_RATIO = 0.6; // approximate em ratio for monospace
@@ -137,7 +140,7 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
     .attr("stroke", COLOR_POST_STROKE)
     .attr("stroke-width", 1.5);
 
-  // Tag labels (floating text with snow halo)
+  // Tag labels (floating text with bg-colour halo for legibility)
   nodeEls
     .filter((d) => d.type === "tag")
     .append("text")
@@ -145,7 +148,7 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
     .attr("text-anchor", "middle")
     .attr("dominant-baseline", "central")
     .attr("fill", COLOR_INK)
-    .attr("stroke", "snow")
+    .attr("stroke", COLOR_POST_FILL)
     .attr("stroke-width", 6)
     .attr("paint-order", "stroke fill")
     .attr("font-family", FONT)
@@ -183,21 +186,24 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
 
   function highlight(activeId: string | null) {
     const connected = activeId ? getConnected(activeId) : null;
+    const s = getComputedStyle(document.documentElement);
+    const currentEdge = s.getPropertyValue("--color-edge").trim();
+    const currentEdgeHover = s.getPropertyValue("--color-edge-hover").trim();
 
     nodeEls.style("opacity", (d) => (!connected || connected.has(d.id) ? 1 : 0.15));
 
     linkEls
       .attr("stroke", (e) => {
-        if (!connected) return COLOR_EDGE;
-        const s = (e.source as GraphNode).id;
-        const t = (e.target as GraphNode).id;
-        return connected.has(s) && connected.has(t) ? COLOR_EDGE_HOVER : COLOR_EDGE;
+        if (!connected) return currentEdge;
+        const src = (e.source as GraphNode).id;
+        const tgt = (e.target as GraphNode).id;
+        return connected.has(src) && connected.has(tgt) ? currentEdgeHover : currentEdge;
       })
       .style("opacity", (e) => {
         if (!connected) return 1;
-        const s = (e.source as GraphNode).id;
-        const t = (e.target as GraphNode).id;
-        return connected.has(s) && connected.has(t) ? 1 : 0.1;
+        const src = (e.source as GraphNode).id;
+        const tgt = (e.target as GraphNode).id;
+        return connected.has(src) && connected.has(tgt) ? 1 : 0.1;
       });
 
     labelEls.attr("opacity", (d) => (connected && connected.has(d.id) ? 1 : 0));
@@ -262,6 +268,33 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
     });
 
   nodeEls.call(dragBehavior);
+
+  // ── Theme change — recolour static SVG elements ───────────────────────────────
+  function recolour() {
+    const s = getComputedStyle(document.documentElement);
+    const ink = s.getPropertyValue("--color-ink").trim();
+    const bg = s.getPropertyValue("--color-bg").trim();
+    const edge = s.getPropertyValue("--color-edge").trim();
+
+    linkEls.attr("stroke", edge);
+    nodeEls.filter((d) => d.type === "post").select("circle")
+      .attr("fill", bg)
+      .attr("stroke", ink);
+    nodeEls.filter((d) => d.type === "tag").select("text")
+      .attr("fill", ink)
+      .attr("stroke", bg);
+    labelEls.attr("fill", ink);
+  }
+
+  // Apply correct colours immediately (handles dark-mode-on-load where
+  // the is:inline theme script may have run after this script's constants
+  // were captured from getComputedStyle).
+  recolour();
+
+  new MutationObserver(recolour).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
 
   // ── Simulation ────────────────────────────────────────────────────────────────
   const simulation = forceSimulation<GraphNode>(nodes)

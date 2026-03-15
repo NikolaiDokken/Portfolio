@@ -150,8 +150,8 @@ const eduTree = buildTree(education as Entry[], "education");
 
 <style>
   .tree-block {
-    background-color: snow;
-    color: #1a1a1a;
+    background-color: var(--color-bg);
+    color: var(--color-ink);
     border-radius: 2px;
     font-size: 0.85rem;
     display: block;
@@ -170,7 +170,7 @@ const eduTree = buildTree(education as Entry[], "education");
     all: unset;
     font-family: inherit;
     font-size: inherit;
-    color: #b0a898;
+    color: var(--color-ink-muted);
     cursor: pointer;
     padding-bottom: 3px;
     border-bottom: 2px solid transparent;
@@ -180,12 +180,12 @@ const eduTree = buildTree(education as Entry[], "education");
   }
 
   .tab.active {
-    color: #2563eb;
-    border-bottom-color: #2563eb;
+    color: var(--color-accent-blue);
+    border-bottom-color: var(--color-accent-blue);
   }
 
   .tab:hover:not(.active) {
-    color: #1a1a1a;
+    color: var(--color-ink);
   }
 
   pre {
@@ -201,13 +201,13 @@ const eduTree = buildTree(education as Entry[], "education");
   }
 
   .prompt {
-    color: #16a34a;
+    color: var(--color-accent-green);
   }
 
   #exp-restart {
     all: unset;
     margin-left: 0.6ch;
-    color: #b0a898;
+    color: var(--color-ink-muted);
     font-family: inherit;
     font-size: inherit;
     cursor: pointer;
@@ -219,20 +219,20 @@ const eduTree = buildTree(education as Entry[], "education");
   }
 
   #exp-restart:hover {
-    color: #1a1a1a;
+    color: var(--color-ink);
   }
 
   :global(.tree-struct) {
-    color: #b0a898;
+    color: var(--color-ink-muted);
   }
   :global(.tree-dir) {
-    color: #2563eb;
+    color: var(--color-accent-blue);
   }
   :global(.tree-key) {
-    color: #0891b2;
+    color: var(--color-accent-cyan);
   }
   :global(.tree-val) {
-    color: #1a1a1a;
+    color: var(--color-ink);
   }
 
   .exp-cursor {
