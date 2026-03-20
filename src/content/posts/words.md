@@ -4,7 +4,7 @@ publishedDate: 2023-06-29 12:00:00
 author: Nikolai Dokken
 slug: word-game
 layout: ../../layouts/PostLayout.astro
-tags: ["project"]
+tags: ["project", "game"]
 ---
 
 🔗 [Play the game here](https://mp-wordle.web.app/)
@@ -21,9 +21,9 @@ The thesis was written in collaboration with a fellow student and friend Ian Eva
 
 The aim of the game is to get as many points as possible by creating words in a 5x5 grid. Each player has **their own** grid in which they will take turns selecting and placing letters in. Player 1 starts by selecting any letter, and placing it in their own grid. Player 2 must then place the same letter in their grid before selecting a letter of their own choice and placing this in their own grid. This goes on untill both grids are full, and the player with the most points is the winner. Points are calculated as follows:
 
--   3-letter words: 3 points
--   4-letter words: 4 points
--   5-letter words: 10 points
+- 3-letter words: 3 points
+- 4-letter words: 4 points
+- 5-letter words: 10 points
 
 ### AI Adversaries
 

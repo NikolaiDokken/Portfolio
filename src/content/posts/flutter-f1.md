@@ -4,10 +4,8 @@ publishedDate: "2021-06-30"
 author: Nikolai Dokken
 slug: f1-app
 layout: ../../layouts/PostLayout.astro
-tags: ["project"]
+tags: ["project", "app"]
 ---
-
-
 
 **Update: Turns out maintaing an app and staying compliant with app store/google play store isn't that easy. For now you'll have to do with the above screnshots.**
 

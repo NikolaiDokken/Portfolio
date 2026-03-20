@@ -4,7 +4,7 @@ publishedDate: 2020-00-20 00:00:00
 author: Nikolai Dokken
 slug: shotterud
 layout: ../../layouts/PostLayout.astro
-tags: ["project"]
+tags: ["project", "game"]
 ---
 
 🔗 [**Visit the website**](https://shotterud.nikolaidokken.no)
