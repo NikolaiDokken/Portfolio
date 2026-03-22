@@ -17,11 +17,13 @@ With Raycast you can either install custom extensions locally, or publish them t
 
 The reason I installed Raycast in the first place was because I wanted a Rofi-like tool on macOS. I wanted to create a tool that I could use to quickly open any of my local git repos from anywhere. This became RepoRay. It allows me to open a repo in any editor, remove local repos, or clone new ones.
 
+🔗 [**Check out the extension here**](https://github.com/NikolaiDokken/devtools/tree/main/raycast-extensions/repo-ray)
+
 # Contributions
 
 ## Todo List - Fixed Windows Bug
 
-One of my first contributions to any public repo - a tiny [one-line bugfix](https://github.com/raycast/extensions/pull/26437) that affected Raycast users on Windows using the Todo List extension. Hopefully I made these 3 people's lives much better :P
+One of my first contributions to any public repo - a tiny one-line bugfix ([#26437](https://github.com/raycast/extensions/pull/26437)) that affected Raycast users on Windows using the Todo List extension. Hopefully I made these 3 people's lives much better :P
 
 🔗 [**Check out the extension here**](https://www.raycast.com/maggie/todo-list)
 
@@ -29,8 +31,8 @@ One of my first contributions to any public repo - a tiny [one-line bugfix](http
 
 Since RepoRay was deemed too similar to existing extension in the Raycast store, I decided to contribute to the closest one I could find - Git Repos. Since this only had a simple list view and allowed opening in an editor of choice I could contribute with several features from RepoRay:
 
-- [A `Remove Repo` command that removes local repos](https://github.com/raycast/extensions/pull/26516)
-- A `Clone Repo` command that takes a clone link as input and lets you clone to any configured project directories
-- Added Windows support. The extension was not in raycast store for windows
+- A `Remove Repo` command that removes local repos ([#26516](https://github.com/raycast/extensions/pull/26516))
+- A `Clone Repo` command that takes a clone link as input and lets you clone to any configured project directories ([#26560](https://github.com/raycast/extensions/pull/26560))
+- Added Windows support to make extension available in raycast store for windows ([#26893](https://github.com/raycast/extensions/pull/26893))
 
 🔗 [**Check out the extension here**](https://www.raycast.com/moored/git-repos)
