@@ -47,9 +47,9 @@ const { frontmatter } = Astro.props;
 
   .tags {
     display: flex;
-    gap: 6px;
+    gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: 12px;
+    margin-bottom: 20px;
   }
 
   .tag {
@@ -61,6 +61,11 @@ const { frontmatter } = Astro.props;
 
   .content {
     margin-top: 24px;
-    margin-bottom: 32px;
+    margin-bottom: 60px;
+  }
+
+  .content :global(img) {
+    max-width: 100%;
+    height: auto;
   }
 </style>

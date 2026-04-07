@@ -60,6 +60,7 @@ body {
   background-color: var(--color-bg);
   color: var(--color-ink);
   font-size: 14px;
+  line-height: 1.7;
 }
 
 a {

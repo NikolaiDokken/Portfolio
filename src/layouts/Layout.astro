@@ -18,20 +18,26 @@ const hasBreadcrumbs = path !== "/" && path.replace(/\/$/, "") !== "";
     <link rel="icon" type="image/png" href="/n_logo.png" />
     <meta name="generator" content={Astro.generator} />
     <title>Nikolai Dokken</title>
-    <style>html { font-size: 14px; }</style>
+    <style>
+      html {
+        font-size: 14px;
+      }
+    </style>
     <Font cssVariable="--font-jetbrains-mono" preload />
     <Font cssVariable="--font-space-mono" />
   </head>
   <body>
     <div class="center-container">
-      {hasBreadcrumbs && (
-        <div class="nav-row">
-          <Breadcrumbs />
-          <div class="toggle-slot">
-            <ThemeToggle />
+      {
+        hasBreadcrumbs && (
+          <div class="nav-row">
+            <Breadcrumbs />
+            <div class="toggle-slot">
+              <ThemeToggle />
+            </div>
           </div>
-        </div>
-      )}
+        )
+      }
       <div class="title-row">
         <h1>{pageTitle}</h1>
         {!hasBreadcrumbs && <ThemeToggle />}
@@ -45,7 +51,7 @@ const hasBreadcrumbs = path !== "/" && path.replace(/\/$/, "") !== "";
   .center-container {
     width: 100%;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 40px 24px 80px;
     box-sizing: border-box;
   }
 
@@ -53,14 +59,14 @@ const hasBreadcrumbs = path !== "/" && path.replace(/\/$/, "") !== "";
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    margin: 16px 0 24px 0;
+    margin: 0 0 24px 0;
   }
 
   /* When breadcrumbs are present they push the toggle to the right naturally;
      without them the toggle still sits at the end of the row. */
   .nav-row :global(.breadcrumb-row) {
     flex: 1;
-    margin: 0;   /* breadcrumb-row has its own margin — reset it here */
+    margin: 0; /* breadcrumb-row has its own margin — reset it here */
   }
 
   .toggle-slot {
@@ -71,7 +77,7 @@ const hasBreadcrumbs = path !== "/" && path.replace(/\/$/, "") !== "";
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 16px 0 8px 0;
+    margin: 0 0 8px 0;
   }
 
   .title-row h1 {
@@ -81,7 +87,7 @@ const hasBreadcrumbs = path !== "/" && path.replace(/\/$/, "") !== "";
   @media (min-width: 768px) {
     .center-container {
       width: 60%;
-      padding: 0;
+      padding: 60px 0 100px;
     }
   }
 </style>
