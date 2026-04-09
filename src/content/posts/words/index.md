@@ -7,6 +7,8 @@ layout: ../../layouts/PostLayout.astro
 tags: ["project", "game"]
 ---
 
+![The game grid and UI](./words.png)
+
 🔗 [Play the game here](https://mp-wordle.web.app/)
 
 ## Master Thesis

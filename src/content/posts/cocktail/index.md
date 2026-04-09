@@ -7,6 +7,7 @@ layout: ../../layouts/PostLayout.astro
 tags: ["project"]
 ---
 
+![Frontpage of cocktail encyclopedia](./cocktailEncyclopedia.jpeg)
 🔗 [**Visit the website**](https://nikolaidokken.github.io/cocktail-encyclopedia/)
 
 ### Look Up Drinks or Ingredients

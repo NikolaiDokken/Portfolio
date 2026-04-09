@@ -7,6 +7,7 @@ layout: ../../layouts/PostLayout.astro
 tags: ["project"]
 ---
 
+![The club's home page](./nhk.jpg)
 🔗 [Visit the website here](https://havseilerklubben.no/)
 
 After hearing that the Norwegian Ocean Racing and Cruising Club needed a website, I quickly put a demo together that could be presented at their next board meeting. Even though I did not have the chance to present the demo myself, I later learned that the board had liked the site so much that they wanted to proceed with the development of it, and that I now had secured the contract for their new website.

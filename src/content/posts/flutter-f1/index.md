@@ -7,6 +7,8 @@ layout: ../../layouts/PostLayout.astro
 tags: ["project", "app"]
 ---
 
+![Flutter app pages](./f1.png)
+
 **Update: Turns out maintaing an app and staying compliant with app store/google play store isn't that easy. For now you'll have to do with the above screnshots.**
 
 #### Download

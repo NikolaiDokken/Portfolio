@@ -18,3 +18,5 @@ We were to develop a **cross-platform** application for both Android and iOS usi
 ### Result
 
 At the end of the semester we finished our app, **SentioApp**, an app that lets health personell view realtime data from patient monitors connected to their patients. The app streams live data and displays trends of different vital measures. It allows nurses/doctors to be notified if something happens, and facilitates communication between health personell via chat. The pictures above are screenshots directly from the app.
+
+![Different screens in the app](./infiniwell.png)
