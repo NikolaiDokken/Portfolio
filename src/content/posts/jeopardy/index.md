@@ -3,7 +3,7 @@ layout: ../../layouts/PostLayout.astro
 author: Nikolai Dokken
 title: Jeopardy
 slug: jeopardy
-publishedDate: "2024-06-24"
+publishedDate: "2026-05-15"
 tags: ["project", "game"]
 ---
 
