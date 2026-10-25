@@ -38,7 +38,11 @@
     }
   }
 
-  setTimeout(tick, 600);
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    el.textContent = words[0];
+  } else {
+    setTimeout(tick, 600);
+  }
 </script>
 
 <style>
@@ -54,6 +58,12 @@
   .hw-cursor {
     animation: hw-blink 1s step-end infinite;
     font-size: 0.85em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hw-cursor {
+      animation: none;
+    }
   }
 
   @keyframes hw-blink {

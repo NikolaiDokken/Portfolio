@@ -1,16 +1,24 @@
 ---
+import type { CollectionEntry } from "astro:content";
 import Layout from "./Layout.astro";
+import { formatDate, tagUrl } from "../utils/posts";
+
+interface Props {
+  frontmatter: CollectionEntry<"posts">["data"];
+}
 
 const { frontmatter } = Astro.props;
 ---
 
-<Layout pageTitle={frontmatter.title}>
+<Layout pageTitle={frontmatter.title} breadcrumbLabel={frontmatter.title}>
   <div class="meta-info">
     {
-      frontmatter.tags?.length > 0 && (
+      frontmatter.tags.length > 0 && (
         <div class="tags">
-          {frontmatter.tags.map((tag: string) => (
-            <span class="tag">#{tag}</span>
+          {frontmatter.tags.map((tag) => (
+            <a class="tag" href={tagUrl(tag)}>
+              #{tag}
+            </a>
           ))}
         </div>
       )
@@ -18,7 +26,7 @@ const { frontmatter } = Astro.props;
     <div class="meta-row">
       <span>By {frontmatter.author}</span>
       <span class="dots"></span>
-      <span>{frontmatter.publishedDate.toISOString().split("T")[0]}</span>
+      <span>{formatDate(frontmatter.publishedDate)}</span>
     </div>
   </div>
   <div class="content">
@@ -57,6 +65,7 @@ const { frontmatter } = Astro.props;
     background-color: var(--color-interactive-bg);
     color: var(--color-interactive-fg);
     padding: 2px 6px;
+    text-decoration: none;
   }
 
   .content {

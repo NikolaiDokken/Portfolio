@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/PostLayout.astro
 author: Nikolai Dokken
 title: Rofi Repo Search Script
 slug: open-repo-script

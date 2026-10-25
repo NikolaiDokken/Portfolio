@@ -79,40 +79,60 @@ const eduTree = buildTree(education as Entry[], "education");
     commands[tab.dataset.target] = makeCmd(tab.textContent);
   });
 
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   let activeTarget = "exp";
   let i = 0;
   let command = commands[activeTarget];
 
-  output.style.opacity = "0";
-  output.style.maxHeight = "0";
+  // Pending timeouts of the current run, cleared when a new run starts so runs never overlap
+  let timers = [];
+  const schedule = (fn, ms) => timers.push(setTimeout(fn, ms));
+
+  function cleanup(e) {
+    if (e.propertyName === "max-height") {
+      output.removeEventListener("transitionend", cleanup);
+      output.style.maxHeight = "none";
+      output.style.overflow = "visible";
+    }
+  }
+
+  function showOutput() {
+    cursor.style.display = "none";
+    restartBtn.style.opacity = "1";
+    restartBtn.style.pointerEvents = "auto";
+    if (reducedMotion) {
+      output.style.maxHeight = "none";
+      output.style.overflow = "visible";
+      output.style.opacity = "1";
+      return;
+    }
+    output.style.transition = "max-height 0.55s ease, opacity 0.4s ease";
+    output.style.maxHeight = output.scrollHeight + "px";
+    output.style.opacity = "1";
+    output.addEventListener("transitionend", cleanup);
+  }
 
   function typeChar() {
     if (i < command.length) {
       cmdEl.textContent += command[i];
       i++;
-      setTimeout(typeChar, 55);
+      schedule(typeChar, 55);
     } else {
       cursor.classList.add("done");
-      setTimeout(() => {
-        cursor.style.display = "none";
-        output.style.transition = "max-height 0.55s ease, opacity 0.4s ease";
-        output.style.maxHeight = output.scrollHeight + "px";
-        output.style.opacity = "1";
-        restartBtn.style.opacity = "1";
-        restartBtn.style.pointerEvents = "auto";
-        function cleanup(e) {
-          if (e.propertyName === "max-height") {
-            output.removeEventListener("transitionend", cleanup);
-            output.style.maxHeight = "none";
-            output.style.overflow = "visible";
-          }
-        }
-        output.addEventListener("transitionend", cleanup);
-      }, 150);
+      schedule(showOutput, 150);
     }
   }
 
   function runAnimation() {
+    timers.forEach(clearTimeout);
+    timers = [];
+    output.removeEventListener("transitionend", cleanup);
+    if (reducedMotion) {
+      cmdEl.textContent = command;
+      showOutput();
+      return;
+    }
     cmdEl.textContent = "";
     cursor.style.display = "";
     cursor.classList.remove("done");
@@ -123,7 +143,7 @@ const eduTree = buildTree(education as Entry[], "education");
     output.style.maxHeight = "0";
     output.style.overflow = "hidden";
     i = 0;
-    setTimeout(typeChar, 300);
+    schedule(typeChar, 300);
   }
 
   tabs.forEach((tab) => {
@@ -145,7 +165,13 @@ const eduTree = buildTree(education as Entry[], "education");
     runAnimation();
   });
 
-  typeChar();
+  if (reducedMotion) {
+    runAnimation();
+  } else {
+    output.style.opacity = "0";
+    output.style.maxHeight = "0";
+    typeChar();
+  }
 </script>
 
 <style>
@@ -241,6 +267,12 @@ const eduTree = buildTree(education as Entry[], "education");
 
   .exp-cursor.done {
     animation: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .exp-cursor {
+      animation: none;
+    }
   }
 
   @keyframes exp-blink {

@@ -3,7 +3,6 @@ title: Raycast - Extensions and contributions
 publishedDate: "2026-02-22"
 author: Nikolai Dokken
 slug: raycast
-layout: ../../layouts/PostLayout.astro
 tags: ["project", "devtools"]
 ---
 

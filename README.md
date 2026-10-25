@@ -1,46 +1,29 @@
-# Astro Starter Kit: Basics
+# nikolaidokken.no — v5
+
+Personal portfolio and blog built with [Astro](https://astro.build), deployed on Vercel.
+
+## Development
+
+Requires Node 24 (see `.node-version`) and pnpm.
+
+If libvips is installed globally (e.g. `brew install vips`), sharp tries to build from source against it and the install fails. Make it use its prebuilt binary instead:
 
 ```sh
-pnpm create astro@latest -- --template basics
+SHARP_IGNORE_GLOBAL_LIBVIPS=1 pnpm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+| Command      | Action                                         |
+| :----------- | :--------------------------------------------- |
+| `pnpm install` | Install dependencies                         |
+| `pnpm dev`     | Start the dev server at `localhost:4321`     |
+| `pnpm build`   | Build the site to `./dist/`                  |
+| `pnpm preview` | Preview the production build                 |
+| `pnpm check`   | Type-check `.astro` and `.ts` files          |
 
-## 🚀 Project Structure
+## Structure
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `src/content/posts/<post>/index.md` — blog posts (one folder per post, images alongside). Frontmatter is validated in `src/content.config.ts`; `publishedDate` must be a quoted `"YYYY-MM-DD"` string.
+- `src/data/` — work experience and education shown on the about page.
+- `src/components/`, `src/layouts/`, `src/pages/` — Astro components and routes.
+- `src/utils/posts.ts` — shared helpers for sorting posts, tags and URLs.
+- `src/assets/fonts/` — self-hosted fonts loaded through Astro's fonts API.

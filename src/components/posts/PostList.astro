@@ -1,31 +1,35 @@
 ---
-import { getCollection } from "astro:content";
+import { formatDate, getSortedPosts, postUrl, tagUrl } from "../../utils/posts";
+
+interface Props {
+  title?: string;
+  /** Max posts to show; also adds a "See all" link when set */
+  limit?: number;
+  tag?: string;
+}
 
 const { title, limit, tag } = Astro.props;
 
-const allPosts = await getCollection("posts");
-
-const sortedPosts = (tag ? allPosts.filter((p) => p.data.tags.includes(tag)) : allPosts)
-  .sort((a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf())
-  .slice(0, limit ?? allPosts.length);
+const allPosts = await getSortedPosts();
+const posts = (tag ? allPosts.filter((p) => p.data.tags.includes(tag)) : allPosts).slice(0, limit);
 ---
 
 <div>
   {title && <h3>{title}</h3>}
   <ul class="posts">
     {
-      sortedPosts.map((post) => (
+      posts.map((post) => (
         <li>
-          <a href={`/posts/${post.data.slug}`}>{post.data.title}</a>
+          <a href={postUrl(post.id)}>{post.data.title}</a>
           <span class="dots" />
-          <span class="date">{post.data.publishedDate.toISOString().split("T")[0]}</span>
+          <span class="date">{formatDate(post.data.publishedDate)}</span>
         </li>
       ))
     }
   </ul>
   {
-    limit && (
-      <a class="see-all" href={tag ? `/tags/${tag}` : "/tags"}>
+    limit !== undefined && (
+      <a class="see-all" href={tag ? tagUrl(tag) : "/tags"}>
         {"See all >"}
       </a>
     )

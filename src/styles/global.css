@@ -1,12 +1,14 @@
 /* ── Theme tokens ─────────────────────────────────────────────────────────── */
 :root {
+  color-scheme: light;
+
   /* Surfaces */
   --color-bg: #fffafa; /* snow */
   --color-surface: #fffafa; /* cards, pre blocks, inline surfaces */
 
   /* Text */
   --color-ink: #1a1a1a; /* primary text */
-  --color-ink-muted: #b0a898; /* secondary / de-emphasised text */
+  --color-ink-muted: #756d61; /* secondary / de-emphasised text (≥4.5:1 on bg) */
 
   /* Interactive — default (border/text only, no fill) */
   --color-interactive: gray;
@@ -26,13 +28,15 @@
 }
 
 [data-theme="dark"] {
+  color-scheme: dark;
+
   /* Surfaces */
   --color-bg: #141414;
   --color-surface: #1e1e1e;
 
   /* Text */
   --color-ink: #e8e0d5;
-  --color-ink-muted: #6b6357;
+  --color-ink-muted: #958c7e; /* ≥4.5:1 on bg and surface */
 
   /* Interactive — default */
   --color-interactive: #6b6357;
@@ -75,12 +79,6 @@ a:hover {
   text-decoration: none;
 }
 
-@media (min-width: 768px) {
-  .center-container {
-    width: 60%;
-  }
-}
-
 /* ── Shiki dual-theme code blocks ────────────────────────────────────────── */
 [data-theme="dark"] .astro-code,
 [data-theme="dark"] .astro-code span {
@@ -98,8 +96,4 @@ a:hover {
 
 .astro-code {
   background-color: var(--color-bg) !important;
-}
-
-.astro-code span {
-  background-color: var(--color-surface) !important;
 }

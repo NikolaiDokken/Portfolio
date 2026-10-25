@@ -17,6 +17,18 @@ import PostList from "../posts/PostList.astro";
 <div id="list-view" hidden>
   <PostList limit={10} />
 </div>
+<noscript>
+  <style is:inline>
+    /* The graph is drawn by JS — without it, show the list instead */
+    .view-toggle,
+    #graph-view {
+      display: none;
+    }
+    #list-view[hidden] {
+      display: block;
+    }
+  </style>
+</noscript>
 
 <script>
   const btnGraph = document.getElementById("btn-graph")!;

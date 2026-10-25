@@ -1,9 +1,8 @@
 ---
-layout: ../../layouts/PostLayout.astro
 author: Nikolai Dokken
 title: Meal Planning Assistant
 slug: let-me-cook
-publishedDate: "2026-06-4"
+publishedDate: "2026-06-04"
 tags: ["project", "LLM"]
 ---
 

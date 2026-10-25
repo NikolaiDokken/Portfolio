@@ -3,7 +3,6 @@ title: Algorithm Visualizer
 publishedDate: "2019-11-25"
 author: Nikolai Dokken
 slug: algorithm-visualizer
-layout: ../../layouts/PostLayout.astro
 tags: ["project"]
 ---
 

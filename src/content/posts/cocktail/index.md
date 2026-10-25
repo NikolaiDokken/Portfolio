@@ -3,7 +3,6 @@ title: Cocktail Encyclopedia
 publishedDate: "2021-03-25"
 author: Nikolai Dokken
 slug: cocktail-encyclopedia
-layout: ../../layouts/PostLayout.astro
 tags: ["project"]
 ---
 

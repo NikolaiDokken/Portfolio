@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Experience from "../components/about/experience.astro";
+import Experience from "../components/about/Experience.astro";
 import Intro from "../components/about/Intro.astro";
 import Volvo from "../components/about/Volvo.astro";
 ---
@@ -36,7 +36,8 @@ import Volvo from "../components/about/Volvo.astro";
   const egg = document.getElementById("volvo-easter-egg");
 
   trigger?.addEventListener("click", () => {
-    const isVisible = egg?.classList.toggle("visible");
+    const isVisible = egg?.classList.toggle("visible") ?? false;
     egg?.setAttribute("aria-hidden", String(!isVisible));
+    trigger.setAttribute("aria-expanded", String(isVisible));
   });
 </script>

@@ -1,9 +1,8 @@
 ---
 title: Norwegian Ocean Racing and Cruising Club
-publishedDate: 2023-03-22 12:00:00
+publishedDate: "2023-03-22"
 author: Nikolai Dokken
 slug: sailing-club
-layout: ../../layouts/PostLayout.astro
 tags: ["project"]
 ---
 

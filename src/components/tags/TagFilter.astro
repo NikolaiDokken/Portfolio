@@ -1,4 +1,6 @@
 ---
+import { tagUrl } from "../../utils/posts";
+
 interface Props {
   tags: string[];
   activeTag?: string;
@@ -9,9 +11,13 @@ const { tags, activeTag } = Astro.props;
 
 <div class="tag-filter">
   <a href="/tags" class:list={["tag", { active: !activeTag }]}>all</a>
-  {tags.map(tag => (
-    <a href={`/tags/${tag}`} class:list={["tag", { active: tag === activeTag }]}>#{tag}</a>
-  ))}
+  {
+    tags.map((tag) => (
+      <a href={tagUrl(tag)} class:list={["tag", { active: tag === activeTag }]}>
+        #{tag}
+      </a>
+    ))
+  }
 </div>
 
 <style>

@@ -1,4 +1,10 @@
 ---
+interface Props {
+  /** Label for the last crumb (e.g. a post title) instead of its URL segment */
+  currentLabel?: string;
+}
+
+const { currentLabel } = Astro.props;
 const currentPath = Astro.url.pathname; // with leading '/'  e.g /cars/toyota/sedans/toyota-crown
 
 const SEPARATOR = "/";
@@ -9,7 +15,6 @@ const getBreadcrumbs = (path: string) => {
   if (path.endsWith(SEPARATOR)) {
     path = path.slice(0, path.length - 1);
   }
-  console.log(path.split(SEPARATOR));
   return path.split(SEPARATOR);
 };
 
@@ -18,18 +23,26 @@ const breadcrumbs = getBreadcrumbs(currentPath);
 
 {
   breadcrumbs.length > 0 && (
-    <div class="breadcrumb-row">
+    <nav class="breadcrumb-row" aria-label="Breadcrumb">
       {breadcrumbs.map((breadcrumb, index) => (
         <div class="breadcrumb">
           {index > 0 && <p class="separator">{SEPARATOR}</p>}
           {index == breadcrumbs.length - 1 ? (
-            <p>{breadcrumb}</p>
+            currentLabel ? (
+              <p aria-current="page">{currentLabel}</p>
+            ) : (
+              <p class="segment" aria-current="page">
+                {decodeURIComponent(breadcrumb)}
+              </p>
+            )
           ) : (
-            <a href={breadcrumbs.slice(0, index + 1).join(SEPARATOR) || "/"}>{breadcrumb || "Home"}</a>
+            <a class="segment" href={breadcrumbs.slice(0, index + 1).join(SEPARATOR) || "/"}>
+              {breadcrumb || "Home"}
+            </a>
           )}
         </div>
       ))}
-    </div>
+    </nav>
   )
 }
 
@@ -47,8 +60,7 @@ const breadcrumbs = getBreadcrumbs(currentPath);
     align-items: center;
   }
 
-  .breadcrumb p,
-  a {
+  .segment {
     text-transform: capitalize;
   }
 

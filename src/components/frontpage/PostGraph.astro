@@ -1,21 +1,21 @@
 ---
 import { getCollection } from "astro:content";
+import { getTags, postUrl, tagUrl } from "../../utils/posts";
 
 const allPosts = await getCollection("posts");
-const tags = [...new Set(allPosts.flatMap((p) => p.data.tags))];
+const tags = await getTags();
 
-const tagNodes = tags.map((tag) => ({ id: `tag:${tag}`, label: tag, type: "tag" }));
+const tagNodes = tags.map((tag) => ({ id: `tag:${tag}`, label: tag, href: tagUrl(tag), type: "tag" }));
 const postNodes = allPosts.map((p) => ({
-  id: `post:${p.data.slug}`,
+  id: `post:${p.id}`,
   label: p.data.title,
-  slug: p.data.slug,
-  tags: p.data.tags,
+  href: postUrl(p.id),
   type: "post",
 }));
 
 const nodes = [...tagNodes, ...postNodes];
 const edges = allPosts.flatMap((p) =>
-  p.data.tags.map((tag) => ({ source: `tag:${tag}`, target: `post:${p.data.slug}` })),
+  p.data.tags.map((tag) => ({ source: `tag:${tag}`, target: `post:${p.id}` })),
 );
 
 const postCountByTag: Record<string, number> = {};
@@ -69,8 +69,7 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
     id: string;
     label: string;
     type: "tag" | "post";
-    slug?: string;
-    tags?: string[];
+    href: string;
     fontSize?: number;
     collisionR: number;
   }
@@ -80,7 +79,7 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
     target: string | GraphNode;
   }
 
-  const svgEl = document.getElementById("post-graph") as SVGSVGElement;
+  const svgEl = document.querySelector<SVGSVGElement>("#post-graph")!;
   const { nodes, edges } = JSON.parse(svgEl.dataset.graph!) as {
     nodes: GraphNode[];
     edges: GraphEdge[];
@@ -92,13 +91,6 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
 
   const FONT = "var(--font-jetbrains-mono, monospace)";
 
-  // Read colors from CSS custom properties so they update with the theme
-  const css = getComputedStyle(document.documentElement);
-  const COLOR_INK = css.getPropertyValue("--color-ink").trim();
-  const COLOR_POST_FILL = css.getPropertyValue("--color-bg").trim();
-  const COLOR_POST_STROKE = css.getPropertyValue("--color-ink").trim();
-  const COLOR_EDGE = css.getPropertyValue("--color-edge").trim();
-  const COLOR_EDGE_HOVER = css.getPropertyValue("--color-edge-hover").trim();
   const POST_R = 7;
   const LABEL_FONT_SIZE = 10;
   const CHAR_WIDTH_RATIO = 0.6; // approximate em ratio for monospace
@@ -116,18 +108,16 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
   const labelGroup = svg.append("g").attr("class", "labels").style("pointer-events", "none");
 
   // ── Edges ─────────────────────────────────────────────────────────────────────
-  const linkEls = edgeGroup
-    .selectAll("line")
-    .data(edges)
-    .join("line")
-    .attr("stroke", COLOR_EDGE)
-    .attr("stroke-width", 1);
+  const linkEls = edgeGroup.selectAll("line").data(edges).join("line").attr("stroke-width", 1);
 
   // ── Nodes ─────────────────────────────────────────────────────────────────────
+  // Real links, so nodes are focusable and work with the keyboard and middle-click
   const nodeEls = nodeGroup
-    .selectAll<SVGGElement, GraphNode>("g")
+    .selectAll<SVGAElement, GraphNode>("a")
     .data(nodes, (d) => d.id)
-    .join("g")
+    .join((enter) => enter.append<SVGAElement>("a"))
+    .attr("href", (d) => d.href)
+    .attr("aria-label", (d) => (d.type === "tag" ? `Tag: ${d.label}` : d.label))
     .attr("class", (d) => `node node-${d.type}`)
     .style("cursor", "pointer");
 
@@ -136,8 +126,6 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
     .filter((d) => d.type === "post")
     .append("circle")
     .attr("r", POST_R)
-    .attr("fill", COLOR_POST_FILL)
-    .attr("stroke", COLOR_POST_STROKE)
     .attr("stroke-width", 1.5);
 
   // Tag labels (floating text with bg-colour halo for legibility)
@@ -147,8 +135,6 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
     .text((d) => `#${d.label}`)
     .attr("text-anchor", "middle")
     .attr("dominant-baseline", "central")
-    .attr("fill", COLOR_INK)
-    .attr("stroke", COLOR_POST_FILL)
     .attr("stroke-width", 6)
     .attr("paint-order", "stroke fill")
     .attr("font-family", FONT)
@@ -166,7 +152,6 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
     .join("text")
     .text((d) => d.label)
     .attr("text-anchor", "middle")
-    .attr("fill", COLOR_INK)
     .attr("font-family", FONT)
     .attr("font-size", LABEL_FONT_SIZE)
     .attr("opacity", 0)
@@ -209,11 +194,7 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
     labelEls.attr("opacity", (d) => (connected && connected.has(d.id) ? 1 : 0));
   }
 
-  // ── Interaction — desktop hover / mobile tap-to-preview ──────────────────────
-  function navigateTo(d: GraphNode) {
-    window.location.href = d.type === "tag" ? `/tags/${d.label}` : `/posts/${d.slug}`;
-  }
-
+  // ── Interaction — desktop hover / keyboard focus / mobile tap-to-preview ─────
   let tappedId: string | null = null;
   // Desktop: highlight on hover
   nodeEls
@@ -222,21 +203,18 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
     })
     .on("mouseleave", () => {
       if (!isTouch) highlight(null);
-    });
+    })
+    .on("focus", (_e, d) => highlight(d.id))
+    .on("blur", () => highlight(null));
 
-  nodeEls.on("click", (e, d) => {
-    if (!isTouch) {
-      navigateTo(d);
-      return;
-    }
+  // Desktop clicks follow the link. On touch, the first tap previews and the second navigates.
+  nodeEls.on("click", (e: MouseEvent, d) => {
+    if (!isTouch) return;
 
     e.stopPropagation();
 
-    if (tappedId === d.id) {
-      // Second tap on same node — navigate
-      navigateTo(d);
-    } else {
-      // First tap — show label and highlight
+    if (tappedId !== d.id) {
+      e.preventDefault();
       tappedId = d.id;
       highlight(d.id);
     }
@@ -251,7 +229,7 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
   });
 
   // ── Drag ──────────────────────────────────────────────────────────────────────
-  const dragBehavior = drag<SVGGElement, GraphNode>()
+  const dragBehavior = drag<SVGAElement, GraphNode>()
     .on("start", (event, d) => {
       if (!event.active) simulation.alphaTarget(0.3).restart();
       d.fx = d.x;
@@ -286,9 +264,7 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
     labelEls.attr("fill", ink);
   }
 
-  // Apply correct colours immediately (handles dark-mode-on-load where
-  // the is:inline theme script may have run after this script's constants
-  // were captured from getComputedStyle).
+  // Colours come from CSS custom properties, so apply them now and again on every theme change
   recolour();
 
   new MutationObserver(recolour).observe(document.documentElement, {
@@ -351,5 +327,18 @@ const graphData = JSON.stringify({ nodes: nodesWithMeta, edges });
     display: block;
     width: 100%;
     height: 420px; /* keep in sync with H constant in script */
+  }
+
+  #post-graph :global(a) {
+    text-decoration: none;
+    outline: none;
+  }
+
+  #post-graph :global(a:focus-visible circle) {
+    stroke-width: 3;
+  }
+
+  #post-graph :global(a:focus-visible text) {
+    text-decoration: underline;
   }
 </style>

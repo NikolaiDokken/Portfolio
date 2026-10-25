@@ -1,9 +1,8 @@
 ---
 title: Patient Monitoring App
-publishedDate: 2020-08-20 12:00:00
+publishedDate: "2020-08-20"
 author: Nikolai Dokken
 slug: patient-monitoring
-layout: ../../layouts/PostLayout.astro
 tags: ["project"]
 ---
 

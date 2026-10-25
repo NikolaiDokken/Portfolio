@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/PostLayout.astro
 author: Nikolai Dokken
 title: Zshivalry
 slug: zshivalry

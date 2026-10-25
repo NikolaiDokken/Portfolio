@@ -1,9 +1,8 @@
 ---
 title: Words
-publishedDate: 2023-06-29 12:00:00
+publishedDate: "2023-06-29"
 author: Nikolai Dokken
 slug: word-game
-layout: ../../layouts/PostLayout.astro
 tags: ["project", "game"]
 ---
 

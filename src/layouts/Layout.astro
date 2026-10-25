@@ -4,7 +4,18 @@ import Breadcrumbs from "../components/Breadcrumbs.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import "../styles/global.css";
 
-const { pageTitle } = Astro.props;
+interface Props {
+  pageTitle: string;
+  description?: string;
+  /** Label for the last breadcrumb, e.g. a post title instead of its slug */
+  breadcrumbLabel?: string;
+}
+
+const SITE_NAME = "Nikolai Dokken";
+const DEFAULT_DESCRIPTION = "Nikolai Dokken's portfolio and blog: projects, posts and experiments.";
+
+const { pageTitle, description = DEFAULT_DESCRIPTION, breadcrumbLabel } = Astro.props;
+const title = pageTitle === SITE_NAME ? SITE_NAME : `${pageTitle} | ${SITE_NAME}`;
 
 const path = Astro.url.pathname;
 const hasBreadcrumbs = path !== "/" && path.replace(/\/$/, "") !== "";
@@ -14,24 +25,35 @@ const hasBreadcrumbs = path !== "/" && path.replace(/\/$/, "") !== "";
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/png" href="/n_logo.png" />
     <meta name="generator" content={Astro.generator} />
-    <title>Nikolai Dokken</title>
-    <style>
-      html {
-        font-size: 14px;
-      }
-    </style>
-    <Font cssVariable="--font-jetbrains-mono" preload />
-    <Font cssVariable="--font-space-mono" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <!-- Runs before first paint to apply the saved/preferred theme without a flash -->
+    <script is:inline>
+      (function () {
+        let saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch {}
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const theme = saved ?? (prefersDark ? "dark" : "light");
+        if (theme === "dark") document.documentElement.setAttribute("data-theme", "dark");
+      })();
+    </script>
+    <Font cssVariable="--font-jetbrains-mono" preload={[{ weight: "400", style: "normal" }]} />
   </head>
   <body>
     <div class="center-container">
       {
         hasBreadcrumbs && (
           <div class="nav-row">
-            <Breadcrumbs />
+            <Breadcrumbs currentLabel={breadcrumbLabel} />
             <div class="toggle-slot">
               <ThemeToggle />
             </div>

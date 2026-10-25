@@ -1,9 +1,8 @@
 ---
 title: Shotterud
-publishedDate: 2020-00-20 00:00:00
+publishedDate: "2020-01-20"
 author: Nikolai Dokken
 slug: shotterud
-layout: ../../layouts/PostLayout.astro
 tags: ["project", "game"]
 ---
 
